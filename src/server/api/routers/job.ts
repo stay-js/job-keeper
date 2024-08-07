@@ -1,8 +1,8 @@
-import { eq } from "drizzle-orm";
-import { z } from "zod";
+import { eq } from 'drizzle-orm';
+import { z } from 'zod';
 
-import { createTRPCRouter, publicProcedure } from "~/server/api/trpc";
-import { jobs, wages } from "~/server/db/schema";
+import { createTRPCRouter, publicProcedure } from '~/server/api/trpc';
+import { jobs, wages } from '~/server/db/schema';
 
 const jobSchema = z.object({
   location: z.string().min(1),
@@ -17,10 +17,11 @@ export const jobRouter = createTRPCRouter({
     return ctx.db
       .select({
         id: jobs.id,
+        date: jobs.date,
         location: jobs.location,
         event: jobs.event,
-        date: jobs.date,
         hours: jobs.hours,
+        position: wages.name,
         wage: wages.wage,
       })
       .from(jobs)
@@ -32,11 +33,9 @@ export const jobRouter = createTRPCRouter({
     await ctx.db.insert(jobs).values(input);
   }),
 
-  delete: publicProcedure
-    .input(z.object({ id: z.number() }))
-    .mutation(async ({ ctx, input }) => {
-      await ctx.db.delete(jobs).where(eq(jobs.id, input.id));
-    }),
+  delete: publicProcedure.input(z.object({ id: z.number() })).mutation(async ({ ctx, input }) => {
+    await ctx.db.delete(jobs).where(eq(jobs.id, input.id));
+  }),
 
   update: publicProcedure
     .input(jobSchema.extend({ id: z.number() }))

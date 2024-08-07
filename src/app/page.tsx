@@ -1,4 +1,5 @@
-import { api, HydrateClient } from "~/trpc/server";
+import { api, HydrateClient } from '~/trpc/server';
+import { JobsPage } from '~/components/jobs-page';
 
 export default async function Home() {
   const jobs = await api.job.getAll();
@@ -7,15 +8,8 @@ export default async function Home() {
 
   return (
     <HydrateClient>
-      <main className="grid min-h-screen place-content-center bg-gradient-to-b from-[#2e026d] to-[#15162c]">
-        <div className="flex flex-col items-center gap-2">
-          {jobs.map((job) => (
-            <div key={job.id}>
-              {job.location}, {job.event}, {job.hours}, {job.wage} Ft,
-              {job.hours * job.wage} Ft
-            </div>
-          ))}
-        </div>
+      <main className="min-h-screen bg-neutral-950 p-6 text-white md:py-24">
+        <JobsPage data={jobs} />
       </main>
     </HydrateClient>
   );
