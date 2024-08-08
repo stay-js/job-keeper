@@ -35,7 +35,7 @@ export const JobsTable: React.FC<{ data: RouterOutputs['job']['getAll'] }> = ({ 
       {
         header: 'Date',
         accessorKey: 'date',
-        cell: (cell) => (cell.getValue() as Date).toLocaleDateString('hu-HU'),
+        cell: (cell) => cell.getValue<Date>().toLocaleDateString('hu-HU'),
       },
       {
         header: 'Location',
@@ -56,12 +56,12 @@ export const JobsTable: React.FC<{ data: RouterOutputs['job']['getAll'] }> = ({ 
       {
         header: 'Wage',
         accessorKey: 'wage',
-        cell: (cell) => currencyFormatter.format(cell.getValue() as number),
+        cell: (cell) => currencyFormatter.format(cell.getValue<number>()),
       },
       {
         header: 'Payout',
         accessorKey: 'payout',
-        cell: (cell) => currencyFormatter.format(cell.getValue() as number),
+        cell: (cell) => currencyFormatter.format(cell.getValue<number>()),
       },
     ],
     getCoreRowModel: getCoreRowModel(),
@@ -106,9 +106,7 @@ export const JobsTable: React.FC<{ data: RouterOutputs['job']['getAll'] }> = ({ 
             <TableCell colSpan={6}>Total:</TableCell>
             <TableCell>
               {currencyFormatter.format(
-                table
-                  .getRowModel()
-                  .rows.reduce((acc, row) => acc + row.original.hours * row.original.wage, 0),
+                table.getRowModel().rows.reduce((acc, row) => acc + row.original.payout, 0),
               )}
             </TableCell>
           </TableRow>
