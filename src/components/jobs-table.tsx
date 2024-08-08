@@ -71,47 +71,45 @@ export const JobsTable: React.FC<{ data: RouterOutputs['job']['getAll'] }> = ({ 
   });
 
   return (
-    <div>
-      <Table>
-        <TableHeader>
-          {table.getHeaderGroups().map((headerGroup) => (
-            <TableRow key={headerGroup.id}>
-              {headerGroup.headers.map((header) => (
-                <TableHead
-                  key={header.id}
-                  onClick={header.column.getToggleSortingHandler()}
-                  className="cursor-pointer select-none"
-                >
-                  {flexRender(header.column.columnDef.header, header.getContext())}
-                </TableHead>
-              ))}
-            </TableRow>
-          ))}
-        </TableHeader>
-
-        <TableBody>
-          {table.getRowModel().rows.map((row) => (
-            <TableRow key={row.id} data-state={row.getIsSelected() && 'selected'}>
-              {row.getVisibleCells().map((cell) => (
-                <TableCell key={cell.id}>
-                  {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                </TableCell>
-              ))}
-            </TableRow>
-          ))}
-        </TableBody>
-
-        <TableFooter>
-          <TableRow>
-            <TableCell colSpan={6}>Total:</TableCell>
-            <TableCell>
-              {currencyFormatter.format(
-                table.getRowModel().rows.reduce((acc, row) => acc + row.original.payout, 0),
-              )}
-            </TableCell>
+    <Table>
+      <TableHeader>
+        {table.getHeaderGroups().map((headerGroup) => (
+          <TableRow key={headerGroup.id}>
+            {headerGroup.headers.map((header) => (
+              <TableHead
+                key={header.id}
+                onClick={header.column.getToggleSortingHandler()}
+                className="cursor-pointer select-none"
+              >
+                {flexRender(header.column.columnDef.header, header.getContext())}
+              </TableHead>
+            ))}
           </TableRow>
-        </TableFooter>
-      </Table>
-    </div>
+        ))}
+      </TableHeader>
+
+      <TableBody>
+        {table.getRowModel().rows.map((row) => (
+          <TableRow key={row.id} data-state={row.getIsSelected() && 'selected'}>
+            {row.getVisibleCells().map((cell) => (
+              <TableCell key={cell.id}>
+                {flexRender(cell.column.columnDef.cell, cell.getContext())}
+              </TableCell>
+            ))}
+          </TableRow>
+        ))}
+      </TableBody>
+
+      <TableFooter>
+        <TableRow>
+          <TableCell colSpan={6}>Total:</TableCell>
+          <TableCell>
+            {currencyFormatter.format(
+              table.getRowModel().rows.reduce((acc, row) => acc + row.original.payout, 0),
+            )}
+          </TableCell>
+        </TableRow>
+      </TableFooter>
+    </Table>
   );
 };

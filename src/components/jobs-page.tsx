@@ -26,7 +26,7 @@ export const JobsPage: React.FC<{ data: RouterOutputs['job']['getAll'] }> = ({ d
   };
 
   return (
-    <div className="mx-auto flex w-fit flex-col items-center gap-4">
+    <div className="mx-auto flex max-w-5xl flex-col gap-4">
       <div className="flex w-full justify-between gap-2">
         <Button onClick={decrementMonth} variant="outline">
           {'<'}
