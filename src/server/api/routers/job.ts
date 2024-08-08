@@ -1,4 +1,4 @@
-import { eq } from 'drizzle-orm';
+import { eq, sql } from 'drizzle-orm';
 import { z } from 'zod';
 
 import { createTRPCRouter, publicProcedure } from '~/server/api/trpc';
@@ -23,9 +23,11 @@ export const jobRouter = createTRPCRouter({
         hours: jobs.hours,
         position: wages.name,
         wage: wages.wage,
+        payout: sql<number>`${jobs.hours} * ${wages.wage}`,
       })
       .from(jobs)
       .innerJoin(wages, eq(wages.id, jobs.wageId))
+      .orderBy(jobs.date)
       .execute();
   }),
 

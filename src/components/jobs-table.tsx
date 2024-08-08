@@ -1,7 +1,14 @@
 'use client';
 
 import type { RouterOutputs } from '~/trpc/react';
-import { flexRender, getCoreRowModel, useReactTable } from '@tanstack/react-table';
+import { useState } from 'react';
+import {
+  type SortingState,
+  flexRender,
+  getCoreRowModel,
+  getSortedRowModel,
+  useReactTable,
+} from '@tanstack/react-table';
 import {
   Table,
   TableBody,
@@ -20,41 +27,47 @@ const currencyFormatter = new Intl.NumberFormat('hu-HU', {
 });
 
 export const JobsTable: React.FC<{ data: RouterOutputs['job']['getAll'] }> = ({ data }) => {
+  const [sorting, setSorting] = useState<SortingState>([]);
+
   const table = useReactTable({
     data,
     columns: [
       {
-        accessorKey: 'date',
         header: 'Date',
+        accessorKey: 'date',
         cell: (cell) => (cell.getValue() as Date).toLocaleDateString('hu-HU'),
       },
       {
-        accessorKey: 'location',
         header: 'Location',
+        accessorKey: 'location',
       },
       {
-        accessorKey: 'event',
         header: 'Event',
+        accessorKey: 'event',
       },
       {
-        accessorKey: 'hours',
         header: 'Hours',
+        accessorKey: 'hours',
       },
       {
-        accessorKey: 'position',
         header: 'Position',
+        accessorKey: 'position',
       },
       {
-        accessorKey: 'wage',
         header: 'Wage',
+        accessorKey: 'wage',
         cell: (cell) => currencyFormatter.format(cell.getValue() as number),
       },
       {
         header: 'Payout',
-        cell: (cell) => currencyFormatter.format(cell.row.original.hours * cell.row.original.wage),
+        accessorKey: 'payout',
+        cell: (cell) => currencyFormatter.format(cell.getValue() as number),
       },
     ],
     getCoreRowModel: getCoreRowModel(),
+    getSortedRowModel: getSortedRowModel(),
+    onSortingChange: setSorting,
+    state: { sorting },
   });
 
   return (
@@ -64,7 +77,11 @@ export const JobsTable: React.FC<{ data: RouterOutputs['job']['getAll'] }> = ({ 
           {table.getHeaderGroups().map((headerGroup) => (
             <TableRow key={headerGroup.id}>
               {headerGroup.headers.map((header) => (
-                <TableHead key={header.id}>
+                <TableHead
+                  key={header.id}
+                  onClick={header.column.getToggleSortingHandler()}
+                  className="cursor-pointer select-none"
+                >
                   {flexRender(header.column.columnDef.header, header.getContext())}
                 </TableHead>
               ))}
