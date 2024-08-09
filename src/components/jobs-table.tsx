@@ -92,35 +92,47 @@ export const JobsTable: React.FC<{ data: RouterOutputs['job']['getAll'] }> = ({ 
         ))}
       </TableHeader>
 
-      <TableBody>
-        {table.getRowModel().rows.map((row) => (
-          <TableRow key={row.id} data-state={row.getIsSelected() && 'selected'}>
-            {row.getVisibleCells().map((cell) => (
-              <TableCell key={cell.id}>
-                {flexRender(cell.column.columnDef.cell, cell.getContext())}
-              </TableCell>
+      {data.length !== 0 ? (
+        <>
+          <TableBody>
+            {table.getRowModel().rows.map((row) => (
+              <TableRow key={row.id} data-state={row.getIsSelected() && 'selected'}>
+                {row.getVisibleCells().map((cell) => (
+                  <TableCell key={cell.id}>
+                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                  </TableCell>
+                ))}
+              </TableRow>
             ))}
-          </TableRow>
-        ))}
-      </TableBody>
+          </TableBody>
 
-      <TableFooter>
-        {Object.entries(perPosition).map(([key, value]) => (
-          <TableRow key={key}>
-            <TableCell colSpan={4}>{key}</TableCell>
-            <TableCell>{value.hoursWorked}</TableCell>
-            <TableCell>{currencyFormatter.format(value.wage)}</TableCell>
-            <TableCell>{currencyFormatter.format(value.hoursWorked * value.wage)}</TableCell>
-          </TableRow>
-        ))}
+          <TableFooter>
+            {Object.entries(perPosition).map(([key, value]) => (
+              <TableRow key={key}>
+                <TableCell colSpan={4}>{key}</TableCell>
+                <TableCell>{value.hoursWorked}</TableCell>
+                <TableCell>{currencyFormatter.format(value.wage)}</TableCell>
+                <TableCell>{currencyFormatter.format(value.hoursWorked * value.wage)}</TableCell>
+              </TableRow>
+            ))}
 
-        <TableRow className="border-t">
-          <TableCell colSpan={6}>Total:</TableCell>
-          <TableCell>
-            {currencyFormatter.format(data.reduce((acc, job) => acc + job.payout, 0))}
-          </TableCell>
-        </TableRow>
-      </TableFooter>
+            <TableRow className="border-t">
+              <TableCell colSpan={6}>Total:</TableCell>
+              <TableCell>
+                {currencyFormatter.format(data.reduce((acc, job) => acc + job.payout, 0))}
+              </TableCell>
+            </TableRow>
+          </TableFooter>
+        </>
+      ) : (
+        <TableBody>
+          <TableRow>
+            <TableCell colSpan={7} className="text-center">
+              No record.
+            </TableCell>
+          </TableRow>
+        </TableBody>
+      )}
     </Table>
   );
 };
