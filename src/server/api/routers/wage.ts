@@ -1,8 +1,8 @@
-import { eq } from 'drizzle-orm';
+import { eq, sum, sql } from 'drizzle-orm';
 import { z } from 'zod';
 
 import { createTRPCRouter, publicProcedure } from '~/server/api/trpc';
-import { wages } from '~/server/db/schema';
+import { wages, jobs } from '~/server/db/schema';
 
 const wageSchema = z.object({
   name: z.string().min(1),
@@ -12,6 +12,21 @@ const wageSchema = z.object({
 export const wageRouter = createTRPCRouter({
   getAll: publicProcedure.query(async ({ ctx }) => {
     return ctx.db.query.wages.findMany();
+  }),
+
+  getAllWithHoursWorked: publicProcedure.query(async ({ ctx }) => {
+    return ctx.db
+      .select({
+        id: wages.id,
+        position: wages.name,
+        wage: wages.wage,
+        hoursWorked: sum(jobs.hours),
+        payout: sql<number>`${sum(jobs.hours)} * ${wages.wage}`,
+      })
+      .from(wages)
+      .innerJoin(jobs, eq(wages.id, jobs.wageId))
+      .groupBy(wages.id)
+      .execute();
   }),
 
   create: publicProcedure.input(wageSchema).mutation(async ({ ctx, input }) => {
