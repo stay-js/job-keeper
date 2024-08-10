@@ -28,7 +28,7 @@ export const positionRouter = createTRPCRouter({
         payout: sql<number>`${sum(jobs.hours)} * ${positions.wage}`,
       })
       .from(positions)
-      .leftJoin(jobs, eq(positions.id, jobs.wageId))
+      .leftJoin(jobs, eq(positions.id, jobs.positionId))
       .groupBy(positions.id)
       .orderBy(positions.name)
       .execute();

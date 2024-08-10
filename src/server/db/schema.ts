@@ -11,7 +11,7 @@ import {
 export const createTable = mysqlTableCreator((name) => name);
 
 export const positions = createTable(
-  'wages',
+  'positions',
   {
     id: bigint('id', { mode: 'number' }).primaryKey().autoincrement(),
     name: varchar('name', { length: 256 }).notNull(),
@@ -30,11 +30,11 @@ export const jobs = createTable(
     event: varchar('event', { length: 256 }),
     date: timestamp('date').notNull(),
     hours: float('hours').notNull(),
-    wageId: bigint('wage_id', { mode: 'number' })
+    positionId: bigint('position_id', { mode: 'number' })
       .notNull()
       .references(() => positions.id, { onDelete: 'no action' }),
   },
   (item) => ({
-    nameIndex: index('by_wage_idx').on(item.wageId),
+    nameIndex: index('by_wage_idx').on(item.positionId),
   }),
 );

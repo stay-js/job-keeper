@@ -9,7 +9,7 @@ const jobSchema = z.object({
   event: z.string().min(1),
   date: z.date(),
   hours: z.number(),
-  wageId: z.number(),
+  positionId: z.number(),
 });
 
 export const jobRouter = createTRPCRouter({
@@ -26,7 +26,7 @@ export const jobRouter = createTRPCRouter({
         payout: sql<number>`${jobs.hours} * ${positions.wage}`,
       })
       .from(jobs)
-      .innerJoin(positions, eq(positions.id, jobs.wageId))
+      .innerJoin(positions, eq(positions.id, jobs.positionId))
       .orderBy(jobs.date)
       .execute();
   }),

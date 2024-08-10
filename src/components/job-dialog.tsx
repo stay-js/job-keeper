@@ -27,7 +27,7 @@ export const formSchema = z.object({
   }),
   location: z.string().min(1, { message: 'Please specify a location!' }),
   event: z.string().min(1, { message: 'Please specify an event!' }),
-  wageId: z
+  positionId: z
     .string()
     .refine((value) => parseInt(value) > 0, { message: 'Please select a position!' }),
   hours: z
@@ -47,9 +47,11 @@ export const JobDialog: React.FC<{ positions: RouterOutputs['position']['getAll'
     handleSubmit,
     formState: { errors },
     reset,
-  } = useForm<{ date: string; location: string; event: string; wageId: string; hours: string }>({
-    resolver: zodResolver(formSchema),
-  });
+  } = useForm<{ date: string; location: string; event: string; positionId: string; hours: string }>(
+    {
+      resolver: zodResolver(formSchema),
+    },
+  );
 
   const { mutate } = api.job.create.useMutation({
     onSuccess: () => {
@@ -81,7 +83,7 @@ export const JobDialog: React.FC<{ positions: RouterOutputs['position']['getAll'
               ...data,
               date: new Date(data.date),
               hours: parseFloat(data.hours),
-              wageId: parseInt(data.wageId),
+              positionId: parseInt(data.positionId),
             }),
           )}
         >
@@ -132,7 +134,7 @@ export const JobDialog: React.FC<{ positions: RouterOutputs['position']['getAll'
 
               <select
                 id="position"
-                {...register('wageId')}
+                {...register('positionId')}
                 className="col-span-3 flex h-10 w-full items-center justify-between rounded-md border border-neutral-200 bg-white p-2 text-sm ring-offset-white placeholder:text-neutral-500 focus:outline-none focus:ring-2 focus:ring-neutral-950 focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 dark:border-neutral-800 dark:bg-neutral-950 dark:ring-offset-neutral-950 dark:placeholder:text-neutral-400 dark:focus:ring-neutral-300 [&>span]:line-clamp-1"
               >
                 <option>Select a position</option>
@@ -144,9 +146,9 @@ export const JobDialog: React.FC<{ positions: RouterOutputs['position']['getAll'
                 ))}
               </select>
 
-              {errors.wageId && (
+              {errors.positionId && (
                 <span className="col-span-full text-right text-xs text-red-500 dark:text-red-500">
-                  {errors.wageId.message}
+                  {errors.positionId.message}
                 </span>
               )}
             </div>
