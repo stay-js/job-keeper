@@ -30,28 +30,30 @@ export const formSchema = z.object({
   positionId: z
     .string()
     .refine((value) => parseInt(value) > 0, { message: 'Please select a position!' }),
-  hours: z
-    .string()
-    .refine((value) => parseFloat(value) > 0, { message: 'Please specify valid hours!' }),
+  hours: z.string().refine((value) => parseFloat(value.replace(',', '.')) > 0, {
+    message: 'Please specify valid hours!',
+  }),
 });
 
-export const JobDialog: React.FC<{ positions: RouterOutputs['position']['getAll'] }> = ({
-  positions,
-}) => {
-  const router = useRouter();
-
+export const JobDialog: React.FC<{
+  positions: RouterOutputs['position']['getAll'];
+}> = ({ positions }) => {
   const [isOpen, setIsOpen] = useState(false);
+
+  const router = useRouter();
 
   const {
     register,
     handleSubmit,
     formState: { errors },
     reset,
-  } = useForm<{ date: string; location: string; event: string; positionId: string; hours: string }>(
-    {
-      resolver: zodResolver(formSchema),
-    },
-  );
+  } = useForm<{
+    date: string;
+    location: string;
+    event: string;
+    positionId: string;
+    hours: string;
+  }>({ resolver: zodResolver(formSchema) });
 
   const { mutate } = api.job.create.useMutation({
     onSuccess: () => {
@@ -82,7 +84,7 @@ export const JobDialog: React.FC<{ positions: RouterOutputs['position']['getAll'
             mutate({
               ...data,
               date: new Date(data.date),
-              hours: parseFloat(data.hours),
+              hours: parseFloat(data.hours.replace(',', '.')),
               positionId: parseInt(data.positionId),
             }),
           )}
@@ -135,9 +137,9 @@ export const JobDialog: React.FC<{ positions: RouterOutputs['position']['getAll'
               <select
                 id="position"
                 {...register('positionId')}
-                className="col-span-3 flex h-10 w-full items-center justify-between rounded-md border border-neutral-200 bg-white p-2 text-sm ring-offset-white placeholder:text-neutral-500 focus:outline-none focus:ring-2 focus:ring-neutral-950 focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 dark:border-neutral-800 dark:bg-neutral-950 dark:ring-offset-neutral-950 dark:placeholder:text-neutral-400 dark:focus:ring-neutral-300 [&>span]:line-clamp-1"
+                className="col-span-3 flex h-10 w-full appearance-none items-center justify-between rounded-md border border-neutral-200 bg-white p-2 text-sm ring-offset-white placeholder:text-neutral-500 focus:outline-none focus:ring-2 focus:ring-neutral-950 focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 dark:border-neutral-800 dark:bg-neutral-950 dark:ring-offset-neutral-950 dark:placeholder:text-neutral-400 dark:focus:ring-neutral-300 [&>span]:line-clamp-1"
               >
-                <option>Select a position</option>
+                <option>Select position</option>
 
                 {positions.map((position) => (
                   <option key={position.id} value={position.id}>
