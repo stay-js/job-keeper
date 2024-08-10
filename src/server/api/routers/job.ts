@@ -2,7 +2,7 @@ import { eq, sql } from 'drizzle-orm';
 import { z } from 'zod';
 
 import { createTRPCRouter, publicProcedure } from '~/server/api/trpc';
-import { jobs, wages } from '~/server/db/schema';
+import { jobs, positions } from '~/server/db/schema';
 
 const jobSchema = z.object({
   location: z.string().min(1),
@@ -21,12 +21,12 @@ export const jobRouter = createTRPCRouter({
         location: jobs.location,
         event: jobs.event,
         hours: jobs.hours,
-        position: wages.name,
-        wage: wages.wage,
-        payout: sql<number>`${jobs.hours} * ${wages.wage}`,
+        position: positions.name,
+        wage: positions.wage,
+        payout: sql<number>`${jobs.hours} * ${positions.wage}`,
       })
       .from(jobs)
-      .innerJoin(wages, eq(wages.id, jobs.wageId))
+      .innerJoin(positions, eq(positions.id, jobs.wageId))
       .orderBy(jobs.date)
       .execute();
   }),

@@ -8,7 +8,7 @@ import { JobDialog } from '~/components/job-dialog';
 
 export const JobsPage: React.FC<{
   jobs: RouterOutputs['job']['getAll'];
-  positions: RouterOutputs['wage']['getAll'];
+  positions: RouterOutputs['position']['getAll'];
 }> = ({ jobs, positions }) => {
   const [month, setMonth] = useState(new Date().getUTCMonth());
   const [year, setYear] = useState(new Date().getUTCFullYear());

@@ -1,28 +1,28 @@
 import { api, HydrateClient } from '~/trpc/server';
 import { JobsPage } from '~/app/jobs';
-import { WagesTable } from '~/components/wages-table';
-import { WageDialog } from '~/components/wage-dialog';
+import { PositionsTable } from '~/components/positions-table';
+import { PositionDialog } from '~/components/position-dialog';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '~/components/ui/tabs';
 
 const Jobs = async () => {
   const jobs = await api.job.getAll();
-  const positions = await api.wage.getAll();
+  const positions = await api.position.getAll();
 
   void api.job.getAll.prefetch();
-  void api.wage.getAll.prefetch();
+  void api.position.getAll.prefetch();
 
   return <JobsPage jobs={jobs} positions={positions} />;
 };
 
-const Wages = async () => {
-  const data = await api.wage.getAllWithHoursWorked();
+const Positions = async () => {
+  const data = await api.position.getAllWithHoursWorked();
 
   void api.job.getAll.prefetch();
 
   return (
     <div className="flex flex-col gap-4">
-      <WagesTable data={data} />
-      <WageDialog />
+      <PositionsTable data={data} />
+      <PositionDialog />
     </div>
   );
 };
@@ -33,14 +33,14 @@ const Page: React.FC = () => (
       <Tabs defaultValue="jobs" className="mx-auto flex max-w-5xl flex-col gap-6">
         <TabsList className="w-full">
           <TabsTrigger value="jobs">Jobs</TabsTrigger>
-          <TabsTrigger value="wages">Wages</TabsTrigger>
+          <TabsTrigger value="positions">Positions</TabsTrigger>
         </TabsList>
 
         <TabsContent value="jobs">
           <Jobs />
         </TabsContent>
-        <TabsContent value="wages">
-          <Wages />
+        <TabsContent value="positions">
+          <Positions />
         </TabsContent>
       </Tabs>
     </main>

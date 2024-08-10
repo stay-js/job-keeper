@@ -1,9 +1,9 @@
-import { wageRouter } from './routers/wage';
+import { positionRouter } from './routers/position';
 import { jobRouter } from './routers/job';
 import { createCallerFactory, createTRPCRouter } from '~/server/api/trpc';
 
 export const appRouter = createTRPCRouter({
-  wage: wageRouter,
+  position: positionRouter,
   job: jobRouter,
 });
 

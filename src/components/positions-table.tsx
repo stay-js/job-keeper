@@ -20,8 +20,8 @@ import {
 import { currencyFormatter } from '~/utils/currency-formatter';
 import { cn } from '~/utils/cn';
 
-export const WagesTable: React.FC<{
-  data: RouterOutputs['wage']['getAllWithHoursWorked'];
+export const PositionsTable: React.FC<{
+  data: RouterOutputs['position']['getAllWithHoursWorked'];
 }> = ({ data }) => {
   const [sorting, setSorting] = useState<SortingState>([]);
 

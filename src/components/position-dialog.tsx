@@ -27,7 +27,7 @@ export const formSchema = z.object({
     .refine((wage) => !isNaN(parseInt(wage)), { message: 'Please specify a valid wage!' }),
 });
 
-export const WageDialog: React.FC = () => {
+export const PositionDialog: React.FC = () => {
   const router = useRouter();
 
   const [isOpen, setIsOpen] = useState(false);
@@ -39,7 +39,7 @@ export const WageDialog: React.FC = () => {
     reset,
   } = useForm<{ name: string; wage: string }>({ resolver: zodResolver(formSchema) });
 
-  const { mutate } = api.wage.create.useMutation({
+  const { mutate } = api.position.create.useMutation({
     onSuccess: () => {
       router.refresh();
       setIsOpen(false);
