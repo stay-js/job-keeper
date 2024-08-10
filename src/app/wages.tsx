@@ -2,7 +2,6 @@
 
 import type { RouterOutputs } from '~/trpc/react';
 import { WagesTable } from '~/components/wages-table';
-
 import { Button } from '~/components/ui/button';
 import {
   Dialog,
@@ -20,24 +19,21 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { api } from '~/trpc/react';
 import { useRouter } from 'next/navigation';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 export const formSchema = z.object({
   name: z.string().min(1, { message: 'Please specify a name!' }),
-  wage: z.coerce.number(),
+  wage: z
+    .string()
+    .min(1, { message: 'Please specify a wage!' })
+    .refine((wage) => !isNaN(parseInt(wage)), { message: 'Please specify a valid wage!' }),
 });
-
-type FormSchema = z.infer<typeof formSchema>;
-
-const defaultValues: FormSchema = {
-  name: '',
-  wage: 0,
-};
 
 export const WagesPage: React.FC<{
   data: RouterOutputs['wage']['getAllWithHoursWorked'];
 }> = ({ data }) => {
   const router = useRouter();
+
   const [isOpen, setIsOpen] = useState(false);
 
   const {
@@ -45,15 +41,17 @@ export const WagesPage: React.FC<{
     handleSubmit,
     formState: { errors },
     reset,
-  } = useForm<FormSchema>({ resolver: zodResolver(formSchema), defaultValues });
+  } = useForm<{ name: string; wage: string }>({ resolver: zodResolver(formSchema) });
 
   const { mutate } = api.wage.create.useMutation({
     onSuccess: () => {
       router.refresh();
-      reset(defaultValues);
       setIsOpen(false);
     },
   });
+
+  useEffect(() => reset(), [isOpen, reset]);
+
   return (
     <div className="flex flex-col gap-4">
       <WagesTable data={data} />
@@ -62,6 +60,7 @@ export const WagesPage: React.FC<{
         <DialogTrigger asChild>
           <Button>Add new</Button>
         </DialogTrigger>
+
         <DialogContent className="w-11/12 max-w-lg rounded-lg">
           <DialogHeader>
             <DialogTitle>Add new position</DialogTitle>
@@ -70,26 +69,34 @@ export const WagesPage: React.FC<{
               changes&quot; button to add the position to the database.
             </DialogDescription>
           </DialogHeader>
-          <form onSubmit={handleSubmit((data) => mutate(data))}>
+
+          <form onSubmit={handleSubmit((data) => mutate({ ...data, wage: parseInt(data.wage) }))}>
             <div className="grid gap-4 py-4">
-              <div className="grid grid-cols-4 items-center gap-4">
+              <div className="grid grid-cols-4 items-center gap-4 gap-y-2">
                 <Label htmlFor="name" className="text-right">
                   Name
                 </Label>
                 <Input id="name" className="col-span-3" {...register('name')} />
+
                 {errors.name && (
                   <span className="col-span-full text-right text-xs text-red-500 dark:text-red-500">
                     {errors.name.message}
                   </span>
                 )}
               </div>
-              <div className="grid grid-cols-4 items-center gap-4">
+              <div className="grid grid-cols-4 items-center gap-4 gap-y-2">
                 <Label htmlFor="wage" className="text-right">
                   Hourly Wage
                 </Label>
                 <Input id="wage" className="col-span-3" type="number" {...register('wage')} />
+                {errors.wage && (
+                  <span className="col-span-full text-right text-xs text-red-500 dark:text-red-500">
+                    {errors.wage.message}
+                  </span>
+                )}
               </div>
             </div>
+
             <DialogFooter>
               <Button type="submit">Save changes</Button>
             </DialogFooter>
