@@ -32,7 +32,7 @@ export const jobs = createTable(
     hours: float('hours').notNull(),
     wageId: bigint('wage_id', { mode: 'number' })
       .notNull()
-      .references(() => wages.id),
+      .references(() => wages.id, { onDelete: 'no action' }),
   },
   (item) => ({
     nameIndex: index('by_wage_idx').on(item.wageId),

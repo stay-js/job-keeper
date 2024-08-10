@@ -28,7 +28,7 @@ export const JobsPage: React.FC<{ data: RouterOutputs['job']['getAll'] }> = ({ d
   return (
     <div className="flex flex-col gap-4">
       <div className="flex w-full justify-between gap-2">
-        <Button onClick={decrementMonth} variant="outline">
+        <Button onClick={decrementMonth} variant="outline" size="icon">
           {'<'}
         </Button>
 
@@ -36,7 +36,7 @@ export const JobsPage: React.FC<{ data: RouterOutputs['job']['getAll'] }> = ({ d
           {year} / {month + 1}.
         </h1>
 
-        <Button onClick={incrementMonth} variant="outline">
+        <Button onClick={incrementMonth} variant="outline" size="icon">
           {'>'}
         </Button>
       </div>

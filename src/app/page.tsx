@@ -1,7 +1,7 @@
 import { api, HydrateClient } from '~/trpc/server';
 import { JobsPage } from '~/app/jobs';
+import { WagesPage } from './wages';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '~/components/ui/tabs';
-import { WagesTable } from '~/components/wages-table';
 
 const Jobs = async () => {
   const jobs = await api.job.getAll();
@@ -16,7 +16,7 @@ const Wages = async () => {
 
   void api.job.getAll.prefetch();
 
-  return <WagesTable data={wages} />;
+  return <WagesPage data={wages} />;
 };
 
 const Page: React.FC = () => (

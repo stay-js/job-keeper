@@ -6,13 +6,11 @@ import { wages, jobs } from '~/server/db/schema';
 
 const wageSchema = z.object({
   name: z.string().min(1),
-  wage: z.number().min(1),
+  wage: z.number(),
 });
 
 export const wageRouter = createTRPCRouter({
-  getAll: publicProcedure.query(async ({ ctx }) => {
-    return ctx.db.query.wages.findMany();
-  }),
+  getAll: publicProcedure.query(async ({ ctx }) => ctx.db.query.wages.findMany()),
 
   getAllWithHoursWorked: publicProcedure.query(async ({ ctx }) => {
     return ctx.db
@@ -20,11 +18,11 @@ export const wageRouter = createTRPCRouter({
         id: wages.id,
         position: wages.name,
         wage: wages.wage,
-        hoursWorked: sum(jobs.hours),
+        hoursWorked: sum(jobs.hours) || 0,
         payout: sql<number>`${sum(jobs.hours)} * ${wages.wage}`,
       })
       .from(wages)
-      .innerJoin(jobs, eq(wages.id, jobs.wageId))
+      .leftJoin(jobs, eq(wages.id, jobs.wageId))
       .groupBy(wages.id)
       .execute();
   }),

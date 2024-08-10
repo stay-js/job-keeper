@@ -18,6 +18,7 @@ import {
   TableRow,
 } from '~/components/ui/table';
 import { currencyFormatter } from '~/utils/currency-formatter';
+import { cn } from '~/utils/cn';
 
 export const WagesTable: React.FC<{
   data: RouterOutputs['wage']['getAllWithHoursWorked'];
@@ -37,11 +38,12 @@ export const WagesTable: React.FC<{
         cell: (cell) => currencyFormatter.format(cell.getValue<number>()),
       },
       {
-        header: 'Total Hours Worked',
+        header: 'Hours Worked',
         accessorKey: 'hoursWorked',
+        cell: (cell) => cell.getValue<number>() || 0,
       },
       {
-        header: 'Total Payout',
+        header: 'Payout',
         accessorKey: 'payout',
         cell: (cell) => currencyFormatter.format(cell.getValue<number>()),
       },
@@ -57,11 +59,11 @@ export const WagesTable: React.FC<{
       <TableHeader>
         {table.getHeaderGroups().map((headerGroup) => (
           <TableRow key={headerGroup.id}>
-            {headerGroup.headers.map((header) => (
+            {headerGroup.headers.map((header, idx) => (
               <TableHead
                 key={header.id}
                 onClick={header.column.getToggleSortingHandler()}
-                className="cursor-pointer select-none"
+                className={cn('cursor-pointer select-none', idx === 0 ? '' : 'w-max')}
               >
                 {flexRender(header.column.columnDef.header, header.getContext())}
               </TableHead>
@@ -70,17 +72,29 @@ export const WagesTable: React.FC<{
         ))}
       </TableHeader>
 
-      <TableBody>
-        {table.getRowModel().rows.map((row) => (
-          <TableRow key={row.id} data-state={row.getIsSelected() && 'selected'}>
-            {row.getVisibleCells().map((cell) => (
-              <TableCell key={cell.id}>
-                {flexRender(cell.column.columnDef.cell, cell.getContext())}
-              </TableCell>
-            ))}
+      {data.length !== 0 ? (
+        <TableBody>
+          {table.getRowModel().rows.map((row) => (
+            <TableRow key={row.id} data-state={row.getIsSelected() && 'selected'}>
+              {row.getVisibleCells().map((cell) => (
+                <TableCell key={cell.id}>
+                  <div className="flex items-center justify-between">
+                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                  </div>
+                </TableCell>
+              ))}
+            </TableRow>
+          ))}
+        </TableBody>
+      ) : (
+        <TableBody>
+          <TableRow>
+            <TableCell colSpan={7} className="text-center">
+              No record.
+            </TableCell>
           </TableRow>
-        ))}
-      </TableBody>
+        </TableBody>
+      )}
     </Table>
   );
 };
