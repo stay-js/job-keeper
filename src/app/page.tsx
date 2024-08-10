@@ -1,22 +1,30 @@
 import { api, HydrateClient } from '~/trpc/server';
 import { JobsPage } from '~/app/jobs';
-import { WagesPage } from './wages';
+import { WagesTable } from '~/components/wages-table';
+import { WageDialog } from '~/components/wage-dialog';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '~/components/ui/tabs';
 
 const Jobs = async () => {
   const jobs = await api.job.getAll();
+  const positions = await api.wage.getAll();
 
   void api.job.getAll.prefetch();
+  void api.wage.getAll.prefetch();
 
-  return <JobsPage data={jobs} />;
+  return <JobsPage jobs={jobs} positions={positions} />;
 };
 
 const Wages = async () => {
-  const wages = await api.wage.getAllWithHoursWorked();
+  const data = await api.wage.getAllWithHoursWorked();
 
   void api.job.getAll.prefetch();
 
-  return <WagesPage data={wages} />;
+  return (
+    <div className="flex flex-col gap-4">
+      <WagesTable data={data} />
+      <WageDialog />
+    </div>
+  );
 };
 
 const Page: React.FC = () => (

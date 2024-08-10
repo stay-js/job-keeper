@@ -10,7 +10,13 @@ const wageSchema = z.object({
 });
 
 export const wageRouter = createTRPCRouter({
-  getAll: publicProcedure.query(async ({ ctx }) => ctx.db.query.wages.findMany()),
+  getAll: publicProcedure.query(async ({ ctx }) =>
+    ctx.db
+      .select({ id: wages.id, name: wages.name, wage: wages.wage })
+      .from(wages)
+      .orderBy(wages.name)
+      .execute(),
+  ),
 
   getAllWithHoursWorked: publicProcedure.query(async ({ ctx }) => {
     return ctx.db
@@ -24,6 +30,7 @@ export const wageRouter = createTRPCRouter({
       .from(wages)
       .leftJoin(jobs, eq(wages.id, jobs.wageId))
       .groupBy(wages.id)
+      .orderBy(wages.name)
       .execute();
   }),
 

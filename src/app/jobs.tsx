@@ -1,15 +1,19 @@
 'use client';
 
 import type { RouterOutputs } from '~/trpc/react';
-import { useState } from 'react';
 import { JobsTable } from '~/components/jobs-table';
 import { Button } from '~/components/ui/button';
+import { useState } from 'react';
+import { JobDialog } from '~/components/job-dialog';
 
-export const JobsPage: React.FC<{ data: RouterOutputs['job']['getAll'] }> = ({ data }) => {
+export const JobsPage: React.FC<{
+  jobs: RouterOutputs['job']['getAll'];
+  positions: RouterOutputs['wage']['getAll'];
+}> = ({ jobs, positions }) => {
   const [month, setMonth] = useState(new Date().getUTCMonth());
   const [year, setYear] = useState(new Date().getUTCFullYear());
 
-  const current = data.filter(
+  const current = jobs.filter(
     (item) => item.date.getUTCMonth() === month && item.date.getUTCFullYear() === year,
   );
 
@@ -42,6 +46,7 @@ export const JobsPage: React.FC<{ data: RouterOutputs['job']['getAll'] }> = ({ d
       </div>
 
       <JobsTable data={current} />
+      <JobDialog positions={positions} />
     </div>
   );
 };
