@@ -9,6 +9,7 @@ import {
   getSortedRowModel,
   useReactTable,
 } from '@tanstack/react-table';
+import { ChevronsUpDown } from 'lucide-react';
 import {
   Table,
   TableBody,
@@ -80,12 +81,11 @@ export const JobsTable: React.FC<{ data: RouterOutputs['job']['getAll'] }> = ({ 
         {table.getHeaderGroups().map((headerGroup) => (
           <TableRow key={headerGroup.id}>
             {headerGroup.headers.map((header) => (
-              <TableHead
-                key={header.id}
-                onClick={header.column.getToggleSortingHandler()}
-                className="cursor-pointer select-none"
-              >
-                {flexRender(header.column.columnDef.header, header.getContext())}
+              <TableHead key={header.id} onClick={header.column.getToggleSortingHandler()}>
+                <div className="flex w-fit cursor-pointer select-none items-center gap-2 rounded-md px-2 py-2 transition-colors hover:bg-neutral-700 hover:text-white">
+                  {flexRender(header.column.columnDef.header, header.getContext())}
+                  <ChevronsUpDown size={14} />
+                </div>
               </TableHead>
             ))}
           </TableRow>

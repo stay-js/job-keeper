@@ -10,6 +10,7 @@ import {
   getPaginationRowModel,
   useReactTable,
 } from '@tanstack/react-table';
+import { ChevronsUpDown } from 'lucide-react';
 import {
   Table,
   TableBody,
@@ -20,7 +21,6 @@ import {
 } from '~/components/ui/table';
 import { Button } from '~/components/ui/button';
 import { currencyFormatter } from '~/utils/currency-formatter';
-import { cn } from '~/utils/cn';
 
 export const PositionsTable: React.FC<{
   data: RouterOutputs['position']['getAllWithHoursWorked'];
@@ -69,13 +69,12 @@ export const PositionsTable: React.FC<{
         <TableHeader>
           {table.getHeaderGroups().map((headerGroup) => (
             <TableRow key={headerGroup.id}>
-              {headerGroup.headers.map((header, idx) => (
-                <TableHead
-                  key={header.id}
-                  onClick={header.column.getToggleSortingHandler()}
-                  className={cn('cursor-pointer select-none', idx === 0 ? '' : 'w-max')}
-                >
-                  {flexRender(header.column.columnDef.header, header.getContext())}
+              {headerGroup.headers.map((header) => (
+                <TableHead key={header.id} onClick={header.column.getToggleSortingHandler()}>
+                  <div className="flex w-fit cursor-pointer select-none items-center gap-2 rounded-md px-2 py-2 transition-colors hover:bg-neutral-700 hover:text-white">
+                    {flexRender(header.column.columnDef.header, header.getContext())}
+                    <ChevronsUpDown size={14} />
+                  </div>
                 </TableHead>
               ))}
             </TableRow>
@@ -93,9 +92,7 @@ export const PositionsTable: React.FC<{
               >
                 {row.getVisibleCells().map((cell) => (
                   <TableCell key={cell.id}>
-                    <div className="flex items-center justify-between">
-                      {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                    </div>
+                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
                   </TableCell>
                 ))}
               </TableRow>

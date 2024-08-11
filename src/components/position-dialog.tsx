@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { useForm } from 'react-hook-form';
+import { useForm, type SubmitHandler } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { api } from '~/trpc/react';
@@ -18,7 +18,7 @@ import {
 import { Popover, PopoverContent, PopoverTrigger } from '~/components/ui/popover';
 import { Input } from '~/components/ui/input';
 import { Label } from '~/components/ui/label';
-import { Button } from './ui/button';
+import { Button } from '~/components/ui/button';
 
 export const formSchema = z.object({
   name: z.string().min(1, { message: 'Please specify a name!' }),
@@ -50,7 +50,7 @@ export const PositionDialog: React.FC<{
   const { mutate: update } = api.position.update.useMutation({ onSuccess: () => router.refresh() });
   const { mutate: remove } = api.position.delete.useMutation({ onSuccess: () => router.refresh() });
 
-  const onSubmit = (data: FormSchema) => {
+  const onSubmit: SubmitHandler<FormSchema> = (data) => {
     if (selected) update({ id: selected, ...data, wage: parseInt(data.wage) });
     else create({ ...data, wage: parseInt(data.wage) });
     setIsOpen(false);
