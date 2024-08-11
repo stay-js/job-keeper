@@ -1,7 +1,6 @@
 import { api, HydrateClient } from '~/trpc/server';
 import { JobsPage } from '~/app/jobs';
-import { PositionsTable } from '~/components/positions-table';
-import { PositionDialog } from '~/components/position-dialog';
+import { PositionsPage } from './positions';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '~/components/ui/tabs';
 
 const Jobs = async () => {
@@ -19,12 +18,7 @@ const Positions = async () => {
 
   void api.job.getAll.prefetch();
 
-  return (
-    <div className="flex flex-col gap-4">
-      <PositionsTable data={data} />
-      <PositionDialog />
-    </div>
-  );
+  return <PositionsPage data={data} />;
 };
 
 const Page: React.FC = () => (

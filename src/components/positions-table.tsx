@@ -22,7 +22,8 @@ import { cn } from '~/utils/cn';
 
 export const PositionsTable: React.FC<{
   data: RouterOutputs['position']['getAllWithHoursWorked'];
-}> = ({ data }) => {
+  setSelected: React.Dispatch<React.SetStateAction<number | null>>;
+}> = ({ data, setSelected }) => {
   const [sorting, setSorting] = useState<SortingState>([]);
 
   const table = useReactTable({
@@ -75,7 +76,12 @@ export const PositionsTable: React.FC<{
       {data.length !== 0 ? (
         <TableBody>
           {table.getRowModel().rows.map((row) => (
-            <TableRow key={row.id} data-state={row.getIsSelected() && 'selected'}>
+            <TableRow
+              className="cursor-pointer"
+              key={row.id}
+              data-state={row.getIsSelected() && 'selected'}
+              onClick={() => setSelected(row.original.id)}
+            >
               {row.getVisibleCells().map((cell) => (
                 <TableCell key={cell.id}>
                   <div className="flex items-center justify-between">
