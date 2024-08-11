@@ -111,8 +111,9 @@ export const PositionDialog: React.FC<{
             </div>
           </div>
 
-          <DialogFooter>
+          <DialogFooter className="flex gap-2">
             <Button type="submit">Save changes</Button>
+
             {selected && (
               <Popover>
                 <PopoverTrigger asChild>
