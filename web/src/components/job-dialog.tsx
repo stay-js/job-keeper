@@ -22,6 +22,7 @@ import { useRouter } from 'next/navigation';
 import { useState, useEffect } from 'react';
 import { Button } from './ui/button';
 import { currencyFormatter } from '~/utils/currency-formatter';
+import { ChevronsUpDown } from 'lucide-react';
 
 export const formSchema = z.object({
   date: z.string().refine((value) => !isNaN(new Date(value).getTime()), {
@@ -153,19 +154,26 @@ export const JobDialog: React.FC<{
                 Position
               </Label>
 
-              <select
-                id="position"
-                {...register('positionId')}
-                className="col-span-3 flex h-10 w-full appearance-none items-center justify-between rounded-md border border-neutral-200 bg-white p-2 text-sm ring-offset-white placeholder:text-neutral-500 focus:ring-2 focus:ring-neutral-950 focus:ring-offset-2 focus:outline-none disabled:cursor-not-allowed disabled:opacity-50 dark:border-neutral-800 dark:bg-neutral-950 dark:ring-offset-neutral-950 dark:placeholder:text-neutral-400 dark:focus:ring-neutral-300 [&>span]:line-clamp-1"
-              >
-                <option value="default">Select position</option>
+              <div className="relative col-span-3">
+                <select
+                  id="position"
+                  {...register('positionId')}
+                  className="flex h-10 w-full appearance-none items-center justify-between rounded-md border border-neutral-200 bg-white p-2 text-sm ring-offset-white placeholder:text-neutral-500 focus:ring-2 focus:ring-neutral-950 focus:ring-offset-2 focus:outline-none disabled:cursor-not-allowed disabled:opacity-50 dark:border-neutral-800 dark:bg-neutral-950 dark:ring-offset-neutral-950 dark:placeholder:text-neutral-400 dark:focus:ring-neutral-300 [&>span]:line-clamp-1"
+                >
+                  <option value="default">Select position</option>
 
-                {positions.map((position) => (
-                  <option key={position.id} value={position.id}>
-                    {position.name} ({currencyFormatter.format(position.wage)})
-                  </option>
-                ))}
-              </select>
+                  {positions.map((position) => (
+                    <option key={position.id} value={position.id}>
+                      {position.name} ({currencyFormatter.format(position.wage)})
+                    </option>
+                  ))}
+                </select>
+
+                <ChevronsUpDown
+                  size={14}
+                  className="pointer-events-none absolute top-1/2 right-2 -translate-y-1/2 text-neutral-500"
+                />
+              </div>
 
               {errors.positionId && (
                 <span className="col-span-full text-right text-xs text-red-500 dark:text-red-500">
