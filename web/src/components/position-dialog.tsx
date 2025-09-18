@@ -30,14 +30,19 @@ export const formSchema = z.object({
 
 type FormSchema = z.infer<typeof formSchema>;
 
+interface PositionWithCanDelete extends FormSchema {
+  canDelete?: boolean;
+}
+
 export const PositionDialog: React.FC<{
   selected: number | null;
   setSelected: React.Dispatch<React.SetStateAction<number | null>>;
-  getDefaultValues: (id: number | null) => FormSchema;
+  getDefaultValues: (id: number | null) => PositionWithCanDelete;
 }> = ({ selected, setSelected, getDefaultValues }) => {
   const router = useRouter();
 
   const [isOpen, setIsOpen] = useState(false);
+  const [canDelete, setCanDelete] = useState(false);
 
   const {
     register,
@@ -58,7 +63,10 @@ export const PositionDialog: React.FC<{
   };
 
   useEffect(() => {
-    reset(getDefaultValues(selected));
+    const defaultValues = getDefaultValues(selected);
+    setCanDelete(defaultValues.canDelete ?? false);
+    reset(defaultValues);
+
     if (selected) setIsOpen(true);
   }, [selected, reset, getDefaultValues]);
 
@@ -79,7 +87,8 @@ export const PositionDialog: React.FC<{
           <DialogTitle>{selected ? 'Edit' : 'Add new'} position</DialogTitle>
           <DialogDescription>
             Use this form to {selected ? 'edit a' : 'add a new'} position. Once completed, click the
-            &quot;Save changes&quot; button.
+            &quot;Save changes&quot; button. You can only delete positions that have no hours worked
+            logged.
           </DialogDescription>
         </DialogHeader>
 
@@ -114,7 +123,7 @@ export const PositionDialog: React.FC<{
           <DialogFooter className="flex gap-2">
             <Button type="submit">Save changes</Button>
 
-            {selected && (
+            {canDelete && selected && (
               <DeletePopover
                 type="position"
                 onDelete={() => {

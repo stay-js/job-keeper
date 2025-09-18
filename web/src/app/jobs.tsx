@@ -32,24 +32,25 @@ export const JobsPage: React.FC<{
   };
 
   const getDefaultValues = (id: number | null) => {
-    if (id === null) {
-      return {
-        date: '',
-        location: '',
-        event: '',
-        positionId: 'default',
-        hours: '',
-      };
-    }
+    const empty = {
+      date: '',
+      location: '',
+      event: '',
+      positionId: 'default',
+      hours: '',
+    };
+
+    if (id === null) return empty;
 
     const item = jobs.find((item) => item.id === id);
+    if (!item) return empty;
 
     return {
-      date: item?.date.toISOString().split('T')[0] ?? '',
-      location: item?.location ?? '',
-      event: item?.event ?? '',
-      positionId: item?.positionId.toString() ?? '',
-      hours: item?.hours.toString() ?? '',
+      date: item.date.toLocaleDateString('hu-HU'),
+      location: item.location,
+      event: item.event,
+      positionId: item.positionId.toString(),
+      hours: item.hours.toString(),
     };
   };
 

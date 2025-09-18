@@ -7,6 +7,7 @@
 A Fizetés nyilvántartó egy Next.js-alapú webalkalmazás, amely a különböző diákmunkákből származó jövedelmek összegzésére, rendszerezésére szolgál.
 
 A projekt a Next.js keretrendszeren alapul, TypeScript nyelven íródott, és a következő főbb technológiákat használja:
+
 - **Next.js**: React keretrendszer szerver oldali renderelési képességekkel
 - **Drizzle ORM**: TypeScript alapú ORM adatbázis-kezeléshez
 - **Zod**: Séma-validáció
@@ -44,8 +45,8 @@ export const jobs = createTable(
   'jobs',
   (d) => ({
     id: d.bigint('id', { mode: 'number' }).primaryKey().autoincrement(),
-    location: d.varchar('location', { length: 256 }),
-    event: d.varchar('event', { length: 256 }),
+    location: d.varchar('location', { length: 256 }).notNull(),
+    event: d.varchar('event', { length: 256 }).notNull(),
     date: d.timestamp('date').notNull(),
     hours: d.float('hours').notNull(),
     positionId: d

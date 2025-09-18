@@ -11,13 +11,17 @@ export const PositionsPage: React.FC<{
   const [selected, setSelected] = useState<number | null>(null);
 
   const getDefaultValues = (id: number | null) => {
-    if (id === null) return { name: '', wage: '' };
+    const empty = { name: '', wage: '' };
+
+    if (id === null) return empty;
 
     const item = data.find((item) => item.id === id);
+    if (!item) return empty;
 
     return {
-      name: item?.position ?? '',
-      wage: item?.wage.toString() ?? '',
+      name: item.position,
+      wage: item.wage.toString(),
+      canDelete: !item.hoursWorked,
     };
   };
 

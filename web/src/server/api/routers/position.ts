@@ -24,7 +24,7 @@ export const positionRouter = createTRPCRouter({
         id: positions.id,
         position: positions.name,
         wage: positions.wage,
-        hoursWorked: sum(jobs.hours) || 0,
+        hoursWorked: sql<number>`${sum(jobs.hours)}`,
         payout: sql<number>`${sum(jobs.hours)} * ${positions.wage}`,
       })
       .from(positions)
