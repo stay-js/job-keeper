@@ -5,7 +5,7 @@ import { TRPCReactProvider } from '~/trpc/react';
 
 const RootLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => (
   <html lang="en" className={`${GeistSans.variable} dark`}>
-    <body className="bg-neutral-950">
+    <body className="bg-neutral-950 text-white">
       <TRPCReactProvider>{children}</TRPCReactProvider>
     </body>
   </html>

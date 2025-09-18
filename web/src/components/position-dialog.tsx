@@ -15,10 +15,10 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '~/components/ui/dialog';
-import { Popover, PopoverContent, PopoverTrigger } from '~/components/ui/popover';
 import { Input } from '~/components/ui/input';
 import { Label } from '~/components/ui/label';
 import { Button } from '~/components/ui/button';
+import { DeletePopover } from './delete-popover';
 
 export const formSchema = z.object({
   name: z.string().min(1, { message: 'Please specify a name!' }),
@@ -115,34 +115,15 @@ export const PositionDialog: React.FC<{
             <Button type="submit">Save changes</Button>
 
             {selected && (
-              <Popover>
-                <PopoverTrigger asChild>
-                  <Button variant="destructive" type="button">
-                    Delete
-                  </Button>
-                </PopoverTrigger>
-                <PopoverContent className="flex flex-col gap-6">
-                  <div className="flex flex-col gap-1.5">
-                    <p className="leading-none font-medium">Delete position</p>
-                    <p className="text-sm text-neutral-400">
-                      Are you sure you want to delete this position? This action is{' '}
-                      <b>permanent and irreversible</b>.
-                    </p>
-                  </div>
+              <DeletePopover
+                type="position"
+                onDelete={() => {
+                  remove({ id: selected });
 
-                  <Button
-                    variant="destructive"
-                    type="button"
-                    onClick={() => {
-                      remove({ id: selected });
-                      setSelected(null);
-                      setIsOpen(false);
-                    }}
-                  >
-                    Delete position
-                  </Button>
-                </PopoverContent>
-              </Popover>
+                  setSelected(null);
+                  setIsOpen(false);
+                }}
+              />
             )}
           </DialogFooter>
         </form>

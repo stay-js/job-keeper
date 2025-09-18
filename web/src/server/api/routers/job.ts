@@ -22,6 +22,7 @@ export const jobRouter = createTRPCRouter({
         event: jobs.event,
         hours: jobs.hours,
         position: positions.name,
+        positionId: jobs.positionId,
         wage: positions.wage,
         payout: sql<number>`${jobs.hours} * ${positions.wage}`,
       })

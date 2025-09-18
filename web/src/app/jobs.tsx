@@ -10,6 +10,8 @@ export const JobsPage: React.FC<{
   jobs: RouterOutputs['job']['getAll'];
   positions: RouterOutputs['position']['getAll'];
 }> = ({ jobs, positions }) => {
+  const [selected, setSelected] = useState<number | null>(null);
+
   const [month, setMonth] = useState(new Date().getUTCMonth());
   const [year, setYear] = useState(new Date().getUTCFullYear());
 
@@ -29,6 +31,28 @@ export const JobsPage: React.FC<{
     if (month === 0) setYear((value) => value - 1);
   };
 
+  const getDefaultValues = (id: number | null) => {
+    if (id === null) {
+      return {
+        date: '',
+        location: '',
+        event: '',
+        positionId: 'default',
+        hours: '',
+      };
+    }
+
+    const item = jobs.find((item) => item.id === id);
+
+    return {
+      date: item?.date.toISOString().split('T')[0] ?? '',
+      location: item?.location ?? '',
+      event: item?.event ?? '',
+      positionId: item?.positionId.toString() ?? '',
+      hours: item?.hours.toString() ?? '',
+    };
+  };
+
   return (
     <div className="flex flex-col gap-4">
       <div className="flex w-full justify-between gap-2">
@@ -45,8 +69,13 @@ export const JobsPage: React.FC<{
         </Button>
       </div>
 
-      <JobsTable data={current} />
-      <JobDialog positions={positions} />
+      <JobsTable data={current} setSelected={setSelected} />
+      <JobDialog
+        positions={positions}
+        selected={selected}
+        setSelected={setSelected}
+        getDefaultValues={getDefaultValues}
+      />
     </div>
   );
 };

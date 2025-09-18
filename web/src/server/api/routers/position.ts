@@ -45,9 +45,6 @@ export const positionRouter = createTRPCRouter({
   update: publicProcedure
     .input(positionSchema.extend({ id: z.number() }))
     .mutation(async ({ ctx, input }) => {
-      await ctx.db
-        .update(positions)
-        .set({ name: input.name, wage: input.wage })
-        .where(eq(positions.id, input.id));
+      await ctx.db.update(positions).set(input).where(eq(positions.id, input.id));
     }),
 });

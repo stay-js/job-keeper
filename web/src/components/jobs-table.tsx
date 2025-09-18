@@ -21,7 +21,10 @@ import {
 } from '~/components/ui/table';
 import { currencyFormatter } from '~/utils/currency-formatter';
 
-export const JobsTable: React.FC<{ data: RouterOutputs['job']['getAll'] }> = ({ data }) => {
+export const JobsTable: React.FC<{
+  data: RouterOutputs['job']['getAll'];
+  setSelected: React.Dispatch<React.SetStateAction<number | null>>;
+}> = ({ data, setSelected }) => {
   const [sorting, setSorting] = useState<SortingState>([]);
 
   const perPosition = data.reduce<Record<string, { hoursWorked: number; wage: number }>>(
@@ -96,7 +99,12 @@ export const JobsTable: React.FC<{ data: RouterOutputs['job']['getAll'] }> = ({ 
         <>
           <TableBody>
             {table.getRowModel().rows.map((row) => (
-              <TableRow key={row.id} data-state={row.getIsSelected() && 'selected'}>
+              <TableRow
+                className="cursor-pointer"
+                key={row.id}
+                data-state={row.getIsSelected() && 'selected'}
+                onClick={() => setSelected(row.original.id)}
+              >
                 {row.getVisibleCells().map((cell) => (
                   <TableCell key={cell.id}>
                     {flexRender(cell.column.columnDef.cell, cell.getContext())}
