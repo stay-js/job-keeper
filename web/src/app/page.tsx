@@ -1,20 +1,15 @@
-import Link from "next/link";
-import type { FC } from "react";
+import Link from 'next/link';
+import { Button } from '~/components/ui/button';
 
-const Page: FC = () => (
-  <main className="flex min-h-screen flex-col items-center justify-center bg-neutral-950 text-white p-6">
-    <div className="text-center space-y-6">
+const Page: React.FC = () => (
+  <main className="grid min-h-screen items-center bg-neutral-950 p-6 text-white">
+    <div className="flex flex-col items-center gap-6 text-center">
       <h1 className="text-5xl font-bold">Üdv a Fizu Appban 💸</h1>
-      <p className="text-lg text-neutral-400">
-        Kezeld a munkáidat és pozícióidat egyszerűen.
-      </p>
+      <p className="text-lg text-neutral-400">Kezeld a munkáidat és pozícióidat egyszerűen.</p>
 
-      <Link
-        href="/dashboard"
-        className="px-6 py-3 rounded-2xl bg-white text-black font-semibold hover:bg-neutral-200 transition"
-      >
-        Menj a Dashboardra →
-      </Link>
+      <Button asChild className="w-fit">
+        <Link href="/dashboard">Menj a Dashboardra →</Link>
+      </Button>
     </div>
   </main>
 );
