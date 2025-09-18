@@ -123,7 +123,7 @@ export const PositionDialog: React.FC<{
                 </PopoverTrigger>
                 <PopoverContent className="flex flex-col gap-6">
                   <div className="flex flex-col gap-1.5">
-                    <p className="font-medium leading-none">Delete position</p>
+                    <p className="leading-none font-medium">Delete position</p>
                     <p className="text-sm text-neutral-400">
                       Are you sure you want to delete this position? This action is{' '}
                       <b>permanent and irreversible</b>.
