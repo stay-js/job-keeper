@@ -15,7 +15,7 @@ docker compose up -d
 - Táblák létrehozása a `Drizzle` schema alapján:
 
 ```bash
-cd web
+cd ../web
 # projekt futtatásához szükséges előészületek után:
 pnpm run db:push
 # amennyiben nincs pnpm telepítve
