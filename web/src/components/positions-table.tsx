@@ -129,6 +129,7 @@ export const PositionsTable: React.FC<{
               .filter((column) => column.getCanHide())
               .map((column) => (
                 <DropdownMenuCheckboxItem
+                  className="cursor-pointer"
                   key={column.id}
                   checked={column.getIsVisible()}
                   onCheckedChange={(value) => column.toggleVisibility(!!value)}
