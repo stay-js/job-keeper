@@ -1,7 +1,6 @@
 import { eq, sum, sql, and } from 'drizzle-orm';
 import { z } from 'zod';
-import { auth } from '@clerk/nextjs/server';
-import { createTRPCRouter, publicProcedure } from '~/server/api/trpc';
+import { createTRPCRouter, protectedProcedure } from '~/server/api/trpc';
 import { positions, jobs } from '~/server/db/schema';
 
 const positionSchema = z.object({
@@ -10,22 +9,16 @@ const positionSchema = z.object({
 });
 
 export const positionRouter = createTRPCRouter({
-  getAll: publicProcedure.query(async ({ ctx }) => {
-    const authObject = await auth();
-    if (!authObject.userId) throw new Error('Unauthorized');
-
+  getAll: protectedProcedure.query(({ ctx }) => {
     return ctx.db
       .select({ id: positions.id, name: positions.name, wage: positions.wage })
       .from(positions)
-      .where(eq(positions.userId, authObject.userId))
+      .where(eq(positions.userId, ctx.auth.userId))
       .orderBy(positions.name)
       .execute();
   }),
 
-  getAllWithHoursWorked: publicProcedure.query(async ({ ctx }) => {
-    const authObject = await auth();
-    if (!authObject.userId) throw new Error('Unauthorized');
-
+  getAllWithHoursWorked: protectedProcedure.query(({ ctx }) => {
     return ctx.db
       .select({
         id: positions.id,
@@ -36,37 +29,28 @@ export const positionRouter = createTRPCRouter({
       })
       .from(positions)
       .leftJoin(jobs, eq(positions.id, jobs.positionId))
-      .where(eq(positions.userId, authObject.userId))
+      .where(eq(positions.userId, ctx.auth.userId))
       .groupBy(positions.id)
       .orderBy(positions.name)
       .execute();
   }),
 
-  create: publicProcedure.input(positionSchema).mutation(async ({ ctx, input }) => {
-    const authObject = await auth();
-    if (!authObject.userId) throw new Error('Unauthorized');
-
-    await ctx.db.insert(positions).values({ ...input, userId: authObject.userId });
+  create: protectedProcedure.input(positionSchema).mutation(({ ctx, input }) => {
+    return ctx.db.insert(positions).values({ ...input, userId: ctx.auth.userId });
   }),
 
-  delete: publicProcedure.input(z.object({ id: z.number() })).mutation(async ({ ctx, input }) => {
-    const authObject = await auth();
-    if (!authObject.userId) throw new Error('Unauthorized');
-
-    await ctx.db
+  delete: protectedProcedure.input(z.object({ id: z.number() })).mutation(({ ctx, input }) => {
+    return ctx.db
       .delete(positions)
-      .where(and(eq(positions.id, input.id), eq(positions.userId, authObject.userId)));
+      .where(and(eq(positions.id, input.id), eq(positions.userId, ctx.auth.userId)));
   }),
 
-  update: publicProcedure
+  update: protectedProcedure
     .input(positionSchema.extend({ id: z.number() }))
-    .mutation(async ({ ctx, input }) => {
-      const authObject = await auth();
-      if (!authObject.userId) throw new Error('Unauthorized');
-
-      await ctx.db
+    .mutation(({ ctx, input }) => {
+      return ctx.db
         .update(positions)
         .set(input)
-        .where(and(eq(positions.id, input.id), eq(positions.userId, authObject.userId)));
+        .where(and(eq(positions.id, input.id), eq(positions.userId, ctx.auth.userId)));
     }),
 });

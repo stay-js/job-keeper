@@ -1,7 +1,6 @@
 import { eq, sql, and } from 'drizzle-orm';
 import { z } from 'zod';
-import { auth } from '@clerk/nextjs/server';
-import { createTRPCRouter, publicProcedure } from '~/server/api/trpc';
+import { createTRPCRouter, protectedProcedure } from '~/server/api/trpc';
 import { jobs, positions } from '~/server/db/schema';
 
 const jobSchema = z.object({
@@ -13,10 +12,7 @@ const jobSchema = z.object({
 });
 
 export const jobRouter = createTRPCRouter({
-  getAll: publicProcedure.query(async ({ ctx }) => {
-    const authObject = await auth();
-    if (!authObject.userId) throw new Error('Unauthorized');
-
+  getAll: protectedProcedure.query(({ ctx }) => {
     return ctx.db
       .select({
         id: jobs.id,
@@ -30,35 +26,26 @@ export const jobRouter = createTRPCRouter({
         payout: sql<number>`${jobs.hours} * ${positions.wage}`,
       })
       .from(jobs)
-      .where(eq(jobs.userId, authObject.userId))
+      .where(eq(jobs.userId, ctx.auth.userId))
       .innerJoin(positions, eq(positions.id, jobs.positionId))
       .orderBy(jobs.date)
       .execute();
   }),
 
-  create: publicProcedure.input(jobSchema).mutation(async ({ ctx, input }) => {
-    const authObject = await auth();
-    if (!authObject.userId) throw new Error('Unauthorized');
-
-    await ctx.db.insert(jobs).values({ ...input, userId: authObject.userId });
+  create: protectedProcedure.input(jobSchema).mutation(({ ctx, input }) => {
+    return ctx.db.insert(jobs).values({ ...input, userId: ctx.auth.userId });
   }),
 
-  delete: publicProcedure.input(z.object({ id: z.number() })).mutation(async ({ ctx, input }) => {
-    const authObject = await auth();
-    if (!authObject.userId) throw new Error('Unauthorized');
-
-    await ctx.db.delete(jobs).where(and(eq(jobs.id, input.id), eq(jobs.userId, authObject.userId)));
+  delete: protectedProcedure.input(z.object({ id: z.number() })).mutation(({ ctx, input }) => {
+    return ctx.db.delete(jobs).where(and(eq(jobs.id, input.id), eq(jobs.userId, ctx.auth.userId)));
   }),
 
-  update: publicProcedure
+  update: protectedProcedure
     .input(jobSchema.extend({ id: z.number() }))
-    .mutation(async ({ ctx, input }) => {
-      const authObject = await auth();
-      if (!authObject.userId) throw new Error('Unauthorized');
-
-      await ctx.db
+    .mutation(({ ctx, input }) => {
+      return ctx.db
         .update(jobs)
         .set(input)
-        .where(and(eq(jobs.id, input.id), eq(jobs.userId, authObject.userId)));
+        .where(and(eq(jobs.id, input.id), eq(jobs.userId, ctx.auth.userId)));
     }),
 });
