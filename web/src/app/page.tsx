@@ -3,6 +3,13 @@ import { SignInButton } from '@clerk/nextjs';
 import { currentUser } from '@clerk/nextjs/server';
 import { MoveRight } from 'lucide-react';
 import { Button } from '~/components/ui/button';
+import { createMetadata } from '~/utils/create-metadata';
+
+export const metadata = createMetadata({
+  path: '/',
+  title: 'Home',
+  description: 'JobKeeper - Track your jobs and positions easily.',
+});
 
 const Page: React.FC = async () => {
   const user = await currentUser();
