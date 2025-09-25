@@ -1,5 +1,7 @@
 # JobKeeper - Dokumentáció
 
+## Hostolt webalkalmazás elérése: [job-keeper.znagy.hu](https://job-keeper.znagy.hu)
+
 ## 1. Fejlesztői Dokumentáció
 
 ### 1.1. Projekt Áttekintés
