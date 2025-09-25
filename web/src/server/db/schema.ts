@@ -33,6 +33,6 @@ export const jobs = createTable(
 export const userData = createTable('user_data', (d) => ({
   userId: d.varchar('user_id', { length: 256 }).primaryKey(),
   currency: d.varchar('currency', { length: 16 }).notNull(),
-  locale: d.varchar('locale', { length: 16 }).notNull(),
+  dateFormat: d.varchar('date_format', { length: 16 }).notNull(),
   precision: d.int('precision').notNull(),
 }));

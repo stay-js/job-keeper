@@ -1,8 +1,10 @@
 'use client';
 
+import { useRouter } from 'next/navigation';
 import { useForm, type SubmitHandler } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
+import { ChevronsUpDown } from 'lucide-react';
 import {
   Dialog,
   DialogContent,
@@ -13,8 +15,9 @@ import {
 } from '~/components/ui/dialog';
 import { Label } from '~/components/ui/label';
 import { Button } from '~/components/ui/button';
-import { ChevronsUpDown } from 'lucide-react';
 import { dateFormats } from '~/constants/date-formats';
+import { api } from '~/trpc/react';
+import { useUserData } from '~/contexts/user-data-context';
 
 export const formSchema = z.object({
   currency: z.string().min(1, { message: 'Please select a currency!' }).max(16),
@@ -36,15 +39,25 @@ export const LocaleCurrencyDialog: React.FC<{
   isOpen: boolean;
   setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }> = ({ isOpen, setIsOpen }) => {
+  const router = useRouter();
+
+  const userData = useUserData();
+
   const {
     register,
     handleSubmit,
     formState: { errors },
     reset,
-  } = useForm<FormSchema>({ resolver: zodResolver(formSchema) });
+  } = useForm<FormSchema>({
+    resolver: zodResolver(formSchema),
+    defaultValues: { ...userData, precision: String(userData.precision) },
+  });
+
+  const { mutate } = api.userData.upsertUserData.useMutation({ onSuccess: () => router.refresh() });
 
   const onSubmit: SubmitHandler<FormSchema> = (data) => {
-    console.log(data);
+    mutate({ ...data, precision: Number(data.precision) });
+    setIsOpen(false);
   };
 
   return (
@@ -73,7 +86,7 @@ export const LocaleCurrencyDialog: React.FC<{
                 >
                   <option value="">Select date format</option>
 
-                  {dateFormats.map((format) => (
+                  {Object.keys(dateFormats).map((format) => (
                     <option key={format} value={format}>
                       {format}
                     </option>

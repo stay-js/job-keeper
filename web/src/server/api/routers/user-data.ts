@@ -1,12 +1,11 @@
-import { eq, sum, sql, and } from 'drizzle-orm';
+import { eq } from 'drizzle-orm';
 import { z } from 'zod';
 import { createTRPCRouter, protectedProcedure } from '~/server/api/trpc';
 import { userData } from '~/server/db/schema';
 
 const userDataSchema = z.object({
-  userId: z.string().min(1),
   currency: z.string().min(1).max(16),
-  locale: z.string().min(1).max(16),
+  dateFormat: z.string().min(1).max(16),
   precision: z.number().min(0).max(10),
 });
 
@@ -22,21 +21,12 @@ export const userDataRouter = createTRPCRouter({
     });
 
     if (existing) {
-      return ctx.db
-        .update(userData)
-        .set({
-          currency: input.currency,
-          locale: input.locale,
-          precision: input.precision,
-        })
-        .where(eq(userData.userId, ctx.auth.userId));
+      return ctx.db.update(userData).set(input).where(eq(userData.userId, ctx.auth.userId));
     }
 
     return ctx.db.insert(userData).values({
+      ...input,
       userId: ctx.auth.userId,
-      currency: input.currency,
-      locale: input.locale,
-      precision: input.precision,
     });
   }),
 });

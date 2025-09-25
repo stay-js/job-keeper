@@ -5,6 +5,7 @@ import { PositionsPage } from '~/app/positions';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '~/components/ui/tabs';
 import { CustomUserButton } from '~/components/custom-user-button';
 import { createMetadata } from '~/utils/create-metadata';
+import { UserDataProvider } from '~/contexts/user-data-context';
 
 export const metadata = createMetadata({
   path: '/dashboard',
@@ -12,7 +13,7 @@ export const metadata = createMetadata({
   noIndex: true,
 });
 
-const Jobs = async () => {
+const Jobs: React.FC = async () => {
   const jobs = await api.job.getAll();
   const positions = await api.position.getAll();
 
@@ -22,7 +23,7 @@ const Jobs = async () => {
   return <JobsPage jobs={jobs} positions={positions} />;
 };
 
-const Positions = async () => {
+const Positions: React.FC = async () => {
   const data = await api.position.getAllWithHoursWorked();
 
   void api.job.getAll.prefetch();
@@ -36,28 +37,35 @@ const Page: React.FC = async () => {
 
   if (!user) return authObject.redirectToSignIn();
 
+  const userData = (await api.userData.getUserData()) ?? {
+    currency: 'USD',
+    dateFormat: 'MM/DD/YYYY',
+    precision: 2,
+  };
+
   return (
     <HydrateClient>
-      <main className="p-6 text-white md:py-24">
-        <></>
-        <Tabs defaultValue="jobs" className="mx-auto flex max-w-5xl flex-col gap-6">
-          <TabsList className="h-fit w-full items-center p-2">
-            <TabsTrigger value="jobs">Jobs</TabsTrigger>
-            <TabsTrigger value="positions">Positions</TabsTrigger>
+      <UserDataProvider value={userData}>
+        <main className="p-6 text-white md:py-24">
+          <Tabs defaultValue="jobs" className="mx-auto flex max-w-5xl flex-col gap-6">
+            <TabsList className="h-fit w-full items-center p-2">
+              <TabsTrigger value="jobs">Jobs</TabsTrigger>
+              <TabsTrigger value="positions">Positions</TabsTrigger>
 
-            <div className="ms-auto flex">
-              <CustomUserButton />
-            </div>
-          </TabsList>
+              <div className="ms-auto flex">
+                <CustomUserButton />
+              </div>
+            </TabsList>
 
-          <TabsContent value="jobs">
-            <Jobs />
-          </TabsContent>
-          <TabsContent value="positions">
-            <Positions />
-          </TabsContent>
-        </Tabs>
-      </main>
+            <TabsContent value="jobs">
+              <Jobs />
+            </TabsContent>
+            <TabsContent value="positions">
+              <Positions />
+            </TabsContent>
+          </Tabs>
+        </main>
+      </UserDataProvider>
     </HydrateClient>
   );
 };
