@@ -1,4 +1,4 @@
-# Fizetés nyilvántartó
+# JobKeeper - Dokumentáció
 
 ## [Adatbázis](db/README.md)
 

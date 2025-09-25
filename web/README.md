@@ -1,10 +1,10 @@
-# Fizetés nyilvántartó - Dokumentáció
+# JobKeeper - Dokumentáció
 
 ## 1. Fejlesztői Dokumentáció
 
 ### 1.1. Projekt Áttekintés
 
-A Fizetés nyilvántartó egy Next.js-alapú webalkalmazás, amely a különböző diákmunkákből származó jövedelmek összegzésére, rendszerezésére szolgál.
+A JobKeeper egy Next.js-alapú webalkalmazás, amely a különböző diákmunkákből származó jövedelmek összegzésére, rendszerezésére szolgál.
 
 A projekt a Next.js keretrendszeren alapul, TypeScript nyelven íródott, és a következő főbb technológiákat használja:
 
@@ -64,6 +64,7 @@ export const jobs = createTable(
 
 - `.env-example` fájlban találhatóak a szükséges környezeti változók. Ezt a fájlt át kell nevezni `.env`-re.
   - `DATABASE_URL` felülírása amennyiben a hostolt adatbázist szeretnénk használni.
+  - `NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY` és `CLERK_SECRET_KEY` felülírása a saját Clerk kulcsainkkal.
 - Amennyiben még nincs, Node.js telepítése: [https://nodejs.org/](https://nodejs.org/)
 - Amennyiben még nincs, pnpm telepítése (opcionális lépes): `npm install -g pnpm`
 - Függőségek telepítése: `pnpm install` vagy `npm install`
