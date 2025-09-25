@@ -5,11 +5,13 @@ export const createMetadata = ({
   title,
   absoluteTitle,
   description,
+  noIndex,
 }: {
   path: string;
   title: string;
   absoluteTitle?: string;
-  description: string;
+  description?: string;
+  noIndex?: boolean;
 }): Metadata => ({
   metadataBase: new URL('https://job-keeper.znagy.hu'),
 
@@ -27,17 +29,25 @@ export const createMetadata = ({
 
   applicationName: 'JobKeeper',
 
-  robots: {
-    index: true,
-    follow: true,
-    googleBot: {
-      index: true,
-      follow: true,
-      'max-video-preview': -1,
-      'max-image-preview': 'large',
-      'max-snippet': -1,
-    },
-  },
+  robots: noIndex
+    ? {
+        index: false,
+        follow: false,
+        'max-video-preview': -1,
+        'max-image-preview': 'none',
+        'max-snippet': -1,
+      }
+    : {
+        index: true,
+        follow: true,
+        googleBot: {
+          index: true,
+          follow: true,
+          'max-video-preview': -1,
+          'max-image-preview': 'large',
+          'max-snippet': -1,
+        },
+      },
 
   openGraph: {
     type: 'website',
