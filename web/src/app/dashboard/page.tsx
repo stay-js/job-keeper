@@ -9,7 +9,8 @@ import { createMetadata } from '~/utils/create-metadata';
 export const metadata = createMetadata({
   path: '/dashboard',
   title: 'Dashboard',
-  description: 'JobKeeper - Track your jobs and positions easily.',
+  description:
+    'Stay on top of your career with JobKeeper. Track jobs, positions, and progress all in one simple dashboard.',
 });
 
 const Jobs = async () => {
