@@ -1,5 +1,6 @@
 import { api, HydrateClient } from '~/trpc/server';
 import { auth, currentUser } from '@clerk/nextjs/server';
+import { UserButton } from '@clerk/nextjs';
 import { JobsPage } from '~/app/jobs';
 import { PositionsPage } from '~/app/positions';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '~/components/ui/tabs';
@@ -31,10 +32,14 @@ const Page: React.FC = async () => {
   return (
     <HydrateClient>
       <main className="p-6 text-white md:py-24">
+        <></>
         <Tabs defaultValue="jobs" className="mx-auto flex max-w-5xl flex-col gap-6">
-          <TabsList className="w-full">
+          <TabsList className="h-fit w-full items-center p-2">
             <TabsTrigger value="jobs">Jobs</TabsTrigger>
             <TabsTrigger value="positions">Positions</TabsTrigger>
+            <div className="ms-auto flex">
+              <UserButton />
+            </div>
           </TabsList>
 
           <TabsContent value="jobs">
