@@ -8,7 +8,7 @@ const jobSchema = z.object({
   location: z.string().min(1),
   event: z.string().min(1),
   date: z.date(),
-  hours: z.number(),
+  hours: z.number().min(0),
   positionId: z.number(),
 });
 

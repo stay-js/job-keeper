@@ -8,7 +8,7 @@ export const positions = createTable(
     id: d.bigint('id', { mode: 'number' }).primaryKey().autoincrement(),
     userId: d.varchar('user_id', { length: 256 }).notNull(),
     name: d.varchar('name', { length: 256 }).notNull(),
-    wage: d.bigint('wage', { mode: 'number' }).notNull(),
+    wage: d.float('wage').notNull(),
   }),
   (t) => [index('wage_idx').on(t.wage)],
 );

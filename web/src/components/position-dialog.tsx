@@ -22,10 +22,9 @@ import { DeletePopover } from './delete-popover';
 
 export const formSchema = z.object({
   name: z.string().min(1, { message: 'Please specify a name!' }),
-  wage: z
-    .string()
-    .min(1, { message: 'Please specify a wage!' })
-    .refine((wage) => !isNaN(parseInt(wage)), { message: 'Please specify a valid wage!' }),
+  wage: z.string().refine((value) => parseFloat(value.replace(',', '.')) > 0, {
+    message: 'Please specify valid wage!',
+  }),
 });
 
 type FormSchema = z.infer<typeof formSchema>;
@@ -56,8 +55,14 @@ export const PositionDialog: React.FC<{
   const { mutate: remove } = api.position.delete.useMutation({ onSuccess: () => router.refresh() });
 
   const onSubmit: SubmitHandler<FormSchema> = (data) => {
-    if (selected) update({ id: selected, ...data, wage: parseInt(data.wage) });
-    else create({ ...data, wage: parseInt(data.wage) });
+    const newData = {
+      name: data.name,
+      wage: parseFloat(data.wage.replace(',', '.')),
+    };
+
+    if (selected) update({ id: selected, ...newData });
+    else create({ ...newData });
+
     setIsOpen(false);
     setSelected(null);
   };
@@ -110,7 +115,7 @@ export const PositionDialog: React.FC<{
               <Label htmlFor="wage" className="text-right">
                 Hourly Wage
               </Label>
-              <Input id="wage" className="col-span-3" type="number" {...register('wage')} />
+              <Input id="wage" className="col-span-3" {...register('wage')} />
 
               {errors.wage && (
                 <span className="col-span-full text-right text-xs text-red-500 dark:text-red-500">
