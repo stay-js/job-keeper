@@ -1,6 +1,6 @@
-import { eq, sql } from 'drizzle-orm';
+import { eq, sql, and } from 'drizzle-orm';
 import { z } from 'zod';
-
+import { auth } from '@clerk/nextjs/server';
 import { createTRPCRouter, publicProcedure } from '~/server/api/trpc';
 import { jobs, positions } from '~/server/db/schema';
 
@@ -13,7 +13,10 @@ const jobSchema = z.object({
 });
 
 export const jobRouter = createTRPCRouter({
-  getAll: publicProcedure.query(({ ctx }) => {
+  getAll: publicProcedure.query(async ({ ctx }) => {
+    const authObject = await auth();
+    if (!authObject.userId) throw new Error('Unauthorized');
+
     return ctx.db
       .select({
         id: jobs.id,
@@ -27,22 +30,35 @@ export const jobRouter = createTRPCRouter({
         payout: sql<number>`${jobs.hours} * ${positions.wage}`,
       })
       .from(jobs)
+      .where(eq(jobs.userId, authObject.userId))
       .innerJoin(positions, eq(positions.id, jobs.positionId))
       .orderBy(jobs.date)
       .execute();
   }),
 
   create: publicProcedure.input(jobSchema).mutation(async ({ ctx, input }) => {
-    await ctx.db.insert(jobs).values(input);
+    const authObject = await auth();
+    if (!authObject.userId) throw new Error('Unauthorized');
+
+    await ctx.db.insert(jobs).values({ ...input, userId: authObject.userId });
   }),
 
   delete: publicProcedure.input(z.object({ id: z.number() })).mutation(async ({ ctx, input }) => {
-    await ctx.db.delete(jobs).where(eq(jobs.id, input.id));
+    const authObject = await auth();
+    if (!authObject.userId) throw new Error('Unauthorized');
+
+    await ctx.db.delete(jobs).where(and(eq(jobs.id, input.id), eq(jobs.userId, authObject.userId)));
   }),
 
   update: publicProcedure
     .input(jobSchema.extend({ id: z.number() }))
     .mutation(async ({ ctx, input }) => {
-      await ctx.db.update(jobs).set(input).where(eq(jobs.id, input.id));
+      const authObject = await auth();
+      if (!authObject.userId) throw new Error('Unauthorized');
+
+      await ctx.db
+        .update(jobs)
+        .set(input)
+        .where(and(eq(jobs.id, input.id), eq(jobs.userId, authObject.userId)));
     }),
 });

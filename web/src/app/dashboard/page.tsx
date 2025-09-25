@@ -1,4 +1,5 @@
 import { api, HydrateClient } from '~/trpc/server';
+import { auth, currentUser } from '@clerk/nextjs/server';
 import { JobsPage } from '~/app/jobs';
 import { PositionsPage } from '~/app/positions';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '~/components/ui/tabs';
@@ -21,24 +22,31 @@ const Positions = async () => {
   return <PositionsPage data={data} />;
 };
 
-const Page: React.FC = () => (
-  <HydrateClient>
-    <main className="p-6 text-white md:py-24">
-      <Tabs defaultValue="jobs" className="mx-auto flex max-w-5xl flex-col gap-6">
-        <TabsList className="w-full">
-          <TabsTrigger value="jobs">Jobs</TabsTrigger>
-          <TabsTrigger value="positions">Positions</TabsTrigger>
-        </TabsList>
+const Page: React.FC = async () => {
+  const authObject = await auth();
+  const user = await currentUser();
 
-        <TabsContent value="jobs">
-          <Jobs />
-        </TabsContent>
-        <TabsContent value="positions">
-          <Positions />
-        </TabsContent>
-      </Tabs>
-    </main>
-  </HydrateClient>
-);
+  if (!user) return authObject.redirectToSignIn();
+
+  return (
+    <HydrateClient>
+      <main className="p-6 text-white md:py-24">
+        <Tabs defaultValue="jobs" className="mx-auto flex max-w-5xl flex-col gap-6">
+          <TabsList className="w-full">
+            <TabsTrigger value="jobs">Jobs</TabsTrigger>
+            <TabsTrigger value="positions">Positions</TabsTrigger>
+          </TabsList>
+
+          <TabsContent value="jobs">
+            <Jobs />
+          </TabsContent>
+          <TabsContent value="positions">
+            <Positions />
+          </TabsContent>
+        </Tabs>
+      </main>
+    </HydrateClient>
+  );
+};
 
 export default Page;
