@@ -48,6 +48,8 @@ export const JobDialog: React.FC<{
 }> = ({ positions, selected, setSelected, getDefaultValues }) => {
   const [isOpen, setIsOpen] = useState(false);
 
+  const canCreate = positions.length > 0;
+
   const router = useRouter();
 
   const {
@@ -102,116 +104,124 @@ export const JobDialog: React.FC<{
       <DialogContent className="w-11/12 max-w-lg rounded-lg">
         <DialogHeader>
           <DialogTitle>{selected ? 'Edit' : 'Add new'} job</DialogTitle>
-          <DialogDescription>
-            Use this form to {selected ? 'edit a' : 'add a new'} job. Once completed, click the
-            &quot;Save changes&quot; button.
-          </DialogDescription>
+          {canCreate ? (
+            <DialogDescription>
+              Use this form to {selected ? 'edit a' : 'add a new'} job. Once completed, click the
+              &quot;Save changes&quot; button.
+            </DialogDescription>
+          ) : (
+            <DialogDescription className="text-base">
+              In order to add jobs, you need to create at least one position first!
+            </DialogDescription>
+          )}
         </DialogHeader>
 
-        <form onSubmit={handleSubmit(onSubmit)}>
-          <div className="grid gap-4 py-4">
-            <div className="grid grid-cols-4 items-center gap-4 gap-y-2">
-              <Label htmlFor="date" className="text-right">
-                Date
-              </Label>
-              <Input id="date" className="col-span-3" {...register('date')} />
+        {canCreate && (
+          <form onSubmit={handleSubmit(onSubmit)}>
+            <div className="grid gap-4 py-4">
+              <div className="grid grid-cols-4 items-center gap-4 gap-y-2">
+                <Label htmlFor="date" className="text-right">
+                  Date
+                </Label>
+                <Input id="date" className="col-span-3" {...register('date')} />
 
-              {errors.date && (
-                <span className="col-span-full text-right text-xs text-red-500 dark:text-red-500">
-                  {errors.date.message}
-                </span>
-              )}
-            </div>
-
-            <div className="grid grid-cols-4 items-center gap-4 gap-y-2">
-              <Label htmlFor="location" className="text-right">
-                Location
-              </Label>
-              <Input id="location" className="col-span-3" {...register('location')} />
-
-              {errors.location && (
-                <span className="col-span-full text-right text-xs text-red-500 dark:text-red-500">
-                  {errors.location.message}
-                </span>
-              )}
-            </div>
-
-            <div className="grid grid-cols-4 items-center gap-4 gap-y-2">
-              <Label htmlFor="event" className="text-right">
-                Event
-              </Label>
-              <Input id="event" className="col-span-3" {...register('event')} />
-
-              {errors.event && (
-                <span className="col-span-full text-right text-xs text-red-500 dark:text-red-500">
-                  {errors.event.message}
-                </span>
-              )}
-            </div>
-
-            <div className="grid grid-cols-4 items-center gap-4 gap-y-2">
-              <Label htmlFor="position" className="text-right">
-                Position
-              </Label>
-
-              <div className="relative col-span-3">
-                <select
-                  id="position"
-                  {...register('positionId')}
-                  className="flex h-10 w-full appearance-none items-center justify-between rounded-md border border-neutral-200 bg-white p-2 text-sm ring-offset-white placeholder:text-neutral-500 focus:ring-2 focus:ring-neutral-950 focus:ring-offset-2 focus:outline-none disabled:cursor-not-allowed disabled:opacity-50 dark:border-neutral-800 dark:bg-neutral-950 dark:ring-offset-neutral-950 dark:placeholder:text-neutral-400 dark:focus:ring-neutral-300 [&>span]:line-clamp-1"
-                >
-                  <option value="default">Select position</option>
-
-                  {positions.map((position) => (
-                    <option key={position.id} value={position.id}>
-                      {position.name} ({currencyFormatter.format(position.wage)})
-                    </option>
-                  ))}
-                </select>
-
-                <ChevronsUpDown
-                  size={14}
-                  className="pointer-events-none absolute top-1/2 right-2 -translate-y-1/2 text-neutral-500"
-                />
+                {errors.date && (
+                  <span className="col-span-full text-right text-xs text-red-500 dark:text-red-500">
+                    {errors.date.message}
+                  </span>
+                )}
               </div>
 
-              {errors.positionId && (
-                <span className="col-span-full text-right text-xs text-red-500 dark:text-red-500">
-                  {errors.positionId.message}
-                </span>
-              )}
+              <div className="grid grid-cols-4 items-center gap-4 gap-y-2">
+                <Label htmlFor="location" className="text-right">
+                  Location
+                </Label>
+                <Input id="location" className="col-span-3" {...register('location')} />
+
+                {errors.location && (
+                  <span className="col-span-full text-right text-xs text-red-500 dark:text-red-500">
+                    {errors.location.message}
+                  </span>
+                )}
+              </div>
+
+              <div className="grid grid-cols-4 items-center gap-4 gap-y-2">
+                <Label htmlFor="event" className="text-right">
+                  Event
+                </Label>
+                <Input id="event" className="col-span-3" {...register('event')} />
+
+                {errors.event && (
+                  <span className="col-span-full text-right text-xs text-red-500 dark:text-red-500">
+                    {errors.event.message}
+                  </span>
+                )}
+              </div>
+
+              <div className="grid grid-cols-4 items-center gap-4 gap-y-2">
+                <Label htmlFor="position" className="text-right">
+                  Position
+                </Label>
+
+                <div className="relative col-span-3">
+                  <select
+                    id="position"
+                    {...register('positionId')}
+                    className="flex h-10 w-full appearance-none items-center justify-between rounded-md border border-neutral-200 bg-white p-2 text-sm ring-offset-white placeholder:text-neutral-500 focus:ring-2 focus:ring-neutral-950 focus:ring-offset-2 focus:outline-none disabled:cursor-not-allowed disabled:opacity-50 dark:border-neutral-800 dark:bg-neutral-950 dark:ring-offset-neutral-950 dark:placeholder:text-neutral-400 dark:focus:ring-neutral-300 [&>span]:line-clamp-1"
+                  >
+                    <option value="default">Select position</option>
+
+                    {positions.map((position) => (
+                      <option key={position.id} value={position.id}>
+                        {position.name} ({currencyFormatter.format(position.wage)})
+                      </option>
+                    ))}
+                  </select>
+
+                  <ChevronsUpDown
+                    size={14}
+                    className="pointer-events-none absolute top-1/2 right-2 -translate-y-1/2 text-neutral-500"
+                  />
+                </div>
+
+                {errors.positionId && (
+                  <span className="col-span-full text-right text-xs text-red-500 dark:text-red-500">
+                    {errors.positionId.message}
+                  </span>
+                )}
+              </div>
+
+              <div className="grid grid-cols-4 items-center gap-4 gap-y-2">
+                <Label htmlFor="hours" className="text-right">
+                  Hours
+                </Label>
+                <Input id="hours" className="col-span-3" {...register('hours')} />
+
+                {errors.hours && (
+                  <span className="col-span-full text-right text-xs text-red-500 dark:text-red-500">
+                    {errors.hours.message}
+                  </span>
+                )}
+              </div>
             </div>
 
-            <div className="grid grid-cols-4 items-center gap-4 gap-y-2">
-              <Label htmlFor="hours" className="text-right">
-                Hours
-              </Label>
-              <Input id="hours" className="col-span-3" {...register('hours')} />
+            <DialogFooter className="flex gap-2">
+              <Button type="submit">Save changes</Button>
 
-              {errors.hours && (
-                <span className="col-span-full text-right text-xs text-red-500 dark:text-red-500">
-                  {errors.hours.message}
-                </span>
+              {selected && (
+                <DeletePopover
+                  type="job"
+                  onDelete={() => {
+                    remove({ id: selected });
+
+                    setSelected(null);
+                    setIsOpen(false);
+                  }}
+                />
               )}
-            </div>
-          </div>
-
-          <DialogFooter className="flex gap-2">
-            <Button type="submit">Save changes</Button>
-
-            {selected && (
-              <DeletePopover
-                type="job"
-                onDelete={() => {
-                  remove({ id: selected });
-
-                  setSelected(null);
-                  setIsOpen(false);
-                }}
-              />
-            )}
-          </DialogFooter>
-        </form>
+            </DialogFooter>
+          </form>
+        )}
       </DialogContent>
     </Dialog>
   );
