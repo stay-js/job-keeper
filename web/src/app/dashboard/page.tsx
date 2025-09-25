@@ -1,9 +1,9 @@
 import { api, HydrateClient } from '~/trpc/server';
 import { auth, currentUser } from '@clerk/nextjs/server';
-import { UserButton } from '@clerk/nextjs';
 import { JobsPage } from '~/app/jobs';
 import { PositionsPage } from '~/app/positions';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '~/components/ui/tabs';
+import { CustomUserButton } from '~/components/custom-user-button';
 import { createMetadata } from '~/utils/create-metadata';
 
 export const metadata = createMetadata({
@@ -44,8 +44,9 @@ const Page: React.FC = async () => {
           <TabsList className="h-fit w-full items-center p-2">
             <TabsTrigger value="jobs">Jobs</TabsTrigger>
             <TabsTrigger value="positions">Positions</TabsTrigger>
+
             <div className="ms-auto flex">
-              <UserButton />
+              <CustomUserButton />
             </div>
           </TabsList>
 
