@@ -10,7 +10,6 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '~/components/ui/dialog';
-import { Popover, PopoverContent, PopoverTrigger } from '~/components/ui/popover';
 import { Input } from '~/components/ui/input';
 import { Label } from '~/components/ui/label';
 import { DeletePopover } from '~/components/delete-popover';
@@ -23,6 +22,7 @@ import { useState, useEffect } from 'react';
 import { Button } from './ui/button';
 import { currencyFormatter } from '~/utils/currency-formatter';
 import { ChevronsUpDown } from 'lucide-react';
+import { useUserData } from '~/contexts/user-data-context';
 
 export const formSchema = z.object({
   date: z.string().refine((value) => !isNaN(new Date(value).getTime()), {
@@ -46,6 +46,9 @@ export const JobDialog: React.FC<{
   setSelected: React.Dispatch<React.SetStateAction<number | null>>;
   getDefaultValues: (id: number | null) => FormSchema;
 }> = ({ positions, selected, setSelected, getDefaultValues }) => {
+  const userData = useUserData();
+  const cf = currencyFormatter(userData);
+
   const [isOpen, setIsOpen] = useState(false);
 
   const canCreate = positions.length > 0;
@@ -173,7 +176,7 @@ export const JobDialog: React.FC<{
 
                     {positions.map((position) => (
                       <option key={position.id} value={position.id}>
-                        {position.name} ({currencyFormatter.format(position.wage)})
+                        {position.name} ({cf.format(position.wage)})
                       </option>
                     ))}
                   </select>

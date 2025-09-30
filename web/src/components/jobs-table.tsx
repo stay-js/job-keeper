@@ -20,11 +20,15 @@ import {
   TableFooter,
 } from '~/components/ui/table';
 import { currencyFormatter } from '~/utils/currency-formatter';
+import { useUserData } from '~/contexts/user-data-context';
 
 export const JobsTable: React.FC<{
   data: RouterOutputs['job']['getAll'];
   setSelected: React.Dispatch<React.SetStateAction<number | null>>;
 }> = ({ data, setSelected }) => {
+  const userData = useUserData();
+  const cf = currencyFormatter(userData);
+
   const [sorting, setSorting] = useState<SortingState>([]);
 
   const perPosition = data.reduce<Record<string, { hoursWorked: number; wage: number }>>(
@@ -43,7 +47,7 @@ export const JobsTable: React.FC<{
       {
         header: 'Date',
         accessorKey: 'date',
-        cell: (cell) => cell.getValue<Date>().toLocaleDateString('hu-HU'),
+        cell: (cell) => cell.getValue<Date>().toLocaleDateString(userData.locale),
       },
       {
         header: 'Location',
@@ -60,7 +64,7 @@ export const JobsTable: React.FC<{
       {
         header: 'Wage',
         accessorKey: 'wage',
-        cell: (cell) => currencyFormatter.format(cell.getValue<number>()),
+        cell: (cell) => cf.format(cell.getValue<number>()),
       },
       {
         header: 'Hours',
@@ -69,7 +73,7 @@ export const JobsTable: React.FC<{
       {
         header: 'Payout',
         accessorKey: 'payout',
-        cell: (cell) => currencyFormatter.format(cell.getValue<number>()),
+        cell: (cell) => cf.format(cell.getValue<number>()),
       },
     ],
     getCoreRowModel: getCoreRowModel(),
@@ -118,18 +122,16 @@ export const JobsTable: React.FC<{
             {Object.entries(perPosition).map(([key, value]) => (
               <TableRow key={key}>
                 <TableCell colSpan={4}>{key}</TableCell>
-                <TableCell>{currencyFormatter.format(value.wage)}</TableCell>
+                <TableCell>{cf.format(value.wage)}</TableCell>
                 <TableCell>{value.hoursWorked}</TableCell>
-                <TableCell>{currencyFormatter.format(value.hoursWorked * value.wage)}</TableCell>
+                <TableCell>{cf.format(value.hoursWorked * value.wage)}</TableCell>
               </TableRow>
             ))}
 
             <TableRow className="border-t">
               <TableCell colSpan={5}>Total:</TableCell>
               <TableCell>{data.reduce((acc, job) => acc + job.hours, 0)}</TableCell>
-              <TableCell>
-                {currencyFormatter.format(data.reduce((acc, job) => acc + job.payout, 0))}
-              </TableCell>
+              <TableCell>{cf.format(data.reduce((acc, job) => acc + job.payout, 0))}</TableCell>
             </TableRow>
           </TableFooter>
         </>

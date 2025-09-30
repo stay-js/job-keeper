@@ -5,11 +5,14 @@ import { JobsTable } from '~/components/jobs-table';
 import { Button } from '~/components/ui/button';
 import { useState } from 'react';
 import { JobDialog } from '~/components/job-dialog';
+import { useUserData } from '~/contexts/user-data-context';
 
 export const JobsPage: React.FC<{
   jobs: RouterOutputs['job']['getAll'];
   positions: RouterOutputs['position']['getAll'];
 }> = ({ jobs, positions }) => {
+  const userData = useUserData();
+
   const [selected, setSelected] = useState<number | null>(null);
 
   const [month, setMonth] = useState(new Date().getUTCMonth());
@@ -46,7 +49,7 @@ export const JobsPage: React.FC<{
     if (!item) return empty;
 
     return {
-      date: item.date.toLocaleDateString('hu-HU'),
+      date: item.date.toLocaleDateString(userData.locale),
       location: item.location,
       event: item.event,
       positionId: item.positionId.toString(),

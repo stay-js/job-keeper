@@ -28,11 +28,15 @@ import {
   DropdownMenuCheckboxItem,
 } from '~/components/ui/dropdown-menu';
 import { ChevronDown } from 'lucide-react';
+import { useUserData } from '~/contexts/user-data-context';
 
 export const PositionsTable: React.FC<{
   data: RouterOutputs['position']['getAllWithHoursWorked'];
   setSelected: React.Dispatch<React.SetStateAction<number | null>>;
 }> = ({ data, setSelected }) => {
+  const userData = useUserData();
+  const cf = currencyFormatter(userData);
+
   const [sorting, setSorting] = useState<SortingState>([]);
   const [pagination, setPagination] = useState({
     pageIndex: 0,
@@ -49,7 +53,7 @@ export const PositionsTable: React.FC<{
       {
         header: 'Wage',
         accessorKey: 'wage',
-        cell: (cell) => currencyFormatter.format(cell.getValue<number>()),
+        cell: (cell) => cf.format(cell.getValue<number>()),
       },
       {
         header: 'Hours Worked',
@@ -59,7 +63,7 @@ export const PositionsTable: React.FC<{
       {
         header: 'Payout',
         accessorKey: 'payout',
-        cell: (cell) => currencyFormatter.format(cell.getValue<number>()),
+        cell: (cell) => cf.format(cell.getValue<number>()),
       },
     ],
     getCoreRowModel: getCoreRowModel(),
