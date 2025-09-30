@@ -8,3 +8,10 @@ export const currencyFormatter = (userData: UserData) => {
     maximumFractionDigits: userData.precision,
   });
 };
+
+export const hourFormatter = (userData: UserData) => {
+  return new Intl.NumberFormat(userData.locale, {
+    useGrouping: true,
+    maximumFractionDigits: 1,
+  });
+};

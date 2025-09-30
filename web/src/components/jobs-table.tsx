@@ -19,7 +19,7 @@ import {
   TableRow,
   TableFooter,
 } from '~/components/ui/table';
-import { currencyFormatter } from '~/utils/currency-formatter';
+import { currencyFormatter, hourFormatter } from '~/utils/formatters';
 import { useUserData } from '~/contexts/user-data-context';
 
 export const JobsTable: React.FC<{
@@ -28,6 +28,7 @@ export const JobsTable: React.FC<{
 }> = ({ data, setSelected }) => {
   const userData = useUserData();
   const cf = currencyFormatter(userData);
+  const hf = hourFormatter(userData);
 
   const [sorting, setSorting] = useState<SortingState>([]);
 
@@ -69,6 +70,7 @@ export const JobsTable: React.FC<{
       {
         header: 'Hours',
         accessorKey: 'hours',
+        cell: (cell) => hf.format(cell.getValue<number>()),
       },
       {
         header: 'Payout',
@@ -123,14 +125,14 @@ export const JobsTable: React.FC<{
               <TableRow key={key}>
                 <TableCell colSpan={4}>{key}</TableCell>
                 <TableCell>{cf.format(value.wage)}</TableCell>
-                <TableCell>{value.hoursWorked}</TableCell>
+                <TableCell>{hf.format(value.hoursWorked)}</TableCell>
                 <TableCell>{cf.format(value.hoursWorked * value.wage)}</TableCell>
               </TableRow>
             ))}
 
             <TableRow className="border-t">
               <TableCell colSpan={5}>Total:</TableCell>
-              <TableCell>{data.reduce((acc, job) => acc + job.hours, 0)}</TableCell>
+              <TableCell>{hf.format(data.reduce((acc, job) => acc + job.hours, 0))}</TableCell>
               <TableCell>{cf.format(data.reduce((acc, job) => acc + job.payout, 0))}</TableCell>
             </TableRow>
           </TableFooter>

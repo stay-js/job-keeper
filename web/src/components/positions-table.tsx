@@ -20,7 +20,7 @@ import {
   TableRow,
 } from '~/components/ui/table';
 import { Button } from '~/components/ui/button';
-import { currencyFormatter } from '~/utils/currency-formatter';
+import { currencyFormatter, hourFormatter } from '~/utils/formatters';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -36,6 +36,7 @@ export const PositionsTable: React.FC<{
 }> = ({ data, setSelected }) => {
   const userData = useUserData();
   const cf = currencyFormatter(userData);
+  const hf = hourFormatter(userData);
 
   const [sorting, setSorting] = useState<SortingState>([]);
   const [pagination, setPagination] = useState({
@@ -58,7 +59,7 @@ export const PositionsTable: React.FC<{
       {
         header: 'Hours Worked',
         accessorKey: 'hoursWorked',
-        cell: (cell) => cell.getValue<number>() || 0,
+        cell: (cell) => hf.format(cell.getValue<number>() || 0),
       },
       {
         header: 'Payout',

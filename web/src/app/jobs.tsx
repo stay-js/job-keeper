@@ -6,12 +6,14 @@ import { Button } from '~/components/ui/button';
 import { useState } from 'react';
 import { JobDialog } from '~/components/job-dialog';
 import { useUserData } from '~/contexts/user-data-context';
+import { hourFormatter } from '~/utils/formatters';
 
 export const JobsPage: React.FC<{
   jobs: RouterOutputs['job']['getAll'];
   positions: RouterOutputs['position']['getAll'];
 }> = ({ jobs, positions }) => {
   const userData = useUserData();
+  const hf = hourFormatter(userData);
 
   const [selected, setSelected] = useState<number | null>(null);
 
@@ -53,7 +55,7 @@ export const JobsPage: React.FC<{
       location: item.location,
       event: item.event,
       positionId: item.positionId.toString(),
-      hours: item.hours.toString(),
+      hours: hf.format(item.hours),
     };
   };
 
