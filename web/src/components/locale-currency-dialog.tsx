@@ -5,6 +5,7 @@ import { useForm, type SubmitHandler } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { ChevronsUpDown } from 'lucide-react';
+import locale from 'locale-codes';
 import {
   Dialog,
   DialogContent,
@@ -15,13 +16,12 @@ import {
 } from '~/components/ui/dialog';
 import { Label } from '~/components/ui/label';
 import { Button } from '~/components/ui/button';
-import { dateFormats } from '~/constants/date-formats';
 import { api } from '~/trpc/react';
 import { useUserData } from '~/contexts/user-data-context';
 
 export const formSchema = z.object({
   currency: z.string().min(1, { message: 'Please select a currency!' }).max(16),
-  dateFormat: z.string().min(1, { message: 'Please select a date format!' }).max(16),
+  locale: z.string().min(1, { message: 'Please select a locale!' }).max(16),
   precision: z
     .string()
     .min(1, { message: 'Please select a precision!' })
@@ -75,20 +75,20 @@ export const LocaleCurrencyDialog: React.FC<{
           <div className="grid gap-4 py-4">
             <div className="grid grid-cols-4 items-center gap-4 gap-y-2">
               <Label htmlFor="locale" className="text-right">
-                Date Format
+                Locale
               </Label>
 
               <div className="relative col-span-3">
                 <select
                   id="date-format"
-                  {...register('dateFormat')}
+                  {...register('locale')}
                   className="flex h-10 w-full appearance-none items-center justify-between rounded-md border border-neutral-200 bg-white p-2 text-sm ring-offset-white placeholder:text-neutral-500 focus:ring-2 focus:ring-neutral-950 focus:ring-offset-2 focus:outline-none disabled:cursor-not-allowed disabled:opacity-50 dark:border-neutral-800 dark:bg-neutral-950 dark:ring-offset-neutral-950 dark:placeholder:text-neutral-400 dark:focus:ring-neutral-300 [&>span]:line-clamp-1"
                 >
-                  <option value="">Select date format</option>
+                  <option value="">Select locale</option>
 
-                  {Object.keys(dateFormats).map((format) => (
-                    <option key={format} value={format}>
-                      {format}
+                  {locale.all.map((format) => (
+                    <option key={format.tag} value={format.tag}>
+                      {format.name} ({format.tag})
                     </option>
                   ))}
                 </select>
@@ -99,9 +99,9 @@ export const LocaleCurrencyDialog: React.FC<{
                 />
               </div>
 
-              {errors.dateFormat && (
+              {errors.locale && (
                 <span className="col-span-full text-right text-xs text-red-500 dark:text-red-500">
-                  {errors.dateFormat.message}
+                  {errors.locale.message}
                 </span>
               )}
             </div>

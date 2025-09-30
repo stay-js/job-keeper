@@ -5,7 +5,7 @@ import { userData } from '~/server/db/schema';
 
 const userDataSchema = z.object({
   currency: z.string().min(1).max(16),
-  dateFormat: z.string().min(1).max(16),
+  locale: z.string().min(1).max(16),
   precision: z.number().min(0).max(10),
 });
 

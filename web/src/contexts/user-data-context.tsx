@@ -3,13 +3,7 @@
 import { createContext, useContext } from 'react';
 import type { RouterOutputs } from '~/trpc/react';
 
-type UserData =
-  | RouterOutputs['userData']['getUserData']
-  | {
-      currency: string;
-      dateFormat: string;
-      precision: number;
-    };
+export type UserData = Omit<NonNullable<RouterOutputs['userData']['getUserData']>, 'userId'>;
 
 const UserDataContext = createContext<UserData | undefined>(undefined);
 
@@ -22,8 +16,8 @@ export const UserDataProvider: React.FC<{
 
 export const useUserData = () => {
   const ctx = useContext(UserDataContext);
-  if (ctx === undefined) {
-    throw new Error('useUserData must be used within a UserDataProvider');
-  }
+
+  if (!ctx) throw new Error('useUserData must be used within a UserDataProvider');
+
   return ctx;
 };
