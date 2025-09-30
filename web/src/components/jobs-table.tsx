@@ -58,13 +58,13 @@ export const JobsTable: React.FC<{
         accessorKey: 'position',
       },
       {
-        header: 'Hours',
-        accessorKey: 'hours',
-      },
-      {
         header: 'Wage',
         accessorKey: 'wage',
         cell: (cell) => currencyFormatter.format(cell.getValue<number>()),
+      },
+      {
+        header: 'Hours',
+        accessorKey: 'hours',
       },
       {
         header: 'Payout',
@@ -118,14 +118,15 @@ export const JobsTable: React.FC<{
             {Object.entries(perPosition).map(([key, value]) => (
               <TableRow key={key}>
                 <TableCell colSpan={4}>{key}</TableCell>
-                <TableCell>{value.hoursWorked}</TableCell>
                 <TableCell>{currencyFormatter.format(value.wage)}</TableCell>
+                <TableCell>{value.hoursWorked}</TableCell>
                 <TableCell>{currencyFormatter.format(value.hoursWorked * value.wage)}</TableCell>
               </TableRow>
             ))}
 
             <TableRow className="border-t">
-              <TableCell colSpan={6}>Total:</TableCell>
+              <TableCell colSpan={5}>Total:</TableCell>
+              <TableCell>{data.reduce((acc, job) => acc + job.hours, 0)}</TableCell>
               <TableCell>
                 {currencyFormatter.format(data.reduce((acc, job) => acc + job.payout, 0))}
               </TableCell>
