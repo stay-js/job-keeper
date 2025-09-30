@@ -38,8 +38,8 @@ const Page: React.FC = async () => {
   if (!user) return authObject.redirectToSignIn();
 
   const userData = (await api.userData.getUserData()) ?? {
-    currency: 'USD',
-    dateFormat: 'MM/DD/YYYY',
+    currency: 'EUR',
+    locale: 'en',
     precision: 2,
   };
 

@@ -3,13 +3,7 @@
 import { createContext, useContext } from 'react';
 import type { RouterOutputs } from '~/trpc/react';
 
-type UserData =
-  | RouterOutputs['userData']['getUserData']
-  | {
-      currency: string;
-      dateFormat: string;
-      precision: number;
-    };
+type UserData = Omit<NonNullable<RouterOutputs['userData']['getUserData']>, 'userId'>;
 
 const UserDataContext = createContext<UserData | undefined>(undefined);
 
