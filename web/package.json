@@ -36,6 +36,7 @@
     "clsx": "^2.1.1",
     "drizzle-orm": "^0.44.5",
     "geist": "^1.5.1",
+    "locale-codes": "^1.3.1",
     "lucide-react": "^0.544.0",
     "mysql2": "^3.14.5",
     "next": "^15.5.3",
