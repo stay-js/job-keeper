@@ -19,7 +19,7 @@ import {
   TableRow,
   TableFooter,
 } from '~/components/ui/table';
-import { currencyFormatter, hourFormatter } from '~/utils/formatters';
+import { getFormatters } from '~/utils/formatters';
 import { useUserData } from '~/contexts/user-data-context';
 
 export const JobsTable: React.FC<{
@@ -27,8 +27,7 @@ export const JobsTable: React.FC<{
   setSelected: React.Dispatch<React.SetStateAction<number | null>>;
 }> = ({ data, setSelected }) => {
   const userData = useUserData();
-  const cf = currencyFormatter(userData);
-  const hf = hourFormatter(userData);
+  const { currency: cf, hours: hf } = getFormatters(userData);
 
   const [sorting, setSorting] = useState<SortingState>([]);
 

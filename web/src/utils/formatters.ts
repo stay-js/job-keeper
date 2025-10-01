@@ -1,6 +1,6 @@
 import type { UserData } from '~/contexts/user-data-context';
 
-export const currencyFormatter = (userData: UserData) => {
+export const getCurrencyFormatter = (userData: UserData) => {
   return new Intl.NumberFormat(userData.locale, {
     style: 'currency',
     currency: userData.currency,
@@ -9,9 +9,16 @@ export const currencyFormatter = (userData: UserData) => {
   });
 };
 
-export const hourFormatter = (userData: UserData) => {
-  return new Intl.NumberFormat(userData.locale, {
+export const getHourFormatter = (locale: string) => {
+  return new Intl.NumberFormat(locale, {
     useGrouping: true,
     maximumFractionDigits: 1,
   });
+};
+
+export const getFormatters = (userData: UserData) => {
+  return {
+    currency: getCurrencyFormatter(userData),
+    hours: getHourFormatter(userData.locale),
+  };
 };

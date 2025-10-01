@@ -20,7 +20,7 @@ import { api } from '~/trpc/react';
 import { useRouter } from 'next/navigation';
 import { useState, useEffect } from 'react';
 import { Button } from './ui/button';
-import { currencyFormatter, hourFormatter } from '~/utils/formatters';
+import { getFormatters } from '~/utils/formatters';
 import { ChevronsUpDown } from 'lucide-react';
 import { useUserData } from '~/contexts/user-data-context';
 
@@ -47,8 +47,7 @@ export const JobDialog: React.FC<{
   getDefaultValues: (id: number | null) => FormSchema;
 }> = ({ positions, selected, setSelected, getDefaultValues }) => {
   const userData = useUserData();
-  const cf = currencyFormatter(userData);
-  const hf = hourFormatter(userData);
+  const { currency: cf, hours: hf } = getFormatters(userData);
 
   const [isOpen, setIsOpen] = useState(false);
 
