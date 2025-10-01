@@ -22,7 +22,7 @@ import { DeletePopover } from './delete-popover';
 
 export const formSchema = z.object({
   name: z.string().min(1, { message: 'Please specify a name!' }),
-  wage: z.string().refine((value) => parseFloat(value.replace(',', '.')) > 0, {
+  wage: z.string().refine((value) => !isNaN(parseFloat(value.replace(',', '.'))), {
     message: 'Please specify valid wage!',
   }),
 });

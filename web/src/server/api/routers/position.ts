@@ -5,7 +5,7 @@ import { positions, jobs } from '~/server/db/schema';
 
 const positionSchema = z.object({
   name: z.string().min(1),
-  wage: z.number().min(0),
+  wage: z.number(),
 });
 
 export const positionRouter = createTRPCRouter({
