@@ -38,7 +38,7 @@ export const JobsPage: React.FC<{
 
   const getDefaultValues = (id: number | null) => {
     const empty = {
-      date: '',
+      date: undefined,
       location: '',
       event: '',
       positionId: 'default',
@@ -51,9 +51,7 @@ export const JobsPage: React.FC<{
     if (!item) return empty;
 
     return {
-      date: item.date.toLocaleDateString(userData.locale),
-      location: item.location,
-      event: item.event,
+      ...item,
       positionId: item.positionId.toString(),
       hours: hf.format(item.hours),
     };

@@ -12,6 +12,7 @@ import {
 } from '~/components/ui/dialog';
 import { Input } from '~/components/ui/input';
 import { Label } from '~/components/ui/label';
+import { DatePicker } from '~/components/ui/date-picker';
 import { DeletePopover } from '~/components/delete-popover';
 import { z } from 'zod';
 import { SubmitHandler, useForm } from 'react-hook-form';
@@ -23,11 +24,10 @@ import { Button } from './ui/button';
 import { getFormatters } from '~/utils/formatters';
 import { ChevronsUpDown } from 'lucide-react';
 import { useUserData } from '~/contexts/user-data-context';
+import type { Optional } from 'utility-types';
 
 export const formSchema = z.object({
-  date: z.string().refine((value) => !isNaN(new Date(value).getTime()), {
-    message: 'Please specify a valid date!',
-  }),
+  date: z.date({ message: 'Please select a valid date!' }),
   location: z.string().min(1, { message: 'Please specify a location!' }),
   event: z.string().min(1, { message: 'Please specify an event!' }),
   positionId: z.string().refine((value) => value !== 'default' && parseInt(value) > 0, {
@@ -44,12 +44,13 @@ export const JobDialog: React.FC<{
   positions: RouterOutputs['position']['getAll'];
   selected: number | null;
   setSelected: React.Dispatch<React.SetStateAction<number | null>>;
-  getDefaultValues: (id: number | null) => FormSchema;
+  getDefaultValues: (id: number | null) => Optional<FormSchema, 'date'>;
 }> = ({ positions, selected, setSelected, getDefaultValues }) => {
   const userData = useUserData();
-  const { currency: cf, hours: hf } = getFormatters(userData);
+  const { currency: cf } = getFormatters(userData);
 
   const [isOpen, setIsOpen] = useState(false);
+  const [date, setDate] = useState<Date | undefined>();
 
   const canCreate = positions.length > 0;
 
@@ -60,13 +61,17 @@ export const JobDialog: React.FC<{
     handleSubmit,
     formState: { errors },
     reset,
+    setValue,
   } = useForm<{
-    date: string;
+    date: Date;
     location: string;
     event: string;
     positionId: string;
     hours: string;
   }>({ resolver: zodResolver(formSchema) });
+
+  register('date');
+  useEffect(() => setValue('date', date ?? new Date()), [date, setValue]);
 
   const { mutate: create } = api.job.create.useMutation({ onSuccess: () => router.refresh() });
   const { mutate: update } = api.job.update.useMutation({ onSuccess: () => router.refresh() });
@@ -75,7 +80,6 @@ export const JobDialog: React.FC<{
   const onSubmit: SubmitHandler<FormSchema> = (data) => {
     const newData = {
       ...data,
-      date: new Date(data.date),
       hours: parseFloat(data.hours.replace(',', '.')),
       positionId: parseInt(data.positionId),
     };
@@ -88,15 +92,23 @@ export const JobDialog: React.FC<{
   };
 
   useEffect(() => {
-    reset(getDefaultValues(selected));
+    const defaultValues = getDefaultValues(selected);
+    setDate(defaultValues.date);
+    reset(defaultValues);
+
     if (selected) setIsOpen(true);
-  }, [selected, reset, getDefaultValues]);
+  }, [selected, reset, getDefaultValues, setDate]);
 
   return (
     <Dialog
       onOpenChange={(state) => {
         setIsOpen(state);
-        if (!state) setSelected(null);
+
+        if (!state) {
+          setSelected(null);
+          setDate(undefined);
+          reset();
+        }
       }}
       open={isOpen}
     >
@@ -126,7 +138,13 @@ export const JobDialog: React.FC<{
                 <Label htmlFor="date" className="text-right">
                   Date
                 </Label>
-                <Input id="date" className="col-span-3" {...register('date')} />
+
+                <DatePicker
+                  className="col-span-3"
+                  date={date}
+                  setDate={setDate}
+                  locale={userData.locale}
+                />
 
                 {errors.date && (
                   <span className="col-span-full text-right text-xs text-red-500 dark:text-red-500">
