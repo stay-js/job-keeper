@@ -47,7 +47,6 @@ export const LocaleCurrencyDialog: React.FC<{
     register,
     handleSubmit,
     formState: { errors },
-    reset,
   } = useForm<FormSchema>({
     resolver: zodResolver(formSchema),
     defaultValues: { ...userData, precision: String(userData.precision) },
