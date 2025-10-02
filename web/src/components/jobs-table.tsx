@@ -47,7 +47,11 @@ export const JobsTable: React.FC<{
       {
         header: 'Date',
         accessorKey: 'date',
-        cell: (cell) => cell.getValue<Date>().toLocaleDateString(userData.locale),
+        cell: (cell) => (
+          <span className="whitespace-nowrap">
+            {cell.getValue<Date>().toLocaleDateString(userData.locale)}
+          </span>
+        ),
       },
       {
         header: 'Location',
@@ -64,17 +68,23 @@ export const JobsTable: React.FC<{
       {
         header: 'Wage',
         accessorKey: 'wage',
-        cell: (cell) => cf.format(cell.getValue<number>()),
+        cell: (cell) => (
+          <span className="whitespace-nowrap">{cf.format(cell.getValue<number>())}</span>
+        ),
       },
       {
         header: 'Hours',
         accessorKey: 'hours',
-        cell: (cell) => hf.format(cell.getValue<number>()),
+        cell: (cell) => (
+          <span className="whitespace-nowrap">{hf.format(cell.getValue<number>())}</span>
+        ),
       },
       {
         header: 'Payout',
         accessorKey: 'payout',
-        cell: (cell) => cf.format(cell.getValue<number>()),
+        cell: (cell) => (
+          <span className="whitespace-nowrap">{cf.format(cell.getValue<number>())}</span>
+        ),
       },
     ],
     getCoreRowModel: getCoreRowModel(),
