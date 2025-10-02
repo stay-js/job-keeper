@@ -131,7 +131,7 @@ export const JobDialog: React.FC<{
             <div className="grid gap-4 py-4">
               <div className="grid grid-cols-4 items-center gap-4 gap-y-2">
                 <Label htmlFor="date" className="text-right">
-                  Date <span className="text-red-500">*</span>
+                  Date: <span className="text-red-500">*</span>
                 </Label>
 
                 <DatePicker
@@ -151,7 +151,7 @@ export const JobDialog: React.FC<{
 
               <div className="grid grid-cols-4 items-center gap-4 gap-y-2">
                 <Label htmlFor="location" className="text-right">
-                  Location <span className="text-red-500">*</span>
+                  Location: <span className="text-red-500">*</span>
                 </Label>
                 <Input id="location" className="col-span-3" {...register('location')} />
 
@@ -164,7 +164,7 @@ export const JobDialog: React.FC<{
 
               <div className="grid grid-cols-4 items-center gap-4 gap-y-2">
                 <Label htmlFor="event" className="text-right">
-                  Event
+                  Event:
                 </Label>
                 <Input id="event" className="col-span-3" {...register('event')} />
 
@@ -177,7 +177,7 @@ export const JobDialog: React.FC<{
 
               <div className="grid grid-cols-4 items-center gap-4 gap-y-2">
                 <Label htmlFor="position" className="text-right">
-                  Position <span className="text-red-500">*</span>
+                  Position: <span className="text-red-500">*</span>
                 </Label>
 
                 <div className="relative col-span-3">
@@ -210,7 +210,7 @@ export const JobDialog: React.FC<{
 
               <div className="grid grid-cols-4 items-center gap-4 gap-y-2">
                 <Label htmlFor="hours" className="text-right">
-                  Hours <span className="text-red-500">*</span>
+                  Hours: <span className="text-red-500">*</span>
                 </Label>
                 <Input id="hours" className="col-span-3" {...register('hours')} />
 

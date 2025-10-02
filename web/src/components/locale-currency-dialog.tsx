@@ -74,7 +74,7 @@ export const LocaleCurrencyDialog: React.FC<{
           <div className="grid gap-4 py-4">
             <div className="grid grid-cols-4 items-center gap-4 gap-y-2">
               <Label htmlFor="locale" className="text-right">
-                Locale
+                Locale:
               </Label>
 
               <div className="relative col-span-3">
@@ -107,7 +107,7 @@ export const LocaleCurrencyDialog: React.FC<{
 
             <div className="grid grid-cols-4 items-center gap-4 gap-y-2">
               <Label htmlFor="currency" className="text-right">
-                Currency
+                Currency:
               </Label>
 
               <div className="relative col-span-3">
@@ -140,7 +140,7 @@ export const LocaleCurrencyDialog: React.FC<{
 
             <div className="grid grid-cols-4 items-center gap-4 gap-y-2">
               <Label htmlFor="precision" className="text-right">
-                Precision (Rounding)
+                Precision (Rounding):
               </Label>
 
               <div className="relative col-span-3">
