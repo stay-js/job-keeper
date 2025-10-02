@@ -25,6 +25,7 @@ import { Button } from './ui/button';
 import { getFormatters } from '~/utils/formatters';
 import { ChevronsUpDown } from 'lucide-react';
 import { useUserData } from '~/contexts/user-data-context';
+import { createDateOnlyString } from '~/utils/create-date-only-string';
 
 export const formSchema = z.object({
   date: z.date({ message: 'Please select a valid date!' }),
@@ -81,6 +82,7 @@ export const JobDialog: React.FC<{
   const onSubmit: SubmitHandler<FormSchema> = (data) => {
     const newData = {
       ...data,
+      date: createDateOnlyString(data.date),
       hours: parseFloat(data.hours.replace(',', '.')),
       positionId: parseInt(data.positionId),
     };
