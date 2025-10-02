@@ -1,7 +1,7 @@
 import { api, HydrateClient } from '~/trpc/server';
 import { auth, currentUser } from '@clerk/nextjs/server';
-import { JobsPage } from '~/app/jobs';
-import { PositionsPage } from '~/app/positions';
+import { JobsTab } from './jobs-tab';
+import { PositionsTab } from './positions-tab';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '~/components/ui/tabs';
 import { CustomUserButton } from '~/components/custom-user-button';
 import { createMetadata } from '~/utils/create-metadata';
@@ -20,7 +20,7 @@ const Jobs: React.FC = async () => {
   void api.job.getAll.prefetch();
   void api.position.getAll.prefetch();
 
-  return <JobsPage jobs={jobs} positions={positions} />;
+  return <JobsTab jobs={jobs} positions={positions} />;
 };
 
 const Positions: React.FC = async () => {
@@ -28,7 +28,7 @@ const Positions: React.FC = async () => {
 
   void api.job.getAll.prefetch();
 
-  return <PositionsPage data={data} />;
+  return <PositionsTab data={data} />;
 };
 
 const Page: React.FC = async () => {

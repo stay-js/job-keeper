@@ -12,7 +12,8 @@ export const DatePicker: React.FC<{
   setDate: React.Dispatch<React.SetStateAction<Date | undefined>>;
   locale?: string;
   className?: string;
-}> = ({ date, setDate, locale, className }) => (
+  defaultMonth: Date;
+}> = ({ date, setDate, locale, className, defaultMonth }) => (
   <Popover>
     <PopoverTrigger asChild>
       <Button
@@ -27,7 +28,14 @@ export const DatePicker: React.FC<{
       </Button>
     </PopoverTrigger>
     <PopoverContent className="w-auto p-0">
-      <Calendar mode="single" selected={date} onSelect={setDate} initialFocus required />
+      <Calendar
+        defaultMonth={defaultMonth}
+        mode="single"
+        selected={date}
+        onSelect={setDate}
+        initialFocus
+        required
+      />
     </PopoverContent>
   </Popover>
 );

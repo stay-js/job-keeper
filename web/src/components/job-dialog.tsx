@@ -45,7 +45,8 @@ export const JobDialog: React.FC<{
   selected: number | null;
   setSelected: React.Dispatch<React.SetStateAction<number | null>>;
   getDefaultValues: (id: number | null) => Optional<FormSchema, 'date'>;
-}> = ({ positions, selected, setSelected, getDefaultValues }) => {
+  defaultMonth: Date;
+}> = ({ positions, selected, setSelected, getDefaultValues, defaultMonth }) => {
   const userData = useUserData();
   const { currency: cf } = getFormatters(userData);
 
@@ -144,6 +145,7 @@ export const JobDialog: React.FC<{
                   date={date}
                   setDate={setDate}
                   locale={userData.locale}
+                  defaultMonth={defaultMonth}
                 />
 
                 {errors.date && (
