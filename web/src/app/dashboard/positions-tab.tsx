@@ -5,7 +5,7 @@ import { useState } from 'react';
 import { PositionsTable } from '~/components/positions-table';
 import { PositionDialog } from '~/components/position-dialog';
 
-export const PositionsPage: React.FC<{
+export const PositionsTab: React.FC<{
   data: RouterOutputs['position']['getAllWithHoursWorked'];
 }> = ({ data }) => {
   const [selected, setSelected] = useState<number | null>(null);
