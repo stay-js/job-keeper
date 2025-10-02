@@ -151,7 +151,7 @@ export const PositionsTable: React.FC<{
             <TableRow key={headerGroup.id}>
               {headerGroup.headers.map((header) => (
                 <TableHead key={header.id} onClick={header.column.getToggleSortingHandler()}>
-                  <div className="flex w-fit cursor-pointer items-center gap-2 rounded-md px-2 py-2 transition-colors select-none hover:bg-neutral-700 hover:text-white">
+                  <div className="flex w-fit cursor-pointer select-none items-center gap-2 rounded-md px-2 py-2 transition-colors hover:bg-neutral-700 hover:text-white">
                     {flexRender(header.column.columnDef.header, header.getContext())}
                     <ChevronsUpDown size={14} />
                   </div>

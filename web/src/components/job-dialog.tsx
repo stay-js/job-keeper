@@ -26,6 +26,7 @@ import { getFormatters } from '~/utils/formatters';
 import { ChevronsUpDown } from 'lucide-react';
 import { useUserData } from '~/contexts/user-data-context';
 import { createDateOnlyString } from '~/utils/create-date-only-string';
+import { errorToast } from '~/utils/error-toast';
 
 export const formSchema = z.object({
   date: z.date({ message: 'Please select a valid date!' }),
@@ -69,9 +70,18 @@ export const JobDialog: React.FC<{
   register('date');
   useEffect(() => setValue('date', date ?? new Date()), [date, setValue]);
 
-  const { mutate: create } = api.job.create.useMutation({ onSuccess: () => router.refresh() });
-  const { mutate: update } = api.job.update.useMutation({ onSuccess: () => router.refresh() });
-  const { mutate: remove } = api.job.delete.useMutation({ onSuccess: () => router.refresh() });
+  const { mutate: create } = api.job.create.useMutation({
+    onSuccess: () => router.refresh(),
+    onError: () => errorToast(),
+  });
+  const { mutate: update } = api.job.update.useMutation({
+    onSuccess: () => router.refresh(),
+    onError: () => errorToast(),
+  });
+  const { mutate: remove } = api.job.delete.useMutation({
+    onSuccess: () => router.refresh(),
+    onError: () => errorToast(),
+  });
 
   const onSubmit: SubmitHandler<FormSchema> = (data) => {
     const newData = {
@@ -186,7 +196,7 @@ export const JobDialog: React.FC<{
                   <select
                     id="position"
                     {...register('positionId')}
-                    className="flex h-10 w-full appearance-none items-center justify-between rounded-md border border-neutral-200 bg-white p-2 text-sm ring-offset-white placeholder:text-neutral-500 focus:ring-2 focus:ring-neutral-950 focus:ring-offset-2 focus:outline-none disabled:cursor-not-allowed disabled:opacity-50 dark:border-neutral-800 dark:bg-neutral-950 dark:ring-offset-neutral-950 dark:placeholder:text-neutral-400 dark:focus:ring-neutral-300 [&>span]:line-clamp-1"
+                    className="flex h-10 w-full appearance-none items-center justify-between rounded-md border border-neutral-200 bg-white p-2 text-sm ring-offset-white placeholder:text-neutral-500 focus:outline-none focus:ring-2 focus:ring-neutral-950 focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 dark:border-neutral-800 dark:bg-neutral-950 dark:ring-offset-neutral-950 dark:placeholder:text-neutral-400 dark:focus:ring-neutral-300 [&>span]:line-clamp-1"
                   >
                     <option value="default">Select position</option>
 
@@ -199,7 +209,7 @@ export const JobDialog: React.FC<{
 
                   <ChevronsUpDown
                     size={14}
-                    className="pointer-events-none absolute top-1/2 right-2 -translate-y-1/2 text-neutral-500"
+                    className="pointer-events-none absolute right-2 top-1/2 -translate-y-1/2 text-neutral-500"
                   />
                 </div>
 

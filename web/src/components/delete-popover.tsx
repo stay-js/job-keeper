@@ -13,7 +13,7 @@ export const DeletePopover: React.FC<{
     </PopoverTrigger>
     <PopoverContent className="flex flex-col gap-6">
       <div className="flex flex-col gap-1.5">
-        <p className="leading-none font-medium">Delete {type}</p>
+        <p className="font-medium leading-none">Delete {type}</p>
         <p className="text-sm text-neutral-400">
           Are you sure you want to delete this {type}? This action is{' '}
           <b>permanent and irreversible</b>.
