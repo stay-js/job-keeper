@@ -5,7 +5,7 @@ import { jobs, positions } from '~/server/db/schema';
 
 const jobSchema = z.object({
   location: z.string().min(1),
-  event: z.string().min(1),
+  event: z.string().optional(),
   date: z.string().refine((val) => !isNaN(Date.parse(val))),
   hours: z.number().min(0),
   positionId: z.number(),

@@ -30,7 +30,7 @@ import { createDateOnlyString } from '~/utils/create-date-only-string';
 export const formSchema = z.object({
   date: z.date({ message: 'Please select a valid date!' }),
   location: z.string().min(1, { message: 'Please specify a location!' }),
-  event: z.string().min(1, { message: 'Please specify an event!' }),
+  event: z.string().optional(),
   positionId: z.string().refine((value) => value !== 'default' && parseInt(value) > 0, {
     message: 'Please select a position!',
   }),
@@ -64,13 +64,7 @@ export const JobDialog: React.FC<{
     formState: { errors },
     reset,
     setValue,
-  } = useForm<{
-    date: Date;
-    location: string;
-    event: string;
-    positionId: string;
-    hours: string;
-  }>({ resolver: zodResolver(formSchema) });
+  } = useForm<FormSchema>({ resolver: zodResolver(formSchema) });
 
   register('date');
   useEffect(() => setValue('date', date ?? new Date()), [date, setValue]);
@@ -139,7 +133,7 @@ export const JobDialog: React.FC<{
             <div className="grid gap-4 py-4">
               <div className="grid grid-cols-4 items-center gap-4 gap-y-2">
                 <Label htmlFor="date" className="text-right">
-                  Date
+                  Date: <span className="text-red-500">*</span>
                 </Label>
 
                 <DatePicker
@@ -159,7 +153,7 @@ export const JobDialog: React.FC<{
 
               <div className="grid grid-cols-4 items-center gap-4 gap-y-2">
                 <Label htmlFor="location" className="text-right">
-                  Location
+                  Location: <span className="text-red-500">*</span>
                 </Label>
                 <Input id="location" className="col-span-3" {...register('location')} />
 
@@ -172,7 +166,7 @@ export const JobDialog: React.FC<{
 
               <div className="grid grid-cols-4 items-center gap-4 gap-y-2">
                 <Label htmlFor="event" className="text-right">
-                  Event
+                  Event:
                 </Label>
                 <Input id="event" className="col-span-3" {...register('event')} />
 
@@ -185,7 +179,7 @@ export const JobDialog: React.FC<{
 
               <div className="grid grid-cols-4 items-center gap-4 gap-y-2">
                 <Label htmlFor="position" className="text-right">
-                  Position
+                  Position: <span className="text-red-500">*</span>
                 </Label>
 
                 <div className="relative col-span-3">
@@ -218,7 +212,7 @@ export const JobDialog: React.FC<{
 
               <div className="grid grid-cols-4 items-center gap-4 gap-y-2">
                 <Label htmlFor="hours" className="text-right">
-                  Hours
+                  Hours: <span className="text-red-500">*</span>
                 </Label>
                 <Input id="hours" className="col-span-3" {...register('hours')} />
 

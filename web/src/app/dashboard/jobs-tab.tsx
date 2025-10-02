@@ -52,6 +52,7 @@ export const JobsTab: React.FC<{
 
     return {
       ...item,
+      event: item.event ?? '',
       positionId: item.positionId.toString(),
       hours: hf.format(item.hours),
     };
