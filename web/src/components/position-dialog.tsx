@@ -19,6 +19,7 @@ import { Input } from '~/components/ui/input';
 import { Label } from '~/components/ui/label';
 import { Button } from '~/components/ui/button';
 import { DeletePopover } from './delete-popover';
+import { errorToast } from '~/utils/error-toast';
 
 export const formSchema = z.object({
   name: z.string().min(1, { message: 'Please specify a name!' }),
@@ -50,9 +51,18 @@ export const PositionDialog: React.FC<{
     reset,
   } = useForm<FormSchema>({ resolver: zodResolver(formSchema) });
 
-  const { mutate: create } = api.position.create.useMutation({ onSuccess: () => router.refresh() });
-  const { mutate: update } = api.position.update.useMutation({ onSuccess: () => router.refresh() });
-  const { mutate: remove } = api.position.delete.useMutation({ onSuccess: () => router.refresh() });
+  const { mutate: create } = api.position.create.useMutation({
+    onSuccess: () => router.refresh(),
+    onError: () => errorToast(),
+  });
+  const { mutate: update } = api.position.update.useMutation({
+    onSuccess: () => router.refresh(),
+    onError: () => errorToast(),
+  });
+  const { mutate: remove } = api.position.delete.useMutation({
+    onSuccess: () => router.refresh(),
+    onError: () => errorToast(),
+  });
 
   const onSubmit: SubmitHandler<FormSchema> = (data) => {
     const newData = {

@@ -18,6 +18,7 @@ import { Label } from '~/components/ui/label';
 import { Button } from '~/components/ui/button';
 import { api } from '~/trpc/react';
 import { useUserData } from '~/contexts/user-data-context';
+import { errorToast } from '~/utils/error-toast';
 
 export const formSchema = z.object({
   currency: z.string().min(1, { message: 'Please select a currency!' }).max(16),
@@ -52,7 +53,10 @@ export const LocaleCurrencyDialog: React.FC<{
     defaultValues: { ...userData, precision: String(userData.precision) },
   });
 
-  const { mutate } = api.userData.upsertUserData.useMutation({ onSuccess: () => router.refresh() });
+  const { mutate } = api.userData.upsertUserData.useMutation({
+    onSuccess: () => router.refresh(),
+    onError: () => errorToast(),
+  });
 
   const onSubmit: SubmitHandler<FormSchema> = (data) => {
     mutate({ ...data, precision: Number(data.precision) });
@@ -81,7 +85,7 @@ export const LocaleCurrencyDialog: React.FC<{
                 <select
                   id="date-format"
                   {...register('locale')}
-                  className="flex h-10 w-full appearance-none items-center justify-between rounded-md border border-neutral-200 bg-white p-2 text-sm ring-offset-white placeholder:text-neutral-500 focus:ring-2 focus:ring-neutral-950 focus:ring-offset-2 focus:outline-none disabled:cursor-not-allowed disabled:opacity-50 dark:border-neutral-800 dark:bg-neutral-950 dark:ring-offset-neutral-950 dark:placeholder:text-neutral-400 dark:focus:ring-neutral-300 [&>span]:line-clamp-1"
+                  className="flex h-10 w-full appearance-none items-center justify-between rounded-md border border-neutral-200 bg-white p-2 text-sm ring-offset-white placeholder:text-neutral-500 focus:outline-none focus:ring-2 focus:ring-neutral-950 focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 dark:border-neutral-800 dark:bg-neutral-950 dark:ring-offset-neutral-950 dark:placeholder:text-neutral-400 dark:focus:ring-neutral-300 [&>span]:line-clamp-1"
                 >
                   <option value="">Select locale</option>
 
@@ -94,7 +98,7 @@ export const LocaleCurrencyDialog: React.FC<{
 
                 <ChevronsUpDown
                   size={14}
-                  className="pointer-events-none absolute top-1/2 right-2 -translate-y-1/2 text-neutral-500"
+                  className="pointer-events-none absolute right-2 top-1/2 -translate-y-1/2 text-neutral-500"
                 />
               </div>
 
@@ -114,7 +118,7 @@ export const LocaleCurrencyDialog: React.FC<{
                 <select
                   id="currency"
                   {...register('currency')}
-                  className="flex h-10 w-full appearance-none items-center justify-between rounded-md border border-neutral-200 bg-white p-2 text-sm ring-offset-white placeholder:text-neutral-500 focus:ring-2 focus:ring-neutral-950 focus:ring-offset-2 focus:outline-none disabled:cursor-not-allowed disabled:opacity-50 dark:border-neutral-800 dark:bg-neutral-950 dark:ring-offset-neutral-950 dark:placeholder:text-neutral-400 dark:focus:ring-neutral-300 [&>span]:line-clamp-1"
+                  className="flex h-10 w-full appearance-none items-center justify-between rounded-md border border-neutral-200 bg-white p-2 text-sm ring-offset-white placeholder:text-neutral-500 focus:outline-none focus:ring-2 focus:ring-neutral-950 focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 dark:border-neutral-800 dark:bg-neutral-950 dark:ring-offset-neutral-950 dark:placeholder:text-neutral-400 dark:focus:ring-neutral-300 [&>span]:line-clamp-1"
                 >
                   <option value="">Select currency</option>
 
@@ -127,7 +131,7 @@ export const LocaleCurrencyDialog: React.FC<{
 
                 <ChevronsUpDown
                   size={14}
-                  className="pointer-events-none absolute top-1/2 right-2 -translate-y-1/2 text-neutral-500"
+                  className="pointer-events-none absolute right-2 top-1/2 -translate-y-1/2 text-neutral-500"
                 />
               </div>
 
@@ -147,7 +151,7 @@ export const LocaleCurrencyDialog: React.FC<{
                 <select
                   id="precision"
                   {...register('precision')}
-                  className="flex h-10 w-full appearance-none items-center justify-between rounded-md border border-neutral-200 bg-white p-2 text-sm ring-offset-white placeholder:text-neutral-500 focus:ring-2 focus:ring-neutral-950 focus:ring-offset-2 focus:outline-none disabled:cursor-not-allowed disabled:opacity-50 dark:border-neutral-800 dark:bg-neutral-950 dark:ring-offset-neutral-950 dark:placeholder:text-neutral-400 dark:focus:ring-neutral-300 [&>span]:line-clamp-1"
+                  className="flex h-10 w-full appearance-none items-center justify-between rounded-md border border-neutral-200 bg-white p-2 text-sm ring-offset-white placeholder:text-neutral-500 focus:outline-none focus:ring-2 focus:ring-neutral-950 focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 dark:border-neutral-800 dark:bg-neutral-950 dark:ring-offset-neutral-950 dark:placeholder:text-neutral-400 dark:focus:ring-neutral-300 [&>span]:line-clamp-1"
                 >
                   <option value="">Select precision</option>
 
@@ -160,7 +164,7 @@ export const LocaleCurrencyDialog: React.FC<{
 
                 <ChevronsUpDown
                   size={14}
-                  className="pointer-events-none absolute top-1/2 right-2 -translate-y-1/2 text-neutral-500"
+                  className="pointer-events-none absolute right-2 top-1/2 -translate-y-1/2 text-neutral-500"
                 />
               </div>
 
