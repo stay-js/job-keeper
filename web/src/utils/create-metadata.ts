@@ -56,12 +56,22 @@ export const createMetadata = ({
     description,
     siteName: 'JobKeeper',
     locale: 'en-US',
+    images: [
+      {
+        url: '/logo.jpg',
+        width: 1000,
+        height: 1000,
+        alt: 'JobKeeper',
+        type: 'image/jpeg',
+      },
+    ],
   },
 
   twitter: {
     card: 'summary',
     title: absoluteTitle ?? `${title} - JobKeeper`,
     description,
+    images: ['/logo.jpg'],
   },
 
   icons: {
