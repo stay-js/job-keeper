@@ -1,9 +1,9 @@
-import type { Config } from "drizzle-kit";
-import { env } from "~/env";
+import type { Config } from 'drizzle-kit';
+import { env } from '~/env';
 
 const config = {
-  schema: "./src/server/db/schema.ts",
-  dialect: "mysql",
+  schema: './src/server/db/schema.ts',
+  dialect: 'mysql',
   dbCredentials: {
     url: env.DATABASE_URL,
   },

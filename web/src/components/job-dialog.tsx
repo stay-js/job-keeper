@@ -1,6 +1,7 @@
 'use client';
 
 import type { RouterOutputs } from '~/trpc/react';
+import type { Optional } from 'utility-types';
 import {
   Dialog,
   DialogContent,
@@ -24,7 +25,6 @@ import { Button } from './ui/button';
 import { getFormatters } from '~/utils/formatters';
 import { ChevronsUpDown } from 'lucide-react';
 import { useUserData } from '~/contexts/user-data-context';
-import type { Optional } from 'utility-types';
 
 export const formSchema = z.object({
   date: z.date({ message: 'Please select a valid date!' }),
