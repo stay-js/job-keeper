@@ -1,10 +1,10 @@
 'use client';
 
 import { useState } from 'react';
-import { LocaleCurrencyDialog } from './locale-currency-dialog';
+import { UserPreferencesDialog } from './user-preferences-dialog';
 
 export const SetInitialUserPreferences = () => {
   const [isOpen, setIsOpen] = useState(true);
 
-  return <LocaleCurrencyDialog isOpen={isOpen} setIsOpen={setIsOpen} type="initial" />;
+  return <UserPreferencesDialog isOpen={isOpen} setIsOpen={setIsOpen} type="initial" />;
 };

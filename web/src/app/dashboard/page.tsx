@@ -6,7 +6,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '~/components/ui/tabs';
 import { CustomUserButton } from '~/components/custom-user-button';
 import { SetInitialUserPreferences } from '~/components/set-initial-user-preferences';
 import { createMetadata } from '~/utils/create-metadata';
-import { UserDataProvider } from '~/contexts/user-data-context';
+import { UserPreferencesProvider } from '~/contexts/user-preferences-context';
 
 export const metadata = createMetadata({
   path: '/dashboard',
@@ -38,9 +38,9 @@ const Page: React.FC = async () => {
 
   if (!user) return authObject.redirectToSignIn();
 
-  const userData = await api.userData.getUserData();
+  const userPreferences = await api.userPreferences.get();
 
-  const fallbackUserData = {
+  const fallbackUserPreferences = {
     currency: 'EUR',
     locale: 'en',
     precision: 2,
@@ -48,7 +48,7 @@ const Page: React.FC = async () => {
 
   return (
     <HydrateClient>
-      <UserDataProvider value={userData ?? fallbackUserData}>
+      <UserPreferencesProvider value={userPreferences ?? fallbackUserPreferences}>
         <main className="p-6 text-white md:py-24">
           <Tabs defaultValue="jobs" className="mx-auto flex max-w-5xl flex-col gap-6">
             <TabsList className="h-fit w-full items-center p-2">
@@ -68,9 +68,9 @@ const Page: React.FC = async () => {
             </TabsContent>
           </Tabs>
 
-          {!userData && <SetInitialUserPreferences />}
+          {!userPreferences && <SetInitialUserPreferences />}
         </main>
-      </UserDataProvider>
+      </UserPreferencesProvider>
     </HydrateClient>
   );
 };

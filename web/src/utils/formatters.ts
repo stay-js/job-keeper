@@ -1,11 +1,11 @@
-import type { UserData } from '~/contexts/user-data-context';
+import type { UserPreferences } from '~/contexts/user-preferences-context';
 
-export const getCurrencyFormatter = (userData: UserData) => {
-  return new Intl.NumberFormat(userData.locale, {
+export const getCurrencyFormatter = (userPreferences: UserPreferences) => {
+  return new Intl.NumberFormat(userPreferences.locale, {
     style: 'currency',
-    currency: userData.currency,
+    currency: userPreferences.currency,
     useGrouping: true,
-    maximumFractionDigits: userData.precision,
+    maximumFractionDigits: userPreferences.precision,
   });
 };
 
@@ -16,9 +16,9 @@ export const getHourFormatter = (locale: string) => {
   });
 };
 
-export const getFormatters = (userData: UserData) => {
+export const getFormatters = (userPreferences: UserPreferences) => {
   return {
-    currency: getCurrencyFormatter(userData),
-    hours: getHourFormatter(userData.locale),
+    currency: getCurrencyFormatter(userPreferences),
+    hours: getHourFormatter(userPreferences.locale),
   };
 };

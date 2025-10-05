@@ -20,14 +20,14 @@ import {
   TableFooter,
 } from '~/components/ui/table';
 import { getFormatters } from '~/utils/formatters';
-import { useUserData } from '~/contexts/user-data-context';
+import { useUserPreferences } from '~/contexts/user-preferences-context';
 
 export const JobsTable: React.FC<{
   data: RouterOutputs['job']['getAll'];
   setSelected: React.Dispatch<React.SetStateAction<number | null>>;
 }> = ({ data, setSelected }) => {
-  const userData = useUserData();
-  const { currency: cf, hours: hf } = getFormatters(userData);
+  const userPreferences = useUserPreferences();
+  const { currency: cf, hours: hf } = getFormatters(userPreferences);
 
   const [sorting, setSorting] = useState<SortingState>([]);
 
@@ -49,7 +49,7 @@ export const JobsTable: React.FC<{
         accessorKey: 'date',
         cell: (cell) => (
           <span className="whitespace-nowrap">
-            {cell.getValue<Date>().toLocaleDateString(userData.locale)}
+            {cell.getValue<Date>().toLocaleDateString(userPreferences.locale)}
           </span>
         ),
       },

@@ -5,15 +5,15 @@ import { JobsTable } from '~/components/jobs-table';
 import { Button } from '~/components/ui/button';
 import { useState } from 'react';
 import { JobDialog } from '~/components/job-dialog';
-import { useUserData } from '~/contexts/user-data-context';
+import { useUserPreferences } from '~/contexts/user-preferences-context';
 import { getFormatters } from '~/utils/formatters';
 
 export const JobsTab: React.FC<{
   jobs: RouterOutputs['job']['getAll'];
   positions: RouterOutputs['position']['getAll'];
 }> = ({ jobs, positions }) => {
-  const userData = useUserData();
-  const { hours: hf } = getFormatters(userData);
+  const userPreferences = useUserPreferences();
+  const { hours: hf } = getFormatters(userPreferences);
 
   const [selected, setSelected] = useState<number | null>(null);
 

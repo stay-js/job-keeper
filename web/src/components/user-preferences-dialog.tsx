@@ -17,7 +17,7 @@ import {
 import { Label } from '~/components/ui/label';
 import { Button } from '~/components/ui/button';
 import { api } from '~/trpc/react';
-import { useUserData } from '~/contexts/user-data-context';
+import { useUserPreferences } from '~/contexts/user-preferences-context';
 import { errorToast } from '~/utils/error-toast';
 
 export const formSchema = z.object({
@@ -36,14 +36,14 @@ export const formSchema = z.object({
 
 type FormSchema = z.infer<typeof formSchema>;
 
-export const LocaleCurrencyDialog: React.FC<{
+export const UserPreferencesDialog: React.FC<{
   isOpen: boolean;
   setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
   type: 'initial' | 'update';
 }> = ({ isOpen, setIsOpen, type }) => {
   const router = useRouter();
 
-  const userData = useUserData();
+  const userPreferences = useUserPreferences();
 
   const {
     register,
@@ -51,10 +51,10 @@ export const LocaleCurrencyDialog: React.FC<{
     formState: { errors },
   } = useForm<FormSchema>({
     resolver: zodResolver(formSchema),
-    defaultValues: { ...userData, precision: String(userData.precision) },
+    defaultValues: { ...userPreferences, precision: String(userPreferences.precision) },
   });
 
-  const { mutate } = api.userData.upsertUserData.useMutation({
+  const { mutate } = api.userPreferences.upsert.useMutation({
     onSuccess: () => router.refresh(),
     onError: () => errorToast(),
   });

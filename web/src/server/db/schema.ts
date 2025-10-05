@@ -30,7 +30,7 @@ export const jobs = createTable(
   (t) => [index('by_wage_idx').on(t.positionId)],
 );
 
-export const userData = createTable('user_data', (d) => ({
+export const userPreferences = createTable('user_preferences', (d) => ({
   userId: d.varchar('user_id', { length: 256 }).primaryKey(),
   currency: d.varchar('currency', { length: 16 }).notNull(),
   locale: d.varchar('locale', { length: 16 }).notNull(),

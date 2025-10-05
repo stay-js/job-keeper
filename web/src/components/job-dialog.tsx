@@ -24,7 +24,7 @@ import { useState, useEffect } from 'react';
 import { Button } from './ui/button';
 import { getFormatters } from '~/utils/formatters';
 import { ChevronsUpDown } from 'lucide-react';
-import { useUserData } from '~/contexts/user-data-context';
+import { useUserPreferences } from '~/contexts/user-preferences-context';
 import { createDateOnlyString } from '~/utils/create-date-only-string';
 import { errorToast } from '~/utils/error-toast';
 
@@ -49,8 +49,8 @@ export const JobDialog: React.FC<{
   getDefaultValues: (id: number | null) => Optional<FormSchema, 'date'>;
   defaultMonth: Date;
 }> = ({ positions, selected, setSelected, getDefaultValues, defaultMonth }) => {
-  const userData = useUserData();
-  const { currency: cf } = getFormatters(userData);
+  const userPreferences = useUserPreferences();
+  const { currency: cf } = getFormatters(userPreferences);
 
   const [isOpen, setIsOpen] = useState(false);
   const [date, setDate] = useState<Date | undefined>();
@@ -150,7 +150,7 @@ export const JobDialog: React.FC<{
                   className="col-span-3"
                   date={date}
                   setDate={setDate}
-                  locale={userData.locale}
+                  locale={userPreferences.locale}
                   defaultMonth={defaultMonth}
                 />
 

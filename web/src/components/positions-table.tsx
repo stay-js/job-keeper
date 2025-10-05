@@ -28,14 +28,14 @@ import {
   DropdownMenuCheckboxItem,
 } from '~/components/ui/dropdown-menu';
 import { ChevronDown } from 'lucide-react';
-import { useUserData } from '~/contexts/user-data-context';
+import { useUserPreferences } from '~/contexts/user-preferences-context';
 
 export const PositionsTable: React.FC<{
   data: RouterOutputs['position']['getAllWithHoursWorked'];
   setSelected: React.Dispatch<React.SetStateAction<number | null>>;
 }> = ({ data, setSelected }) => {
-  const userData = useUserData();
-  const { currency: cf, hours: hf } = getFormatters(userData);
+  const userPreferences = useUserPreferences();
+  const { currency: cf, hours: hf } = getFormatters(userPreferences);
 
   const [sorting, setSorting] = useState<SortingState>([]);
   const [pagination, setPagination] = useState({

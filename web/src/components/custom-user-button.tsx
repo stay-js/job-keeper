@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import { UserButton } from '@clerk/nextjs';
 import { Globe } from 'lucide-react';
-import { LocaleCurrencyDialog } from './locale-currency-dialog';
+import { UserPreferencesDialog } from './user-preferences-dialog';
 
 export const CustomUserButton = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -20,7 +20,7 @@ export const CustomUserButton = () => {
         </UserButton.MenuItems>
       </UserButton>
 
-      <LocaleCurrencyDialog isOpen={isOpen} setIsOpen={setIsOpen} type="update" />
+      <UserPreferencesDialog isOpen={isOpen} setIsOpen={setIsOpen} type="update" />
     </>
   );
 };
