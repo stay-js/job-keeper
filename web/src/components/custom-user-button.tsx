@@ -20,7 +20,7 @@ export const CustomUserButton = () => {
         </UserButton.MenuItems>
       </UserButton>
 
-      <LocaleCurrencyDialog isOpen={isOpen} setIsOpen={setIsOpen} />
+      <LocaleCurrencyDialog isOpen={isOpen} setIsOpen={setIsOpen} type="update" />
     </>
   );
 };

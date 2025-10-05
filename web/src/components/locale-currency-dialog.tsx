@@ -39,7 +39,8 @@ type FormSchema = z.infer<typeof formSchema>;
 export const LocaleCurrencyDialog: React.FC<{
   isOpen: boolean;
   setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
-}> = ({ isOpen, setIsOpen }) => {
+  type: 'initial' | 'update';
+}> = ({ isOpen, setIsOpen, type }) => {
   const router = useRouter();
 
   const userData = useUserData();
@@ -67,10 +68,14 @@ export const LocaleCurrencyDialog: React.FC<{
     <Dialog onOpenChange={setIsOpen} open={isOpen}>
       <DialogContent className="w-11/12 max-w-lg rounded-lg">
         <DialogHeader>
-          <DialogTitle>Update Locale & Currency</DialogTitle>
+          <DialogTitle>{type === 'initial' ? 'Set' : 'Update'} Locale & Currency</DialogTitle>
           <DialogDescription>
-            Use this form to update the locale and currency settings. Once completed, click the
-            &quot;Save changes&quot; button.
+            {type === 'initial'
+              ? 'Please select your preferred locale and currency.'
+              : 'Use this form to update the locale and currency settings.'}{' '}
+            Once completed, click the &quot;Save changes&quot; button.
+            {type === 'initial' &&
+              ' This dialog will open every time you log in until you save your preferences. You can change these settings later in your profile.'}
           </DialogDescription>
         </DialogHeader>
 
