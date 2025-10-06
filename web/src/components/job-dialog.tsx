@@ -35,9 +35,15 @@ export const formSchema = z.object({
   positionId: z.string().refine((value) => value !== 'default' && parseInt(value) > 0, {
     message: 'Please select a position!',
   }),
-  hours: z.string().refine((value) => parseFloat(value.replace(',', '.')) > 0, {
-    message: 'Please specify valid hours!',
-  }),
+  hours: z.string().refine(
+    (value) => {
+      const num = parseFloat(value.replace(',', '.'));
+      return num > 0 && num <= 24;
+    },
+    {
+      message: 'Please specify valid work hours! (0-24)',
+    },
+  ),
 });
 
 type FormSchema = z.infer<typeof formSchema>;

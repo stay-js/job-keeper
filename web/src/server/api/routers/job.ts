@@ -7,7 +7,7 @@ const jobSchema = z.object({
   location: z.string().min(1),
   event: z.string().optional(),
   date: z.string().refine((val) => !isNaN(Date.parse(val))),
-  hours: z.number().min(0),
+  hours: z.number().min(0).max(24),
   positionId: z.number(),
 });
 
