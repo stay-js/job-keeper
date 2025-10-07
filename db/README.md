@@ -22,7 +22,7 @@ pnpm run db:push
 # npm run db:push
 ```
 
-## Hostolt adatbázis elérése
+## Hostolt development adatbázis elérése
 
 - Host: `mysql-znagy-gh-znagy-gh.g.aivencloud.com`
 - Port: `25828`

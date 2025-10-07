@@ -1,6 +1,6 @@
 # JobKeeper - Dokumentáció
 
-## Hostolt webalkalmazás elérése: [job-keeper.znagy.hu](https://job-keeper.znagy.hu)
+## Production app elérése: [job-keeper.znagy.hu](https://job-keeper.znagy.hu) (Clerk is prod módba, prod adatbázissal)
 
 ## 1. Fejlesztői Dokumentáció
 
@@ -33,8 +33,9 @@ export const positions = createTable(
   'positions',
   (d) => ({
     id: d.bigint('id', { mode: 'number' }).primaryKey().autoincrement(),
+    userId: d.varchar('user_id', { length: 256 }).notNull(),
     name: d.varchar('name', { length: 256 }).notNull(),
-    wage: d.smallint('wage').notNull(),
+    wage: d.float('wage').notNull(),
   }),
   (t) => [index('wage_idx').on(t.wage)],
 );
@@ -47,9 +48,10 @@ export const jobs = createTable(
   'jobs',
   (d) => ({
     id: d.bigint('id', { mode: 'number' }).primaryKey().autoincrement(),
+    userId: d.varchar('user_id', { length: 256 }).notNull(),
     location: d.varchar('location', { length: 256 }).notNull(),
-    event: d.varchar('event', { length: 256 }).notNull(),
-    date: d.timestamp('date').notNull(),
+    event: d.varchar('event', { length: 256 }),
+    date: d.date('date', { mode: 'string' }).notNull(),
     hours: d.float('hours').notNull(),
     positionId: d
       .bigint('position_id', { mode: 'number' })
@@ -58,6 +60,17 @@ export const jobs = createTable(
   }),
   (t) => [index('by_wage_idx').on(t.positionId)],
 );
+```
+
+#### 1.3.3. Felhasználói beállítások (`user_preferences`)
+
+```typescript
+export const userPreferences = createTable('user_preferences', (d) => ({
+  userId: d.varchar('user_id', { length: 256 }).primaryKey(),
+  currency: d.varchar('currency', { length: 16 }).notNull(),
+  locale: d.varchar('locale', { length: 16 }).notNull(),
+  precision: d.int('precision').notNull(),
+}));
 ```
 
 ### 1.4. Futtatás és Fejlesztés
