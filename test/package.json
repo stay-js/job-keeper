@@ -11,6 +11,9 @@
     "test:headed": "TEST_ENV=dev playwright test --headed",
     "test:headed:prod": "TEST_ENV=prod playwright test --headed"
   },
+  "dependencies": {
+    "dotenv": "^17.2.3"
+  },
   "devDependencies": {
     "@playwright/test": "^1.45.0",
     "@types/node": "^24.7.0",
