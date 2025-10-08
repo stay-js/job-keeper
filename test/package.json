@@ -1,0 +1,18 @@
+{
+  "name": "job-keeper-tests",
+  "version": "1.0.0",
+  "scripts": {
+    "test": "playwright test",
+    "test:dev": "TEST_ENV=dev playwright test",
+    "test:prod": "TEST_ENV=prod playwright test",
+    "test:ui": "TEST_ENV=dev playwright test --ui",
+    "test:ui:prod": "TEST_ENV=prod playwright test --ui",
+    "test:debug": "TEST_ENV=dev playwright test --debug",
+    "test:headed": "TEST_ENV=dev playwright test --headed"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.45.0",
+    "@types/node": "^24.7.0",
+    "typescript": "^5.0.0"
+  }
+}
