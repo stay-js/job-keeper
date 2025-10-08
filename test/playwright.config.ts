@@ -1,5 +1,8 @@
 import { defineConfig, devices } from '@playwright/test';
-import 'dotenv/config';
+import * as dotenv from 'dotenv';
+import * as path from 'path';
+
+dotenv.config({ path: path.resolve(__dirname, '.env') });
 
 const ENV = process.env.TEST_ENV || 'dev';
 const isDev = ENV === 'dev';

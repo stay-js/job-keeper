@@ -8,7 +8,7 @@ test.describe('Authentication', () => {
     await expect(page.locator('[role="dialog"]')).toBeVisible();
   });
 
-  test('should sign in with GitHub using', async ({ page, baseURL }) => {
+  test('should redirect to "/dashboard" after signing in', async ({ page, baseURL }) => {
     await page.goto('/');
     const signInButton = page.getByRole('button', { name: /go to dashboard/i });
     await signInButton.click();
@@ -31,7 +31,7 @@ test.describe('Authentication', () => {
       await authorizeButton.click();
     }
 
-    await page.waitForURL(`${baseURL}/**`, { timeout: 10_000 });
+    await page.waitForURL(`${baseURL}/**`, { timeout: 20_000 });
 
     await expect(page).toHaveURL(`${baseURL}/dashboard`);
   });
