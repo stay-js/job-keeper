@@ -15,6 +15,7 @@
     "dotenv": "^17.2.3"
   },
   "devDependencies": {
+    "@clerk/testing": "^1.13.3",
     "@playwright/test": "^1.45.0",
     "@types/node": "^24.7.0",
     "typescript": "^5.0.0"

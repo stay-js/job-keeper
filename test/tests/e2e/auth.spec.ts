@@ -1,15 +1,24 @@
 import { test, expect } from '@playwright/test';
+import { clerk, setupClerkTestingToken } from '@clerk/testing/playwright';
 
 test.describe('Authentication', () => {
   test('should open sign in modal when clicking sign in button', async ({ page }) => {
     await page.goto('/');
+
     const signInButton = page.getByRole('button', { name: /go to dashboard/i });
     await signInButton.click();
+
     await expect(page.locator('[role="dialog"]')).toBeVisible();
   });
 
-  test('should redirect to "/dashboard" after signing in', async ({ page, baseURL }) => {
+  test('should sign in with GitHub and redirect to "/dashboard" after signing in (only dev, because of bot detection)', async ({
+    page,
+    baseURL,
+  }) => {
+    if (process.env.TEST_ENV !== 'dev') test.skip();
+
     await page.goto('/');
+
     const signInButton = page.getByRole('button', { name: /go to dashboard/i });
     await signInButton.click();
 
@@ -20,8 +29,8 @@ test.describe('Authentication', () => {
 
     await page.waitForURL('https://github.com/login**', { timeout: 5_000 });
 
-    await page.fill('input#login_field', process.env.GITHUB_USERNAME);
-    await page.fill('input#password', process.env.GITHUB_PASSWORD);
+    await page.fill('input#login_field', process.env.E2E_GITHUB_USERNAME);
+    await page.fill('input#password', process.env.E2E_GITHUB_PASSWORD);
 
     await page.click('input[type="submit"][value="Sign in"]');
 
@@ -33,6 +42,26 @@ test.describe('Authentication', () => {
 
     await page.waitForURL(`${baseURL}/**`, { timeout: 20_000 });
 
-    await expect(page).toHaveURL(`${baseURL}/dashboard`);
+    await expect(page).toHaveURL(/dashboard/, { timeout: 15_000 });
+  });
+
+  test('should redirect to "/dashboard" after signing in', async ({ page, baseURL }) => {
+    await setupClerkTestingToken({ page });
+
+    await page.goto('/');
+
+    // does not work on prod webkit
+    await clerk.signIn({
+      page,
+      signInParams: {
+        strategy: 'password',
+        identifier: process.env.E2E_CLERK_USER_USERNAME || process.env.E2E_CLERK_USER_EMAIL!,
+        password: process.env.E2E_CLERK_USER_PASSWORD!,
+      },
+    });
+
+    await page.waitForURL(`${baseURL}/**`, { timeout: 20_000 });
+
+    await expect(page).toHaveURL(/dashboard/, { timeout: 30_000 });
   });
 });

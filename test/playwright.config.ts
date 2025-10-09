@@ -17,6 +17,14 @@ const webServer = isDev
     }
   : undefined;
 
+process.env.CLERK_PUBLISHABLE_KEY = isDev
+  ? process.env.DEV_CLERK_PUBLISHABLE_KEY
+  : process.env.PROD_CLERK_PUBLISHABLE_KEY;
+
+process.env.CLERK_SECRET_KEY = isDev
+  ? process.env.DEV_CLERK_SECRET_KEY
+  : process.env.PROD_CLERK_SECRET_KEY;
+
 export default defineConfig({
   testDir: './tests',
   fullyParallel: true,
@@ -35,20 +43,31 @@ export default defineConfig({
 
   projects: [
     {
+      name: 'setup clerk',
+      testMatch: /global\.setup\.ts/,
+    },
+
+    {
       name: 'chromium',
-      use: { ...devices['Desktop Chrome'] },
+      use: {
+        ...devices['Desktop Chrome'],
+      },
+      dependencies: ['setup clerk'],
     },
     {
       name: 'firefox',
       use: { ...devices['Desktop Firefox'] },
+      dependencies: ['setup clerk'],
     },
     {
       name: 'webkit',
       use: { ...devices['Desktop Safari'] },
+      dependencies: ['setup clerk'],
     },
     {
       name: 'Mobile Chrome',
       use: { ...devices['Pixel 5'] },
+      dependencies: ['setup clerk'],
     },
   ],
 
