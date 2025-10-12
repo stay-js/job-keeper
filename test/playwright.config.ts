@@ -61,15 +61,7 @@ export default defineConfig({
     },
     {
       name: 'webkit',
-      use: {
-        ...devices['Desktop Safari'],
-        storageState: undefined, // Don't reuse storage
-        // Explicitly set storage options
-        contextOptions: {
-          acceptDownloads: true,
-          strictSelectors: false,
-        },
-      },
+      use: { ...devices['Desktop Safari'] },
       dependencies: ['setup clerk'],
     },
     {
