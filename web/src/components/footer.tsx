@@ -30,12 +30,7 @@ export const Footer: React.FC = () => (
           GitHub
         </Link>
 
-        <Link
-          href="/privacy-policy"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="text-sm transition-colors hover:text-gray-200"
-        >
+        <Link href="/privacy-policy" className="text-sm transition-colors hover:text-gray-200">
           Privacy Policy
         </Link>
       </div>
