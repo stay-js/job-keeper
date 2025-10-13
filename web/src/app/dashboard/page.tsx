@@ -17,11 +17,13 @@ export const metadata = createMetadata({
 const Jobs: React.FC = async () => {
   const jobs = await api.job.getAll();
   const positions = await api.position.getAll();
+  const expenses = await api.expense.getAll();
 
   void api.job.getAll.prefetch();
   void api.position.getAll.prefetch();
+  void api.expense.getAll.prefetch();
 
-  return <JobsTab jobs={jobs} positions={positions} />;
+  return <JobsTab jobs={jobs} positions={positions} expenses={expenses} />;
 };
 
 const Positions: React.FC = async () => {

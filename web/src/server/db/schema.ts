@@ -30,6 +30,18 @@ export const jobs = createTable(
   (t) => [index('by_wage_idx').on(t.positionId)],
 );
 
+export const expenses = createTable(
+  'expenses',
+  (d) => ({
+    id: d.bigint('id', { mode: 'number' }).primaryKey().autoincrement(),
+    userId: d.varchar('user_id', { length: 256 }).notNull(),
+    name: d.varchar('name', { length: 256 }).notNull(),
+    amount: d.float('amount').notNull(),
+    date: d.date('date', { mode: 'string' }).notNull(),
+  }),
+  (t) => [index('by_user_idx').on(t.userId)],
+);
+
 export const userPreferences = createTable('user_preferences', (d) => ({
   userId: d.varchar('user_id', { length: 256 }).primaryKey(),
   currency: d.varchar('currency', { length: 16 }).notNull(),

@@ -1,11 +1,5 @@
 'use client';
 
-import { useState, useEffect } from 'react';
-import { useRouter } from 'next/navigation';
-import { useForm, type SubmitHandler } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { z } from 'zod';
-import { api } from '~/trpc/react';
 import {
   Dialog,
   DialogContent,
@@ -15,69 +9,78 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '~/components/ui/dialog';
-import { Input } from '~/components/ui/input';
-import { Label } from '~/components/ui/label';
-import { Button } from '~/components/ui/button';
-import { DeletePopover } from './delete-popover';
+import { DeletePopover } from '~/components/delete-popover';
+import { z } from 'zod';
+import { SubmitHandler, useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { api } from '~/trpc/react';
+import { useRouter } from 'next/navigation';
+import { useState, useEffect } from 'react';
+import { Button } from './ui/button';
+import { createDateOnlyString } from '~/utils/create-date-only-string';
 import { errorToast } from '~/utils/error-toast';
+import { Label } from './ui/label';
+import { Input } from './ui/input';
 
 export const formSchema = z.object({
   name: z.string().min(1, { message: 'Please specify a name!' }),
-  wage: z.string().refine(
+  amount: z.string().refine(
     (value) => {
       const num = parseFloat(value.replace(',', '.'));
       return num > 0;
     },
     {
-      message: 'Please specify valid wage! (>0)',
+      message: 'Please specify valid amount! (>0)',
     },
   ),
+  date: z.date(),
 });
 
 type FormSchema = z.infer<typeof formSchema>;
 
-interface PositionWithCanDelete extends FormSchema {
-  canDelete?: boolean;
-}
-
-export const PositionDialog: React.FC<{
+export const ExpensesDialog: React.FC<{
   selected: number | null;
   setSelected: React.Dispatch<React.SetStateAction<number | null>>;
-  getDefaultValues: (id: number | null) => PositionWithCanDelete;
-}> = ({ selected, setSelected, getDefaultValues }) => {
-  const router = useRouter();
-
+  getDefaultValues: (id: number | null) => Omit<FormSchema, 'date'>;
+  date: Date;
+}> = ({ selected, setSelected, getDefaultValues, date }) => {
   const [isOpen, setIsOpen] = useState(false);
-  const [canDelete, setCanDelete] = useState(false);
+
+  const router = useRouter();
 
   const {
     register,
     handleSubmit,
     formState: { errors },
     reset,
+    setValue,
   } = useForm<FormSchema>({ resolver: zodResolver(formSchema) });
 
-  const { mutate: create } = api.position.create.useMutation({
+  register('date');
+  setValue('date', date);
+
+  const { mutate: create } = api.expense.create.useMutation({
     onSuccess: () => router.refresh(),
     onError: () => errorToast(),
   });
-  const { mutate: update } = api.position.update.useMutation({
+  const { mutate: update } = api.expense.update.useMutation({
     onSuccess: () => router.refresh(),
     onError: () => errorToast(),
   });
-  const { mutate: remove } = api.position.delete.useMutation({
+  const { mutate: remove } = api.expense.delete.useMutation({
     onSuccess: () => router.refresh(),
     onError: () => errorToast(),
   });
 
   const onSubmit: SubmitHandler<FormSchema> = (data) => {
     const newData = {
-      name: data.name,
-      wage: parseFloat(data.wage.replace(',', '.')),
+      ...data,
+      date: createDateOnlyString(data.date),
+      amount: parseFloat(data.amount.replace(',', '.')),
     };
 
     if (selected) update({ id: selected, ...newData });
-    else create({ ...newData });
+    else create(newData);
 
     setIsOpen(false);
     setSelected(null);
@@ -85,7 +88,6 @@ export const PositionDialog: React.FC<{
 
   useEffect(() => {
     const defaultValues = getDefaultValues(selected);
-    setCanDelete(defaultValues.canDelete ?? false);
     reset(defaultValues);
 
     if (selected) setIsOpen(true);
@@ -95,21 +97,25 @@ export const PositionDialog: React.FC<{
     <Dialog
       onOpenChange={(state) => {
         setIsOpen(state);
-        if (!state) setSelected(null);
+
+        if (!state) {
+          setSelected(null);
+          reset();
+        }
       }}
       open={isOpen}
     >
       <DialogTrigger asChild>
-        <Button>Add new</Button>
+        <Button>Add expense</Button>
       </DialogTrigger>
 
       <DialogContent className="w-11/12 max-w-lg rounded-lg">
         <DialogHeader>
-          <DialogTitle>{selected ? 'Edit' : 'Add new'} position</DialogTitle>
+          <DialogTitle>{selected ? 'Edit' : 'Add new'} expense</DialogTitle>
+
           <DialogDescription>
-            Use this form to {selected ? 'edit a' : 'add a new'} position. Once completed, click the
-            &quot;Save changes&quot; button. You can only delete positions that have no hours worked
-            logged.
+            Use this form to {selected ? 'edit an' : 'add a new'} expense. Once completed, click the
+            &quot;Save changes&quot; button.
           </DialogDescription>
         </DialogHeader>
 
@@ -128,14 +134,14 @@ export const PositionDialog: React.FC<{
               )}
             </div>
             <div className="grid grid-cols-4 items-center gap-4 gap-y-2">
-              <Label htmlFor="wage" className="text-right">
-                Hourly Wage:
+              <Label htmlFor="amount" className="text-right">
+                Amount:
               </Label>
-              <Input id="wage" className="col-span-3" {...register('wage')} />
+              <Input id="amount" className="col-span-3" {...register('amount')} />
 
-              {errors.wage && (
+              {errors.amount && (
                 <span className="col-span-full text-right text-xs text-red-500 dark:text-red-500">
-                  {errors.wage.message}
+                  {errors.amount.message}
                 </span>
               )}
             </div>
@@ -144,9 +150,9 @@ export const PositionDialog: React.FC<{
           <DialogFooter className="flex gap-2">
             <Button type="submit">Save changes</Button>
 
-            {canDelete && selected && (
+            {selected && (
               <DeletePopover
-                type="position"
+                type="expense"
                 onDelete={() => {
                   remove({ id: selected });
 

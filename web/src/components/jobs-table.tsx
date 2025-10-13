@@ -24,8 +24,10 @@ import { useUserPreferences } from '~/contexts/user-preferences-context';
 
 export const JobsTable: React.FC<{
   data: RouterOutputs['job']['getAll'];
+  expenses: RouterOutputs['expense']['getAll'];
   setSelected: React.Dispatch<React.SetStateAction<number | null>>;
-}> = ({ data, setSelected }) => {
+  setSelectedExpense: React.Dispatch<React.SetStateAction<number | null>>;
+}> = ({ data, expenses, setSelected, setSelectedExpense }) => {
   const userPreferences = useUserPreferences();
   const { currency: cf, hours: hf } = getFormatters(userPreferences);
 
@@ -40,6 +42,10 @@ export const JobsTable: React.FC<{
     },
     {},
   );
+
+  const totalHours = data.reduce((acc, job) => acc + job.hours, 0);
+  const totalPayout = data.reduce((acc, job) => acc + job.payout, 0);
+  const totalExpenses = expenses.reduce((acc, expense) => acc + expense.amount, 0);
 
   const table = useReactTable({
     data,
@@ -110,9 +116,9 @@ export const JobsTable: React.FC<{
         ))}
       </TableHeader>
 
-      {data.length !== 0 ? (
-        <>
-          <TableBody>
+      <TableBody>
+        {data.length !== 0 ? (
+          <>
             {table.getRowModel().rows.map((row) => (
               <TableRow
                 className="cursor-pointer"
@@ -127,34 +133,43 @@ export const JobsTable: React.FC<{
                 ))}
               </TableRow>
             ))}
-          </TableBody>
-
-          <TableFooter>
-            {Object.entries(perPosition).map(([key, value]) => (
-              <TableRow key={key}>
-                <TableCell colSpan={4}>{key}</TableCell>
-                <TableCell>{cf.format(value.wage)}</TableCell>
-                <TableCell>{hf.format(value.hoursWorked)}</TableCell>
-                <TableCell>{cf.format(value.hoursWorked * value.wage)}</TableCell>
-              </TableRow>
-            ))}
-
-            <TableRow className="border-t">
-              <TableCell colSpan={5}>Total:</TableCell>
-              <TableCell>{hf.format(data.reduce((acc, job) => acc + job.hours, 0))}</TableCell>
-              <TableCell>{cf.format(data.reduce((acc, job) => acc + job.payout, 0))}</TableCell>
-            </TableRow>
-          </TableFooter>
-        </>
-      ) : (
-        <TableBody>
+          </>
+        ) : (
           <TableRow>
             <TableCell colSpan={7} className="text-center">
               No record.
             </TableCell>
           </TableRow>
-        </TableBody>
-      )}
+        )}
+      </TableBody>
+
+      <TableFooter>
+        {Object.entries(perPosition).map(([key, value]) => (
+          <TableRow key={key}>
+            <TableCell colSpan={4}>{key}</TableCell>
+            <TableCell>{cf.format(value.wage)}</TableCell>
+            <TableCell>{hf.format(value.hoursWorked)}</TableCell>
+            <TableCell>{cf.format(value.hoursWorked * value.wage)}</TableCell>
+          </TableRow>
+        ))}
+
+        {expenses.map((expense) => (
+          <TableRow
+            className="cursor-pointer"
+            key={expense.id}
+            onClick={() => setSelectedExpense(expense.id)}
+          >
+            <TableCell colSpan={6}>{expense.name}</TableCell>
+            <TableCell>- {cf.format(expense.amount)}</TableCell>
+          </TableRow>
+        ))}
+
+        <TableRow className="border-t">
+          <TableCell colSpan={5}>Total:</TableCell>
+          <TableCell>{hf.format(totalHours)}</TableCell>
+          <TableCell>{cf.format(totalPayout - totalExpenses)}</TableCell>
+        </TableRow>
+      </TableFooter>
     </Table>
   );
 };
