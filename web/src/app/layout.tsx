@@ -17,7 +17,7 @@ const RootLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => (
     <TRPCReactProvider>
       <html lang="en" className={`${GeistSans.variable} dark`}>
         <body className="bg-neutral-950 text-white">
-          <div className="grid min-h-screen grid-cols-1 grid-rows-[1fr_auto] gap-6">
+          <div className="grid min-h-[var(--app-min-height-dynamic,_var(--app-min-height))] grid-cols-1 grid-rows-[1fr_auto] gap-6">
             <div>{children}</div>
 
             <Footer />
