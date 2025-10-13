@@ -16,7 +16,7 @@
 PNPM:
 
 ```bash
-pnpm run test
+pnpm test
 ```
 
 NPM:
@@ -30,7 +30,7 @@ npm run test
 PNPM:
 
 ```bash
-pnpm run test:prod
+pnpm test:prod
 ```
 
 NPM:
