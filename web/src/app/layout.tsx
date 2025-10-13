@@ -4,8 +4,9 @@ import { type Viewport } from 'next';
 import { GeistSans } from 'geist/font/sans';
 import { ClerkProvider } from '@clerk/nextjs';
 import { dark } from '@clerk/themes';
-import { Toaster } from '~/components/ui/sonner';
 import { TRPCReactProvider } from '~/trpc/react';
+import { Toaster } from '~/components/ui/sonner';
+import { Footer } from '~/components/footer';
 
 export const viewport: Viewport = {
   colorScheme: 'dark',
@@ -13,15 +14,19 @@ export const viewport: Viewport = {
 
 const RootLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => (
   <ClerkProvider appearance={{ baseTheme: dark }}>
-    <html lang="en" className={`${GeistSans.variable} dark`}>
-      <body className="bg-neutral-950 text-white">
-        <TRPCReactProvider>
-          {children}
+    <TRPCReactProvider>
+      <html lang="en" className={`${GeistSans.variable} dark`}>
+        <body className="bg-neutral-950 text-white">
+          <div className="grid min-h-screen grid-cols-1 grid-rows-[1fr_auto] gap-6">
+            <div>{children}</div>
+
+            <Footer />
+          </div>
 
           <Toaster />
-        </TRPCReactProvider>
-      </body>
-    </html>
+        </body>
+      </html>
+    </TRPCReactProvider>
   </ClerkProvider>
 );
 
