@@ -30,7 +30,7 @@ export const DashboardPreview: React.FC = () => (
               alt="JobKeeper Jobs Dashboard showing a table with job entries including dates, locations, events, positions, wages, hours worked, and payouts"
               width={1600}
               height={900}
-              className="h-auto w-full"
+              className="aspect-video w-full"
               priority
             />
           </div>
@@ -53,7 +53,7 @@ export const DashboardPreview: React.FC = () => (
               alt="JobKeeper Positions Dashboard displaying a paginated table of different positions with wages, hours worked, and total payouts"
               width={1600}
               height={900}
-              className="h-auto w-full"
+              className="aspect-video w-full"
             />
           </div>
         </div>
