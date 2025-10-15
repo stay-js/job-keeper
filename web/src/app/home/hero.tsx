@@ -5,6 +5,12 @@ import { SignInButton, SignUpButton, useUser } from '@clerk/nextjs';
 import { MoveRight, Calendar, DollarSign, Clock } from 'lucide-react';
 import { Button } from '~/components/ui/button';
 
+const signInButtonClasses =
+  'text-black flex w-fit items-center gap-2 rounded-xl px-4 py-6 shadow-black/20 transition-all duration-300 hover:scale-105 hover:shadow-xl hover:shadow-black/30';
+
+const signUpButtonClasses =
+  'rounded-xl px-4 py-6 shadow-black/20 transition-all duration-300 hover:scale-105 hover:shadow-xl hover:shadow-black/30';
+
 export const Hero: React.FC = () => {
   const { isSignedIn } = useUser();
 
@@ -34,28 +40,30 @@ export const Hero: React.FC = () => {
 
           {isSignedIn ? (
             <div className="flex justify-center gap-4">
-              <Button className="flex w-fit items-center gap-2" asChild>
+              <Button className={signInButtonClasses} asChild>
                 <Link href="/dashboard">
-                  <span className="text-black">Go to Dashboard</span>
-                  <MoveRight color="black" />
+                  <span>Go to Dashboard</span>
+                  <MoveRight />
                 </Link>
               </Button>
 
-              <Button variant="secondary" asChild>
-                <Link href="/dashboard">Sign Up </Link>
+              <Button variant="secondary" className={signUpButtonClasses} asChild>
+                <Link href="/dashboard">Sign Up</Link>
               </Button>
             </div>
           ) : (
             <div className="flex justify-center gap-4">
               <SignInButton mode="modal">
-                <Button className="flex w-fit items-center gap-2">
-                  <span className="text-black">Go to Dashboard</span>
-                  <MoveRight color="black" />
+                <Button className={signInButtonClasses}>
+                  <span>Go to Dashboard</span>
+                  <MoveRight />
                 </Button>
               </SignInButton>
 
               <SignUpButton mode="modal">
-                <Button variant="secondary">Sign Up</Button>
+                <Button variant="secondary" className={signUpButtonClasses}>
+                  Sign Up
+                </Button>
               </SignUpButton>
             </div>
           )}
