@@ -1,38 +1,77 @@
+import type React from 'react';
 import Link from 'next/link';
+import { Github, Globe } from 'lucide-react';
 
 export const Footer: React.FC = () => (
-  <footer className="bg-neutral-900 py-6 text-neutral-400">
-    <div className="container mx-auto flex flex-col items-center justify-between gap-4 px-4 md:flex-row">
-      <div className="max-md:text-center">
+  <footer className="border-t bg-neutral-900 text-sm">
+    <div className="container mx-auto flex flex-col gap-8 px-8 py-12">
+      <div className="flex justify-between gap-8 max-md:flex-col">
+        <div className="flex flex-col gap-4">
+          <h3 className="text-lg font-semibold">JobKeeper</h3>
+
+          <p className="text-balanced max-w-[50ch] leading-relaxed text-neutral-400">
+            Track hours, calculate earnings, and organize all your positions in one place. Built for
+            students who juggle multiple jobs.
+          </p>
+        </div>
+
+        <div className="flex gap-8 max-md:flex-col">
+          <div className="flex flex-col gap-4">
+            <h4 className="font-semibold">Quick Links</h4>
+
+            <div className="flex flex-col gap-2">
+              <Link href="/home" className="text-neutral-400 transition-colors hover:text-white">
+                Home
+              </Link>
+              <Link
+                href="/dashboard"
+                className="text-neutral-400 transition-colors hover:text-white"
+              >
+                Dashboard
+              </Link>
+              <Link
+                href="/privacy-policy"
+                className="text-neutral-400 transition-colors hover:text-white"
+              >
+                Privacy Policy
+              </Link>
+            </div>
+          </div>
+
+          <div className="flex flex-col gap-4">
+            <h4 className="font-semibold">Connect</h4>
+
+            <div className="flex flex-col gap-2">
+              <Link
+                href="https://github.com/stay-js/job-keeper"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-1 text-neutral-400 transition-colors hover:text-white"
+              >
+                <Github size={16} />
+                View on GitHub
+              </Link>
+
+              <Link
+                href="https://znagy.hu"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-1 text-neutral-400 transition-colors hover:text-white"
+              >
+                <Globe size={16} />
+                znagy.hu
+              </Link>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div className="border-t pt-8 text-neutral-400">
         &copy; 2025{' '}
-        <Link href="/" className="transition-colors hover:text-gray-200">
+        <Link href="/" className="transition-colors hover:text-white">
           JobKeeper
         </Link>
         . All rights reserved.
-      </div>
-
-      <div className="flex gap-4">
-        <Link
-          href="https://znagy.hu"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="transition-colors hover:text-gray-200"
-        >
-          znagy.hu
-        </Link>
-
-        <Link
-          href="https://github.com/stay-js/job-keeper"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="transition-colors hover:text-gray-200"
-        >
-          GitHub
-        </Link>
-
-        <Link href="/privacy-policy" className="transition-colors hover:text-gray-200">
-          Privacy Policy
-        </Link>
       </div>
     </div>
   </footer>
