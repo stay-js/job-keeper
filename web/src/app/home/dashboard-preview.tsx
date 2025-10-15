@@ -28,9 +28,9 @@ export const DashboardPreview: React.FC = () => (
             <Image
               src="/jobs.png"
               alt="JobKeeper Jobs Dashboard showing a table with job entries including dates, locations, events, positions, wages, hours worked, and payouts"
-              width={1600}
-              height={900}
-              className="aspect-video w-full"
+              width={2048}
+              height={1152}
+              className="aspect-video w-full object-cover"
               priority
             />
           </div>
@@ -51,9 +51,9 @@ export const DashboardPreview: React.FC = () => (
             <Image
               src="/positions.png"
               alt="JobKeeper Positions Dashboard displaying a paginated table of different positions with wages, hours worked, and total payouts"
-              width={1600}
-              height={900}
-              className="aspect-video w-full"
+              width={2048}
+              height={1152}
+              className="aspect-video w-full object-cover"
             />
           </div>
         </div>
