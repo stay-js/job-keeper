@@ -10,7 +10,7 @@ Ugrás a [Felhasználói Dokumentációra](#2-felhasználói-dokumentáció)
 
 A JobKeeper egy Next.js-alapú webalkalmazás, amely a különböző diákmunkákből származó jövedelmek összegzésére, rendszerezésére szolgál.
 
-A projekt a Next.js keretrendszeren alapul, TypeScript nyelven íródott, és a következő főbb technológiákat használja:
+A projekt TypeScript nyelven íródott, és a következő főbb technológiákat használja:
 
 - **Next.js**: React keretrendszer szerver oldali renderelési képességekkel
 - **Drizzle ORM**: TypeScript alapú ORM adatbázis-kezeléshez
@@ -32,8 +32,8 @@ web/
 ├── public/ # Statikus fájlok (képek, ikonok, stb.)
 ├── src/
 │ ├── app/
-│ │ ├── api/ # Backend API útvonalak (pl. TRPC endpointok)
-│ │ ├── dashboard/ # Felhasználói dashboard és ahhoz tartozó oldalak
+│ │ ├── api/ # API útvonalak (pl. TRPC endpointok)
+│ │ ├── dashboard/ # Dashboard és ahhoz tartozó oldalak
 │ │ ├── home/ # Landing page és hozzá tartozó komponensek
 │ │ ├── privacy-policy/ # Adatvédelmi nyilatkozat
 │ │ ├── layout.tsx # Globális oldalelrendezés
@@ -55,7 +55,7 @@ web/
 ├── drizzle.config.ts # Drizzle ORM beállítások (adatbázis kapcsolat és migráció)
 ├── tsconfig.json # TypeScript konfiguráció
 ├── next-env.d.ts # Next.js típusdefiníciók importálása
-├── components.json # ShadCN UI konfiguráció
+├── components.json # shadcn/ui konfiguráció
 ├── package.json # Projekt metaadatai, scriptek és függőségek
 ├── pnpm-lock.yaml # PNPM lockfile a pontos verziókhoz
 └── README.md # Dokumentáció
@@ -165,7 +165,7 @@ pnpm start
 
 ## 2. Felhasználói Dokumentáció
 
-Üdvözlünk a JobKeeperben! Ez az útmutató segít neked abban, hogy a legtöbbet hozd ki az alkalmazásból. A JobKeeper célja, hogy egyszerűsítse a munkáid, a ledolgozott óráid és a bevételeid nyomon követését.
+Üdvözlünk a JobKeeperben! Ez az útmutató segít neked abban, hogy a legtöbbet hozd ki az alkalmazásból. A JobKeeper célja, hogy egyszerűsítse a munkáid, a ledolgozott óráid és a fizetésed nyomon követését.
 
 ### 📋 Tartalomjegyzék
 
@@ -186,11 +186,11 @@ Amikor először lépsz be a JobKeeper fiókodba, az alkalmazás megkér, hogy �
 
 **Dátum- és Időformátum (Locale):** Itt választhatod ki a régiódat (pl. Magyarország, `hu` / `hu-HU`). Ez határozza meg, hogy a dátumok és számok milyen formátumban jelennek meg.
 
-- **Például:** A magyar (`hu`) beállítás esetén a dátum `2023. 12. 24.` formátumú lesz, míg az amerikai angol (`en-US`) esetén `12/24/2023`.
+- **Például:** A magyar (`hu`) beállítás esetén a dátum `2023. 12. 24.` formátumú lesz, a számoknál nincs helyiérték pont és tizedes vesszőt használunk, míg az amerikai angol (`en-US`) esetén a dátum `12/24/2023` formátumú lesz a számoknál pedig helyiérték vesszőt és tizedes pontot használunk.
 
-**Pénznem (Currency):** Válaszd ki azt a pénznemet, amelyben a fizetésedet kapod (pl. `HUF`, `EUR`, `USD`). Az alkalmazás ebben a pénznemben fogja megjeleníteni az órabéreket és a teljes keresetet.
+**Pénznem (Currency):** Válaszd ki azt a pénznemet, amelyben a fizetésedet kapod (pl. `HUF`, `EUR`, `USD`). Az alkalmazás ebben a pénznemben fogja megjeleníteni az órabéreket és a teljes keresetedet.
 
-**Kerekítés (Precision):** Itt adhatod meg, hogy a pénzösszegek (órabéred, fizetésed) hány tizedesjegy pontossággal jelenjenek meg.
+**Kerekítés (Precision):** Itt adhatod meg, hogy a pénzösszegek (órabéred, fizetésed), hány tizedesjegy pontossággal jelenjenek meg.
 
 Opciók:
 
@@ -206,19 +206,19 @@ Opciók:
 
 Az alkalmazás három fő fogalom köré épül: **Pozíciók (Positions)**, **Munkák (Jobs)** és **Kiadások (Expenses)**.
 
-**Pozíció (Position):** Ez egy általános munkakör, amihez egy adott órabér tartozik. Például: "Pincér", "Grafikus", "Futár".
+**Pozíció (Position):** Egy munkakör, amihez egy adott órabér tartozik. Például: "Pincér", "Grafikus", "Futár".
 
-**Munka (Job):** Ez egy konkrét, elvégzett munkaalkalom vagy műszak. Egy munkához mindig tartozik egy dátum, helyszín és a ledolgozott órák száma. Minden munkát egy már létező pozícióhoz kell hozzárendelned.
+**Munka (Job):** Egy konkrét, elvégzett munkaalkalom vagy műszak. Egy munkához mindig tartozik egy dátum, helyszín és a ledolgozott órák száma. Minden munkát egy már létező pozícióhoz kell hozzárendelned.
 
-> ⚠️ **FONTOS:** Mielőtt rögzítenél egy munkát (Job), létre kell hoznod legalább egy pozíciót. A rendszer nem is engedi másképp, a munkák felvételénél csak a már meglévő pozícióid közül választhatsz.
+> ⚠️ **FONTOS:** Mielőtt rögzítenél egy munkát (Job), létre kell hoznod legalább egy pozíciót. A rendszer nem is engedi másképp, mivel a munkák felvételénél csak a már meglévő pozícióid közül választhatsz.
 
-**Kiadás (Expense):** Ez egy olyan költség, ami a fizetésedből hónap végén levonásra kerül. Például: "Diákszövetkezeti tagdíj", "Adóelőleg", "Levonás (mert egy adott munkán nem jelentél meg)".
+**Kiadás (Expense):** Egy olyan költség, ami a fizetésedből hónap végén levonásra kerül. Például: "Diákszövetkezeti tagdíj", "Adóelőleg", "Levonás (mert egy adott munkán nem jelentél meg)".
 
 ---
 
 ### 2.3. Pozíciók Kezelése
 
-A pozícióidat a **Positions** fülön kezelheted. Itt láthatod az összes eddig létrehozott pozíciódat, a hozzájuk tartozó órabért és az azokban ledolgozott összesített óraszámot.
+A pozícióidat a **Positions** fülön kezelheted. Itt láthatod az összes eddig létrehozott pozíciódat, a hozzájuk tartozó órabért és az azokban ledolgozott összesített óraszámot, illetve fizetést.
 
 #### Új pozíció létrehozása
 
@@ -281,7 +281,7 @@ Kattints a táblázatban a módosítani vagy törölni kívánt kiadás sorára.
 
 ### 2.6. Profilbeállítások Módosítása
 
-Ha módosítani szeretnéd a dátumformátumot, a pénznemet vagy a kerekítési beállításokat, azt egyszerűen megteheted a profilodban.
+Ha módosítani szeretnéd a dátum- és számformátumot, a pénznemet vagy a kerekítési beállításokat, azt egyszerűen megteheted a profilodban.
 
 1. Kattints a jobb felső sarokban található profil ikonra.
 2. A lenyíló menüben válaszd az **Update Locale & Currency** opciót.
@@ -291,4 +291,4 @@ Ha módosítani szeretnéd a dátumformátumot, a pénznemet vagy a kerekítési
 
 ### 🎉 Készen állsz!
 
-Most már minden eszköz a kezedben van ahhoz, hogy hatékonyan kövesd a munkáidat és bevételeidet a JobKeeper segítségével. Kellemes használatot!
+Most már minden eszköz a kezedben van ahhoz, hogy hatékonyan kövesd a munkáidat és fizetésedet a JobKeeper segítségével. Kellemes használatot!
