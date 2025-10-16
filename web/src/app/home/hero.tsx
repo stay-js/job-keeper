@@ -16,7 +16,7 @@ export const Hero: React.FC = () => {
 
   return (
     <section className="relative isolate overflow-hidden py-20 sm:py-32">
-      <div className="container mx-auto flex max-w-4xl flex-col items-center gap-16 px-6 text-center">
+      <div className="container flex max-w-4xl flex-col items-center gap-16 text-center">
         <div className="flex flex-col items-center gap-8">
           <div className="flex w-fit items-center gap-2 rounded-full bg-neutral-800 px-4 py-1.5 text-sm">
             <span className="relative flex size-2">

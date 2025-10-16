@@ -10,7 +10,7 @@ export const CTA: React.FC = () => {
 
   return (
     <section className="py-20 sm:py-32">
-      <div className="container mx-auto max-w-4xl px-6 text-center">
+      <div className="container max-w-4xl text-center">
         <div className="group relative isolate overflow-hidden rounded-3xl bg-gradient-to-br from-cyan-500 via-blue-600 to-blue-700 p-[2px] transition-all duration-300 hover:scale-[1.02] hover:shadow-2xl hover:shadow-blue-500/50">
           <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-cyan-500 via-blue-600 to-blue-700 px-8 py-16 sm:px-16 sm:py-24">
             <div className="absolute inset-0 bg-[linear-gradient(to_right,#ffffff08_1px,transparent_1px),linear-gradient(to_bottom,#ffffff08_1px,transparent_1px)] bg-[size:24px_24px] [mask-image:radial-gradient(ellipse_80%_50%_at_50%_50%,#000_70%,transparent_110%)]" />

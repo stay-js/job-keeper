@@ -10,7 +10,7 @@ export const metadata = createMetadata({
 });
 
 const PrivacyPolicyPage: NextPage = () => (
-  <div className="container mx-auto flex max-w-6xl scroll-m-8 flex-col gap-8 px-4 py-20 sm:px-6 lg:px-8">
+  <div className="container flex max-w-6xl flex-col gap-8 py-20">
     <h1 className="text-balance text-4xl font-bold">Privacy Policy</h1>
 
     <div className="flex flex-col gap-10">
