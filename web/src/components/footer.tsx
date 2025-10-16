@@ -46,7 +46,7 @@ export const Footer: React.FC = () => (
                 href="https://github.com/stay-js/job-keeper"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-1 text-neutral-400 transition-colors hover:text-white"
+                className="flex items-center gap-1 text-neutral-400 transition-colors hover:text-white"
               >
                 <Github size={16} />
                 View on GitHub
@@ -56,7 +56,7 @@ export const Footer: React.FC = () => (
                 href="https://znagy.hu"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-1 text-neutral-400 transition-colors hover:text-white"
+                className="flex items-center gap-1 text-neutral-400 transition-colors hover:text-white"
               >
                 <Globe size={16} />
                 znagy.hu
@@ -67,11 +67,7 @@ export const Footer: React.FC = () => (
       </div>
 
       <div className="border-t pt-8 text-neutral-400">
-        &copy; 2025{' '}
-        <Link href="/" className="transition-colors hover:text-white">
-          JobKeeper
-        </Link>
-        . All rights reserved.
+        &copy; 2025 JobKeeper. All rights reserved.
       </div>
     </div>
   </footer>
