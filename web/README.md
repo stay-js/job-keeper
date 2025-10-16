@@ -25,7 +25,41 @@ A projekt a Next.js keretrendszeren alapul, TypeScript nyelven íródott, és a 
 
 ### 1.2. Projekt Struktúra
 
-TODO
+A projekt főbb könyvtárai és fájljai a következők:
+
+```
+web/
+├── public/ # Statikus fájlok (képek, ikonok, stb.)
+├── src/
+│ ├── app/
+│ │ ├── api/ # Backend API útvonalak (pl. TRPC endpointok)
+│ │ ├── dashboard/ # Felhasználói dashboard és ahhoz tartozó oldalak
+│ │ ├── home/ # Landing page és hozzá tartozó komponensek
+│ │ ├── privacy-policy/ # Adatvédelmi nyilatkozat
+│ │ ├── layout.tsx # Globális oldalelrendezés
+│ │ └── page.tsx # Főoldal
+│ │
+│ ├── components/ # Újrafelhasználható UI-elemek és logikai komponensek
+│ │ ├── ui/ # Alacsony szintű felhasználói interfész elemek (gombok, táblázatok, dialógusok)
+│ │ └── ... # Magasabb szintű komponensek (pl. jobs-table, position-dialog)
+│ │
+│ └── contexts/ # React Context-ek (pl. felhasználói beállítások kezelése)
+│
+├── .env, .env.prod.local, .env-example # Környezeti változók különböző környezetekhez
+├── .gitignore # Git által figyelmen kívül hagyott fájlok
+├── eslint.config.js # ESLint szabályok
+├── next.config.js # Next.js konfiguráció (build, routing, stb.)
+├── prettier.config.js # Prettier formázási beállítások
+├── postcss.config.cjs # PostCSS konfiguráció a Tailwind CSS-hez
+├── tailwind.config.ts # Tailwind CSS testreszabott stílusbeállítások
+├── drizzle.config.ts # Drizzle ORM beállítások (adatbázis kapcsolat és migráció)
+├── tsconfig.json # TypeScript konfiguráció
+├── next-env.d.ts # Next.js típusdefiníciók importálása
+├── components.json # ShadCN UI konfiguráció
+├── package.json # Projekt metaadatai, scriptek és függőségek
+├── pnpm-lock.yaml # PNPM lockfile a pontos verziókhoz
+└── README.md # Dokumentáció
+```
 
 ---
 
