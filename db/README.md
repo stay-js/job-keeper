@@ -18,6 +18,7 @@ docker compose up -d
 cd ../web
 # projekt futtatásához szükséges előészületek után:
 pnpm db:push
+
 # amennyiben nincs pnpm telepítve
 # npm run db:push
 ```

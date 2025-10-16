@@ -1,5 +1,7 @@
 # Playwright E2E tesztek
 
+[Tesztelési jegyzőkönyv](https://docs.google.com/spreadsheets/d/1b-or4NJnWaIDnzoBL1KeDcjVB5-IcsmRzyQjqHdfRU0/edit?usp=sharing)
+
 ## Előkészületek
 
 - `.env-example` fájlban találhatóak a szükséges környezeti változók. Ezt a fájlt át kell nevezni `.env`-re. És a váltókat megfelelő értékekre cserélni.
@@ -11,32 +13,22 @@
 
 ### Előkészületek
 
-[Webalkalmazás dokumentáció](../web/README.md) 1.4.1. pontját követve.
-
-PNPM:
+[Webalkalmazás dokumentáció](../web/README.md#141-előkészületek) 1.4.1. pontját követve.
 
 ```bash
 pnpm test
-```
 
-NPM:
-
-```bash
-npm run test
+# amennyiben nincs pnpm telepítve
+# npm run test
 ```
 
 ## Futtatás production környezetben
 
-PNPM:
-
 ```bash
 pnpm test:prod
-```
 
-NPM:
-
-```bash
-npm run test:prod
+# amennyiben nincs pnpm telepítve
+# npm run test:prod
 ```
 
 ## További futtatási lehetőségek
