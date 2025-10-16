@@ -1,10 +1,9 @@
-import type React from 'react';
 import Link from 'next/link';
 import { Github, Globe } from 'lucide-react';
 
 export const Footer: React.FC = () => (
   <footer className="border-t bg-neutral-900 text-sm">
-    <div className="container mx-auto flex flex-col gap-8 px-8 py-12">
+    <div className="container mx-auto flex flex-col gap-8 px-6 py-12">
       <div className="flex justify-between gap-8 max-md:flex-col">
         <div className="flex flex-col gap-4">
           <h3 className="text-lg font-semibold">JobKeeper</h3>

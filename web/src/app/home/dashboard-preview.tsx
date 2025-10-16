@@ -2,7 +2,7 @@ import Image from 'next/image';
 
 export const DashboardPreview: React.FC = () => (
   <section id="dashboard" className="bg-neutral-900 py-20 sm:py-32">
-    <div className="container mx-auto flex flex-col items-center gap-16">
+    <div className="container mx-auto flex flex-col items-center gap-16 px-6">
       <div className="flex max-w-2xl flex-col gap-4 text-center">
         <h2 className="text-balance text-3xl font-bold tracking-tight sm:text-4xl">
           A powerful dashboard at your fingertips
