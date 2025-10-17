@@ -5,10 +5,10 @@ Itt megtalálod az alkalmazás különböző komponenseinek leírását, telepí
 
 ## 📘 Felhasználói dokumentáció
 
-👉 [Felhasználói dokumentáció](web/README.md#2-felhasználói-dokumentáció) Ismerd meg, hogyan használhatod a **JobKeeper**-t. 🚀
+👉 [Felhasználói dokumentáció](web/README.md#1-felhasználói-dokumentáció) Ismerd meg, hogyan használhatod a **JobKeeper**-t. 🚀
 
 ## ⚙️ Fejlesztői dokumentáció
 
 - [Adatbázis dokumentációja](db/README.md)
-- [Full-stack webapp dokumentációja](web/README.md)
+- [Full-stack webapp dokumentációja](web/README.md#2-fejlesztői-dokumentáció)
 - [Automatizált tesztek dokumentációja](test/README.md)

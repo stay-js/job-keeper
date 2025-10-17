@@ -13,7 +13,7 @@
 
 ### Előkészületek
 
-[Webalkalmazás dokumentáció](../web/README.md#141-előkészületek) 1.4.1. pontját követve.
+[Webalkalmazás dokumentáció](../web/README.md#241-előkészületek) 2.4.1. pontját követve.
 
 ```bash
 pnpm test
