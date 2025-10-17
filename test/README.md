@@ -5,7 +5,7 @@
 ## Előkészületek
 
 - `.env-example` fájlban találhatóak a szükséges környezeti változók. Ezt a fájlt át kell nevezni `.env`-re. És a váltókat megfelelő értékekre cserélni.
-- Amennyiben még nincs, Node.js telepítése: [https://nodejs.org/](https://nodejs.org/)
+- Amennyiben még nincs, Node.js telepítése: <https://nodejs.org/>
 - Amennyiben még nincs, pnpm telepítése (opcionális lépes): `npm install -g pnpm`
 - Függőségek telepítése: `pnpm install` vagy `npm install`
 

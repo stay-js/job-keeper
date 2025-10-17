@@ -1,6 +1,6 @@
 # JobKeeper - Dokumentáció
 
-App elérése: [job-keeper.znagy.hu](https://job-keeper.znagy.hu)
+App elérése: <https://job-keeper.znagy.hu>
 
 Ugrás a [Fejlesztői Dokumentációra](#2-fejlesztői-dokumentáció)
 
@@ -273,7 +273,7 @@ export const userPreferences = createTable('user_preferences', (d) => ({
 - `.env-example` fájlban találhatóak a szükséges környezeti változók. Ezt a fájlt át kell nevezni `.env`-re.
   - `DATABASE_URL` felülírása amennyiben a hostolt adatbázist szeretnénk használni.
   - `NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY` és `CLERK_SECRET_KEY` felülírása a saját Clerk kulcsainkkal.
-- Amennyiben még nincs, Node.js telepítése: [https://nodejs.org/](https://nodejs.org/)
+- Amennyiben még nincs, Node.js telepítése: <https://nodejs.org/>
 - Amennyiben még nincs, pnpm telepítése (opcionális lépes): `npm install -g pnpm`
 - Függőségek telepítése: `pnpm install` vagy `npm install`
 
