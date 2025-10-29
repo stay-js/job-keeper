@@ -19,7 +19,7 @@ const Page: NextPage = () => (
       </div>
 
       <Button asChild size="lg" className="w-fit">
-        <Link href="/">Back to home</Link>
+        <Link href="/home">Back to home</Link>
       </Button>
     </div>
   </main>
