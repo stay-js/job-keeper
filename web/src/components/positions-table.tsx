@@ -30,6 +30,7 @@ import {
 } from '~/components/ui/dropdown-menu';
 import { Skeleton } from '~/components/ui/skeleton';
 import { useUserPreferences } from '~/contexts/user-preferences-context';
+import { cn } from '~/utils/cn';
 
 export const PositionsTable: React.FC<{
   data: RouterOutputs['position']['getAllWithHoursWorked'];
@@ -193,7 +194,7 @@ export const PositionsTable: React.FC<{
           <TableBody>
             {table.getRowModel().rows.map((row) => (
               <TableRow
-                className="cursor-pointer"
+                className={cn(setSelected && 'cursor-pointer')}
                 key={row.id}
                 data-state={row.getIsSelected() && 'selected'}
                 onClick={setSelected ? () => setSelected(row.original.id) : undefined}
