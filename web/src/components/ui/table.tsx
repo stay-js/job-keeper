@@ -1,3 +1,4 @@
+import { ChevronsUpDown } from 'lucide-react';
 import * as React from 'react';
 
 import { cn } from '~/utils/cn';
@@ -63,13 +64,31 @@ const TableHead = React.forwardRef<
   <th
     ref={ref}
     className={cn(
-      'h-12 px-4 text-left align-middle font-medium text-neutral-500 dark:text-neutral-400 [&:has([role=checkbox])]:pr-0',
+      'h-12 px-4 text-left align-middle font-medium text-neutral-500 has-[>button]:px-2 dark:text-neutral-400 [&:has([role=checkbox])]:pr-0',
       className,
     )}
     {...props}
   />
 ));
 TableHead.displayName = 'TableHead';
+
+const TableHeadOrderButton = React.forwardRef<
+  HTMLButtonElement,
+  React.ButtonHTMLAttributes<HTMLButtonElement>
+>(({ className, ...props }, ref) => (
+  <button
+    ref={ref}
+    className={cn(
+      'flex w-fit cursor-pointer select-none items-center gap-2 rounded-md px-2 py-2 transition-colors hover:bg-neutral-700 hover:text-white',
+      className,
+    )}
+    {...props}
+  >
+    {props.children}
+    <ChevronsUpDown size={14} />
+  </button>
+));
+TableHeadOrderButton.displayName = 'TableHeadOrderButton';
 
 const TableCell = React.forwardRef<
   HTMLTableCellElement,
@@ -95,4 +114,14 @@ const TableCaption = React.forwardRef<
 ));
 TableCaption.displayName = 'TableCaption';
 
-export { Table, TableHeader, TableBody, TableFooter, TableHead, TableRow, TableCell, TableCaption };
+export {
+  Table,
+  TableHeader,
+  TableBody,
+  TableFooter,
+  TableHead,
+  TableHeadOrderButton,
+  TableRow,
+  TableCell,
+  TableCaption,
+};
