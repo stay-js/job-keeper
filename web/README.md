@@ -204,7 +204,7 @@ Az alkalmazás négy fő adatbázis táblát használ:
 #### 2.3.1. Pozíciók (`positions`)
 
 ```typescript
-export const positions = createTable(
+export const positions = table(
   'positions',
   (d) => ({
     id: d.bigint('id', { mode: 'number' }).primaryKey().autoincrement(),
@@ -219,7 +219,7 @@ export const positions = createTable(
 #### 2.3.2. Munkák (`jobs`)
 
 ```typescript
-export const jobs = createTable(
+export const jobs = table(
   'jobs',
   (d) => ({
     id: d.bigint('id', { mode: 'number' }).primaryKey().autoincrement(),
@@ -231,7 +231,7 @@ export const jobs = createTable(
     positionId: d
       .bigint('position_id', { mode: 'number' })
       .notNull()
-      .references(() => positions.id, { onDelete: 'no action' }),
+      .references(() => positions.id, { onDelete: 'restrict', onUpdate: 'restrict' }),
   }),
   (t) => [index('by_wage_idx').on(t.positionId)],
 );
@@ -240,7 +240,7 @@ export const jobs = createTable(
 #### 2.3.3. Kiadások (`expenses`)
 
 ```typescript
-export const expenses = createTable(
+export const expenses = table(
   'expenses',
   (d) => ({
     id: d.bigint('id', { mode: 'number' }).primaryKey().autoincrement(),
@@ -256,7 +256,7 @@ export const expenses = createTable(
 #### 2.3.4. Felhasználói beállítások (`user_preferences`)
 
 ```typescript
-export const userPreferences = createTable('user_preferences', (d) => ({
+export const userPreferences = table('user_preferences', (d) => ({
   userId: d.varchar('user_id', { length: 256 }).primaryKey(),
   currency: d.varchar('currency', { length: 16 }).notNull(),
   locale: d.varchar('locale', { length: 16 }).notNull(),
