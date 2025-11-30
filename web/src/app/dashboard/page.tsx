@@ -57,7 +57,7 @@ const Page: React.FC = async () => {
     <HydrateClient>
       <UserPreferencesProvider value={userPreferences ?? fallbackUserPreferences}>
         <main className="container py-6 text-white md:py-24">
-          <Tabs defaultValue="jobs" className="mx-auto flex max-w-5xl flex-col gap-6">
+          <Tabs defaultValue="jobs" className="mx-auto flex max-w-5xl flex-col gap-4">
             <TabsList className="h-fit w-full items-center p-2">
               <TabsTrigger value="jobs">Jobs</TabsTrigger>
               <TabsTrigger value="positions">Positions</TabsTrigger>

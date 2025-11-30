@@ -12,7 +12,7 @@ export const DatePicker: React.FC<{
   setDate: React.Dispatch<React.SetStateAction<Date | undefined>>;
   locale?: string;
   className?: string;
-  defaultMonth: Date;
+  defaultMonth?: Date;
 }> = ({ date, setDate, locale, className, defaultMonth }) => (
   <Popover>
     <PopoverTrigger asChild>
