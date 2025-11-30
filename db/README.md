@@ -2,7 +2,7 @@
 
 ## Előkészületek
 
-- `.env-example` fájlban találhatóak a szükséges környezeti változók. Ezt a fájlt át kell nevezni `.env`-re.
+- `.env.example` fájlban találhatóak a szükséges környezeti változók. Ezt a fájlt le kell másolni és átnevezni `.env`-re.
 
 ## Futtatás lokálisan
 
