@@ -135,7 +135,7 @@ export const JobsTable: React.FC<{
           </>
         ) : (
           <TableRow>
-            <TableCell colSpan={7} className="text-center">
+            <TableCell colSpan={table.getAllColumns().length} className="text-center">
               No record.
             </TableCell>
           </TableRow>

@@ -161,7 +161,17 @@ export const PositionsTable: React.FC<{
           ))}
         </TableHeader>
 
-        {data.length !== 0 ? (
+        {data.length === 0 && (
+          <TableBody>
+            <TableRow>
+              <TableCell colSpan={table.getAllColumns().length} className="text-center">
+                No record.
+              </TableCell>
+            </TableRow>
+          </TableBody>
+        )}
+
+        {data.length > 0 && (
           <TableBody>
             {table.getRowModel().rows.map((row) => (
               <TableRow
@@ -177,14 +187,6 @@ export const PositionsTable: React.FC<{
                 ))}
               </TableRow>
             ))}
-          </TableBody>
-        ) : (
-          <TableBody>
-            <TableRow>
-              <TableCell colSpan={7} className="text-center">
-                No record.
-              </TableCell>
-            </TableRow>
           </TableBody>
         )}
       </Table>
