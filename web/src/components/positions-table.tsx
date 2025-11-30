@@ -32,7 +32,7 @@ import { useUserPreferences } from '~/contexts/user-preferences-context';
 
 export const PositionsTable: React.FC<{
   data: RouterOutputs['position']['getAllWithHoursWorked'];
-  setSelected: React.Dispatch<React.SetStateAction<number | null>>;
+  setSelected?: React.Dispatch<React.SetStateAction<number | null>>;
 }> = ({ data, setSelected }) => {
   const userPreferences = useUserPreferences();
   const { currency: cf, hours: hf } = getFormatters(userPreferences);
@@ -98,7 +98,8 @@ export const PositionsTable: React.FC<{
           </div>
 
           <div>
-            Page <b>{table.getState().pagination.pageIndex + 1}</b> of <b>{table.getPageCount()}</b>
+            Page <b>{table.getState().pagination.pageIndex + 1}</b> of{' '}
+            <b>{Math.max(table.getPageCount(), 1)}</b>
           </div>
 
           <div className="flex gap-2">
@@ -167,7 +168,7 @@ export const PositionsTable: React.FC<{
                 className="cursor-pointer"
                 key={row.id}
                 data-state={row.getIsSelected() && 'selected'}
-                onClick={() => setSelected(row.original.id)}
+                onClick={setSelected ? () => setSelected(row.original.id) : undefined}
               >
                 {row.getVisibleCells().map((cell) => (
                   <TableCell key={cell.id}>

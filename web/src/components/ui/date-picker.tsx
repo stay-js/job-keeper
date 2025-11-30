@@ -10,9 +10,9 @@ import { cn } from '~/utils/cn';
 export const DatePicker: React.FC<{
   date: Date | undefined;
   setDate: React.Dispatch<React.SetStateAction<Date | undefined>>;
+  defaultMonth: Date | undefined;
   locale?: string;
   className?: string;
-  defaultMonth: Date;
 }> = ({ date, setDate, locale, className, defaultMonth }) => (
   <Popover>
     <PopoverTrigger asChild>

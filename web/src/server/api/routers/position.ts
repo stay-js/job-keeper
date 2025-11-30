@@ -35,6 +35,35 @@ export const positionRouter = createTRPCRouter({
       .execute();
   }),
 
+  getWihtHoursWorkedFromTo: protectedProcedure
+    .input(
+      z.object({
+        from: z.date(),
+        to: z.date(),
+      }),
+    )
+    .query(({ ctx, input }) => {
+      return ctx.db
+        .select({
+          id: positions.id,
+          position: positions.name,
+          wage: positions.wage,
+          hoursWorked: sql<number>`${sum(jobs.hours)}`,
+          payout: sql<number>`${sum(jobs.hours)} * ${positions.wage}`,
+        })
+        .from(positions)
+        .leftJoin(jobs, eq(positions.id, jobs.positionId))
+        .where(
+          and(
+            eq(positions.userId, ctx.auth.userId),
+            sql`${jobs.date} BETWEEN ${input.from} AND ${input.to}`,
+          ),
+        )
+        .groupBy(positions.id)
+        .orderBy(positions.name)
+        .execute();
+    }),
+
   create: protectedProcedure.input(positionSchema).mutation(({ ctx, input }) => {
     return ctx.db.insert(positions).values({ ...input, userId: ctx.auth.userId });
   }),
