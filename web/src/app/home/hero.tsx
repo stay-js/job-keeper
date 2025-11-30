@@ -5,12 +5,6 @@ import { SignInButton, SignUpButton, useUser } from '@clerk/nextjs';
 import { MoveRight, Calendar, DollarSign, Clock } from 'lucide-react';
 import { Button } from '~/components/ui/button';
 
-const signInButtonClasses =
-  'text-black flex w-fit items-center gap-2 rounded-xl px-4 py-6 shadow-black/20 transition-all duration-300 hover:scale-105 hover:shadow-xl hover:shadow-black/30';
-
-const signUpButtonClasses =
-  'rounded-xl px-4 py-6 shadow-black/20 transition-all duration-300 hover:scale-105 hover:shadow-xl hover:shadow-black/30';
-
 export const Hero: React.FC = () => {
   const { isSignedIn } = useUser();
 
@@ -40,28 +34,28 @@ export const Hero: React.FC = () => {
 
           {isSignedIn ? (
             <div className="flex justify-center gap-4">
-              <Button className={signInButtonClasses} asChild>
+              <Button className="flex items-center gap-2 rounded-xl" asChild>
                 <Link href="/dashboard">
                   <span>Go to Dashboard</span>
                   <MoveRight />
                 </Link>
               </Button>
 
-              <Button variant="secondary" className={signUpButtonClasses} asChild>
+              <Button variant="secondary" className="rounded-xl" asChild>
                 <Link href="/dashboard">Sign Up</Link>
               </Button>
             </div>
           ) : (
             <div className="flex justify-center gap-4">
               <SignInButton mode="modal">
-                <Button className={signInButtonClasses}>
+                <Button className="flex items-center gap-2 rounded-xl">
                   <span>Go to Dashboard</span>
                   <MoveRight />
                 </Button>
               </SignInButton>
 
               <SignUpButton mode="modal">
-                <Button variant="secondary" className={signUpButtonClasses}>
+                <Button variant="secondary" className="rounded-xl">
                   Sign Up
                 </Button>
               </SignUpButton>

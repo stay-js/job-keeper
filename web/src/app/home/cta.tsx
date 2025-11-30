@@ -38,7 +38,7 @@ export const CTA: React.FC = () => {
                 >
                   <Link href="/dashboard" className="flex items-center gap-2">
                     <span>Get Started</span>
-                    <MoveRight className="transition-transform duration-300 group-hover/btn:translate-x-1" />
+                    <MoveRight />
                     <div className="absolute inset-0 -z-10 bg-gradient-to-r from-cyan-100 to-blue-100 opacity-0 transition-opacity duration-300 group-hover/btn:opacity-100" />
                   </Link>
                 </Button>
@@ -47,7 +47,7 @@ export const CTA: React.FC = () => {
                   <Button className="group/btn relative overflow-hidden rounded-xl bg-white px-8 py-7 text-base font-semibold text-blue-600 shadow-lg shadow-black/20 transition-all duration-300 hover:scale-105 hover:shadow-xl hover:shadow-black/30">
                     <span className="flex items-center gap-2">
                       <span>Get Started</span>
-                      <MoveRight className="transition-transform duration-300 group-hover/btn:translate-x-1" />
+                      <MoveRight />
                     </span>
                     <div className="absolute inset-0 -z-10 bg-gradient-to-r from-cyan-100 to-blue-100 opacity-0 transition-opacity duration-300 group-hover/btn:opacity-100" />
                   </Button>
