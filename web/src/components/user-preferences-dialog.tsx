@@ -21,12 +21,18 @@ import { useUserPreferences } from '~/contexts/user-preferences-context';
 import { errorToast } from '~/utils/error-toast';
 
 export const formSchema = z.object({
-  currency: z.string().min(1, { message: 'Please select a currency!' }).max(16),
-  locale: z.string().min(1, { message: 'Please select a locale!' }).max(16),
+  currency: z
+    .string()
+    .min(1, { error: 'Please select a currency!' })
+    .max(16, { error: 'Currency is too long! (max 16 characters)' }),
+  locale: z
+    .string()
+    .min(1, { error: 'Please select a locale!' })
+    .max(16, { error: 'Locale is too long! (max 16 characters)' }),
   precision: z
     .string()
-    .min(1, { message: 'Please select a precision!' })
-    .max(2)
+    .min(1, { error: 'Please select a precision!' })
+    .max(2, { error: 'Precision is too long! (max 2 characters)' })
     .refine((val) => {
       const num = Number(val);
 

@@ -4,8 +4,8 @@ import { createTRPCRouter, protectedProcedure } from '~/server/api/trpc';
 import { positions, jobs } from '~/server/db/schema';
 
 const positionSchema = z.object({
-  name: z.string().min(1),
-  wage: z.number(),
+  name: z.string().min(1).max(256),
+  wage: z.number().nonnegative(),
 });
 
 export const positionRouter = createTRPCRouter({

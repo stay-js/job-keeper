@@ -23,14 +23,17 @@ import { Label } from './ui/label';
 import { Input } from './ui/input';
 
 export const formSchema = z.object({
-  name: z.string().min(1, { message: 'Please specify a name!' }),
+  name: z
+    .string()
+    .min(1, { error: 'Please specify a name!' })
+    .max(256, { error: 'Name is too long! (max 256 characters)' }),
   amount: z.string().refine(
     (value) => {
       const num = parseFloat(value.replace(',', '.'));
       return num > 0;
     },
     {
-      message: 'Please specify valid amount! (>0)',
+      error: 'Please specify valid amount! (>0)',
     },
   ),
   date: z.date(),

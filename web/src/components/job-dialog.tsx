@@ -29,11 +29,14 @@ import { createDateOnlyString } from '~/utils/create-date-only-string';
 import { errorToast } from '~/utils/error-toast';
 
 export const formSchema = z.object({
-  date: z.date({ message: 'Please select a valid date!' }),
-  location: z.string().min(1, { message: 'Please specify a location!' }),
-  event: z.string().optional(),
+  date: z.date({ error: 'Please select a valid date!' }),
+  location: z
+    .string()
+    .min(1, { error: 'Please specify a location!' })
+    .max(256, { error: 'Location is too long! (max 256 characters)' }),
+  event: z.string().max(256, { error: 'Event is too long! (max 256 characters)' }).optional(),
   positionId: z.string().refine((value) => value !== 'default' && parseInt(value) > 0, {
-    message: 'Please select a position!',
+    error: 'Please select a position!',
   }),
   hours: z.string().refine(
     (value) => {
@@ -41,7 +44,7 @@ export const formSchema = z.object({
       return num > 0 && num <= 24;
     },
     {
-      message: 'Please specify valid work hours! (0-24)',
+      error: 'Please specify valid work hours! (0-24)',
     },
   ),
 });

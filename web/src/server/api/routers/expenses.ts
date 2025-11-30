@@ -4,9 +4,9 @@ import { createTRPCRouter, protectedProcedure } from '~/server/api/trpc';
 import { expenses } from '~/server/db/schema';
 
 const expenseSchema = z.object({
-  name: z.string().min(1),
-  amount: z.number(),
-  date: z.string(),
+  name: z.string().min(1).max(256),
+  amount: z.number().nonnegative(),
+  date: z.string().refine((date) => !isNaN(Date.parse(date))),
 });
 
 export const expenseRouter = createTRPCRouter({
