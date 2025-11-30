@@ -24,8 +24,8 @@ export const StatisticsTab: React.FC = () => {
 
   return (
     <div className="flex flex-col gap-4">
-      <div className="flex flex-wrap gap-6">
-        <div className="flex items-center gap-2">
+      <div className="flex flex-wrap gap-x-6 gap-y-4 max-sm:flex-col">
+        <div className="flex w-fit items-center gap-2">
           <span>From: </span>
           <DatePicker
             date={fromDate}
@@ -35,7 +35,7 @@ export const StatisticsTab: React.FC = () => {
           />
         </div>
 
-        <div className="flex items-center gap-2">
+        <div className="flex w-fit items-center gap-2">
           <span>To: </span>
           <DatePicker
             date={toDate}
