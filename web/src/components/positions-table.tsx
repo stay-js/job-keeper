@@ -28,12 +28,14 @@ import {
   DropdownMenuTrigger,
   DropdownMenuCheckboxItem,
 } from '~/components/ui/dropdown-menu';
+import { Skeleton } from '~/components/ui/skeleton';
 import { useUserPreferences } from '~/contexts/user-preferences-context';
 
 export const PositionsTable: React.FC<{
   data: RouterOutputs['position']['getAllWithHoursWorked'];
   setSelected?: React.Dispatch<React.SetStateAction<number | null>>;
-}> = ({ data, setSelected }) => {
+  isLoading?: boolean;
+}> = ({ data, setSelected, isLoading }) => {
   const userPreferences = useUserPreferences();
   const { currency: cf, hours: hf } = getFormatters(userPreferences);
 
@@ -161,7 +163,23 @@ export const PositionsTable: React.FC<{
           ))}
         </TableHeader>
 
-        {data.length === 0 && (
+        {isLoading && (
+          <TableBody>
+            {new Array(5).fill(null).map((_, idx) => (
+              <TableRow key={idx}>
+                {table.getAllColumns().map((column) => (
+                  <TableCell key={column.id}>
+                    <div className="py-1">
+                      <Skeleton className="h-3 w-1/2" />
+                    </div>
+                  </TableCell>
+                ))}
+              </TableRow>
+            ))}
+          </TableBody>
+        )}
+
+        {!isLoading && data.length === 0 && (
           <TableBody>
             <TableRow>
               <TableCell colSpan={table.getAllColumns().length} className="text-center">
@@ -171,7 +189,7 @@ export const PositionsTable: React.FC<{
           </TableBody>
         )}
 
-        {data.length > 0 && (
+        {!isLoading && data.length > 0 && (
           <TableBody>
             {table.getRowModel().rows.map((row) => (
               <TableRow

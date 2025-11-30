@@ -17,7 +17,7 @@ export const StatisticsTab: React.FC = () => {
   const [fromDate, setFromDate] = useState<Date | undefined>(from);
   const [toDate, setToDate] = useState<Date | undefined>(to);
 
-  const { data: positions } = api.position.getWihtHoursWorkedFromTo.useQuery({
+  const { data: positions, isLoading } = api.position.getWihtHoursWorkedFromTo.useQuery({
     from: fromDate ?? from,
     to: toDate ?? to,
   });
@@ -46,7 +46,7 @@ export const StatisticsTab: React.FC = () => {
         </div>
       </div>
 
-      <PositionsTable data={positions ?? []} />
+      <PositionsTable data={positions ?? []} isLoading={isLoading} />
     </div>
   );
 };
