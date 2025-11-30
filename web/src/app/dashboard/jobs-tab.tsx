@@ -1,9 +1,10 @@
 'use client';
 
+import { useState } from 'react';
 import type { RouterOutputs } from '~/trpc/react';
+import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { JobsTable } from '~/components/jobs-table';
 import { Button } from '~/components/ui/button';
-import { useState } from 'react';
 import { JobDialog } from '~/components/job-dialog';
 import { ExpensesDialog } from '~/components/expenses-dialog';
 import { useUserPreferences } from '~/contexts/user-preferences-context';
@@ -88,7 +89,7 @@ export const JobsTab: React.FC<{
     <div className="flex flex-col gap-4">
       <div className="flex w-full justify-between gap-2">
         <Button onClick={decrementMonth} variant="outline" size="icon">
-          {'<'}
+          <ChevronLeft size={18} />
         </Button>
 
         <h1 className="text-4xl font-bold text-white">
@@ -96,7 +97,7 @@ export const JobsTab: React.FC<{
         </h1>
 
         <Button onClick={incrementMonth} variant="outline" size="icon">
-          {'>'}
+          <ChevronRight size={18} />
         </Button>
       </div>
 

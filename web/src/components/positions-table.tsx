@@ -10,7 +10,14 @@ import {
   getPaginationRowModel,
   useReactTable,
 } from '@tanstack/react-table';
-import { ChevronsUpDown } from 'lucide-react';
+import {
+  ChevronsUpDown,
+  ChevronDown,
+  ChevronLeft,
+  ChevronRight,
+  ChevronFirst,
+  ChevronLast,
+} from 'lucide-react';
 import {
   Table,
   TableBody,
@@ -27,7 +34,6 @@ import {
   DropdownMenuTrigger,
   DropdownMenuCheckboxItem,
 } from '~/components/ui/dropdown-menu';
-import { ChevronDown } from 'lucide-react';
 import { useUserPreferences } from '~/contexts/user-preferences-context';
 
 export const PositionsTable: React.FC<{
@@ -85,7 +91,7 @@ export const PositionsTable: React.FC<{
               size="icon"
               variant="outline"
             >
-              {'<<'}
+              <ChevronFirst size={18} />
             </Button>
             <Button
               onClick={() => table.previousPage()}
@@ -93,7 +99,7 @@ export const PositionsTable: React.FC<{
               size="icon"
               variant="outline"
             >
-              {'<'}
+              <ChevronLeft size={18} />
             </Button>
           </div>
 
@@ -108,7 +114,7 @@ export const PositionsTable: React.FC<{
               size="icon"
               variant="outline"
             >
-              {'>'}
+              <ChevronRight size={18} />
             </Button>
             <Button
               onClick={() => table.lastPage()}
@@ -116,7 +122,7 @@ export const PositionsTable: React.FC<{
               size="icon"
               variant="outline"
             >
-              {'>>'}
+              <ChevronLast size={18} />
             </Button>
           </div>
         </div>
