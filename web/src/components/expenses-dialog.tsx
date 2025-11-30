@@ -123,7 +123,7 @@ export const ExpensesDialog: React.FC<{
           <div className="grid gap-4 py-4">
             <div className="grid grid-cols-4 items-center gap-4 gap-y-2">
               <Label htmlFor="name" className="text-right">
-                Name:
+                Name: <span className="text-red-500">*</span>
               </Label>
               <Input id="name" className="col-span-3" {...register('name')} />
 
@@ -135,7 +135,7 @@ export const ExpensesDialog: React.FC<{
             </div>
             <div className="grid grid-cols-4 items-center gap-4 gap-y-2">
               <Label htmlFor="amount" className="text-right">
-                Amount:
+                Amount: <span className="text-red-500">*</span>
               </Label>
               <Input id="amount" className="col-span-3" {...register('amount')} />
 
