@@ -2,6 +2,7 @@ import { api, HydrateClient } from '~/trpc/server';
 import { auth, currentUser } from '@clerk/nextjs/server';
 import { JobsTab } from './jobs-tab';
 import { PositionsTab } from './positions-tab';
+import { StatisticsTab } from './statistics-tab';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '~/components/ui/tabs';
 import { CustomUserButton } from '~/components/custom-user-button';
 import { SetInitialUserPreferences } from '~/components/set-initial-user-preferences';
@@ -34,6 +35,10 @@ const Positions: React.FC = async () => {
   return <PositionsTab data={data} />;
 };
 
+const Statistics: React.FC = async () => {
+  return <StatisticsTab />;
+};
+
 const Page: React.FC = async () => {
   const authObject = await auth();
   const user = await currentUser();
@@ -56,6 +61,7 @@ const Page: React.FC = async () => {
             <TabsList className="h-fit w-full items-center p-2">
               <TabsTrigger value="jobs">Jobs</TabsTrigger>
               <TabsTrigger value="positions">Positions</TabsTrigger>
+              <TabsTrigger value="statistics">Statistics</TabsTrigger>
 
               <div className="ms-auto flex">
                 <CustomUserButton />
@@ -67,6 +73,9 @@ const Page: React.FC = async () => {
             </TabsContent>
             <TabsContent value="positions">
               <Positions />
+            </TabsContent>
+            <TabsContent value="statistics">
+              <Statistics />
             </TabsContent>
           </Tabs>
 
