@@ -11,7 +11,7 @@ import {
 } from '~/components/ui/dialog';
 import { DeletePopover } from '~/components/delete-popover';
 import { z } from 'zod';
-import { SubmitHandler, useForm } from 'react-hook-form';
+import { type SubmitHandler, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { api } from '~/trpc/react';
 import { useRouter } from 'next/navigation';
