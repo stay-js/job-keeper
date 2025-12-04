@@ -3,7 +3,7 @@ import { index, mysqlTable as table } from 'drizzle-orm/mysql-core';
 export const positions = table(
   'positions',
   (d) => ({
-    id: d.bigint('id', { mode: 'number' }).primaryKey().autoincrement(),
+    id: d.bigint('id', { mode: 'number', unsigned: true }).primaryKey().autoincrement(),
     userId: d.varchar('user_id', { length: 256 }).notNull(),
     name: d.varchar('name', { length: 256 }).notNull(),
     wage: d.float('wage').notNull(),
@@ -14,14 +14,14 @@ export const positions = table(
 export const jobs = table(
   'jobs',
   (d) => ({
-    id: d.bigint('id', { mode: 'number' }).primaryKey().autoincrement(),
+    id: d.bigint('id', { mode: 'number', unsigned: true }).primaryKey().autoincrement(),
     userId: d.varchar('user_id', { length: 256 }).notNull(),
     location: d.varchar('location', { length: 256 }).notNull(),
     event: d.varchar('event', { length: 256 }),
     date: d.date('date', { mode: 'string' }).notNull(),
     hours: d.float('hours').notNull(),
     positionId: d
-      .bigint('position_id', { mode: 'number' })
+      .bigint('position_id', { mode: 'number', unsigned: true })
       .notNull()
       .references(() => positions.id, { onDelete: 'restrict', onUpdate: 'restrict' }),
   }),
@@ -31,7 +31,7 @@ export const jobs = table(
 export const expenses = table(
   'expenses',
   (d) => ({
-    id: d.bigint('id', { mode: 'number' }).primaryKey().autoincrement(),
+    id: d.bigint('id', { mode: 'number', unsigned: true }).primaryKey().autoincrement(),
     userId: d.varchar('user_id', { length: 256 }).notNull(),
     name: d.varchar('name', { length: 256 }).notNull(),
     amount: d.float('amount').notNull(),
