@@ -20,7 +20,7 @@ import {
   TableRow,
   TableFooter,
 } from '~/components/ui/table';
-import { TableSkeleton, TableNoRecord } from '~/components/table-utils';
+import { TableSkeleton, TableNoRecord, TableHeaderWithOrdering } from '~/components/table-utils';
 import { useUserPreferences } from '~/contexts/user-preferences-context';
 import { getFormatters } from '~/utils/formatters';
 
@@ -104,19 +104,7 @@ export const JobsTable: React.FC<{
 
   return (
     <Table>
-      <TableHeader>
-        {table.getHeaderGroups().map((headerGroup) => (
-          <TableRow key={headerGroup.id}>
-            {headerGroup.headers.map((header) => (
-              <TableHead key={header.id}>
-                <TableHeadOrderButton onClick={header.column.getToggleSortingHandler()}>
-                  {flexRender(header.column.columnDef.header, header.getContext())}
-                </TableHeadOrderButton>
-              </TableHead>
-            ))}
-          </TableRow>
-        ))}
-      </TableHeader>
+      <TableHeaderWithOrdering table={table} />
 
       {isLoading && <TableSkeleton table={table} />}
 

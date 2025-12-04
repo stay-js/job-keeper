@@ -12,15 +12,7 @@ import {
 import { ChevronDown, ChevronLeft, ChevronRight, ChevronFirst, ChevronLast } from 'lucide-react';
 
 import type { RouterOutputs } from '~/trpc/react';
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeadOrderButton,
-  TableHeader,
-  TableRow,
-} from '~/components/ui/table';
+import { Table, TableBody, TableCell, TableRow } from '~/components/ui/table';
 import { Button } from '~/components/ui/button';
 import {
   DropdownMenu,
@@ -28,7 +20,7 @@ import {
   DropdownMenuTrigger,
   DropdownMenuCheckboxItem,
 } from '~/components/ui/dropdown-menu';
-import { TableSkeleton, TableNoRecord } from '~/components/table-utils';
+import { TableSkeleton, TableNoRecord, TableHeaderWithOrdering } from '~/components/table-utils';
 import { useUserPreferences } from '~/contexts/user-preferences-context';
 import { getFormatters } from '~/utils/formatters';
 import { cn } from '~/utils/cn';
@@ -151,19 +143,7 @@ export const PositionsTable: React.FC<{
       </div>
 
       <Table>
-        <TableHeader>
-          {table.getHeaderGroups().map((headerGroup) => (
-            <TableRow key={headerGroup.id}>
-              {headerGroup.headers.map((header) => (
-                <TableHead key={header.id}>
-                  <TableHeadOrderButton onClick={header.column.getToggleSortingHandler()}>
-                    {flexRender(header.column.columnDef.header, header.getContext())}
-                  </TableHeadOrderButton>
-                </TableHead>
-              ))}
-            </TableRow>
-          ))}
-        </TableHeader>
+        <TableHeaderWithOrdering table={table} />
 
         {isLoading && <TableSkeleton table={table} />}
 
