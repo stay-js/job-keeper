@@ -33,10 +33,10 @@ import { useUserPreferences } from '~/contexts/user-preferences-context';
 import { cn } from '~/utils/cn';
 
 export const PositionsTable: React.FC<{
-  data: RouterOutputs['position']['getAllWithHoursWorked'];
+  positions: RouterOutputs['position']['getAllWithHoursWorked'] | undefined;
+  isLoading: boolean;
   setSelected?: React.Dispatch<React.SetStateAction<number | null>>;
-  isLoading?: boolean;
-}> = ({ data, setSelected, isLoading }) => {
+}> = ({ positions = [], isLoading, setSelected }) => {
   const userPreferences = useUserPreferences();
   const { currency: cf, hours: hf } = getFormatters(userPreferences);
 
@@ -47,7 +47,7 @@ export const PositionsTable: React.FC<{
   });
 
   const table = useReactTable({
-    data,
+    data: positions,
     columns: [
       {
         header: 'Position',
@@ -180,7 +180,7 @@ export const PositionsTable: React.FC<{
           </TableBody>
         )}
 
-        {!isLoading && data.length === 0 && (
+        {!isLoading && positions.length === 0 && (
           <TableBody>
             <TableRow>
               <TableCell colSpan={table.getAllColumns().length} className="text-center">
@@ -190,7 +190,7 @@ export const PositionsTable: React.FC<{
           </TableBody>
         )}
 
-        {!isLoading && data.length > 0 && (
+        {!isLoading && positions.length > 0 && (
           <TableBody>
             {table.getRowModel().rows.map((row) => (
               <TableRow

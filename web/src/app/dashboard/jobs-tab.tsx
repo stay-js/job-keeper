@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import type { RouterOutputs } from '~/trpc/react';
+import { api } from '~/trpc/react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { JobsTable } from '~/components/jobs-table';
 import { Button } from '~/components/ui/button';
@@ -10,11 +10,11 @@ import { ExpensesDialog } from '~/components/expenses-dialog';
 import { useUserPreferences } from '~/contexts/user-preferences-context';
 import { getFormatters } from '~/utils/formatters';
 
-export const JobsTab: React.FC<{
-  jobs: RouterOutputs['job']['getAll'];
-  positions: RouterOutputs['position']['getAll'];
-  expenses: RouterOutputs['expense']['getAll'];
-}> = ({ jobs, positions, expenses }) => {
+export const JobsTab: React.FC = () => {
+  const { data: jobs, isLoading: isJobsLoading } = api.job.getAll.useQuery();
+  const { data: expenses, isLoading: isExpensesLoading } = api.expense.getAll.useQuery();
+  const { data: positions } = api.position.getAll.useQuery();
+
   const userPreferences = useUserPreferences();
   const { hours: hf } = getFormatters(userPreferences);
 
@@ -26,11 +26,11 @@ export const JobsTab: React.FC<{
 
   const monthDate = new Date(Date.UTC(year, month, 1));
 
-  const current = jobs.filter(
+  const current = jobs?.filter(
     (item) => item.date.getUTCMonth() === month && item.date.getUTCFullYear() === year,
   );
 
-  const currentExpenses = expenses.filter(
+  const currentExpenses = expenses?.filter(
     (item) => item.date.getUTCMonth() === month && item.date.getUTCFullYear() === year,
   );
 
@@ -57,7 +57,7 @@ export const JobsTab: React.FC<{
 
     if (id === null) return empty;
 
-    const item = jobs.find((item) => item.id === id);
+    const item = jobs?.find((item) => item.id === id);
     if (!item) return empty;
 
     return {
@@ -76,7 +76,7 @@ export const JobsTab: React.FC<{
 
     if (id === null) return empty;
 
-    const item = expenses.find((item) => item.id === id);
+    const item = expenses?.find((item) => item.id === id);
     if (!item) return empty;
 
     return {
@@ -102,8 +102,9 @@ export const JobsTab: React.FC<{
       </div>
 
       <JobsTable
-        data={current}
+        jobs={current}
         expenses={currentExpenses}
+        isLoading={isJobsLoading || isExpensesLoading}
         setSelected={setSelected}
         setSelectedExpense={setSelectedExpense}
       />

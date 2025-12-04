@@ -1,13 +1,13 @@
 'use client';
 
-import type { RouterOutputs } from '~/trpc/react';
 import { useState } from 'react';
+import { api } from '~/trpc/react';
 import { PositionsTable } from '~/components/positions-table';
 import { PositionDialog } from '~/components/position-dialog';
 
-export const PositionsTab: React.FC<{
-  data: RouterOutputs['position']['getAllWithHoursWorked'];
-}> = ({ data }) => {
+export const PositionsTab: React.FC = () => {
+  const { data: positions, isLoading } = api.position.getAllWithHoursWorked.useQuery();
+
   const [selected, setSelected] = useState<number | null>(null);
 
   const getDefaultValues = (id: number | null) => {
@@ -15,7 +15,7 @@ export const PositionsTab: React.FC<{
 
     if (id === null) return empty;
 
-    const item = data.find((item) => item.id === id);
+    const item = positions?.find((item) => item.id === id);
     if (!item) return empty;
 
     return {
@@ -27,7 +27,7 @@ export const PositionsTab: React.FC<{
 
   return (
     <div className="flex flex-col gap-4">
-      <PositionsTable data={data} setSelected={setSelected} />
+      <PositionsTable positions={positions} isLoading={isLoading} setSelected={setSelected} />
       <PositionDialog
         selected={selected}
         setSelected={setSelected}

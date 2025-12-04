@@ -1,11 +1,10 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { useRouter } from 'next/navigation';
+import { api } from '~/trpc/react';
 import { useForm, type SubmitHandler } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
-import { api } from '~/trpc/react';
 import {
   Dialog,
   DialogContent,
@@ -48,7 +47,7 @@ export const PositionDialog: React.FC<{
   setSelected: React.Dispatch<React.SetStateAction<number | null>>;
   getDefaultValues: (id: number | null) => PositionWithCanDelete;
 }> = ({ selected, setSelected, getDefaultValues }) => {
-  const router = useRouter();
+  const utils = api.useUtils();
 
   const [isOpen, setIsOpen] = useState(false);
   const [canDelete, setCanDelete] = useState(false);
@@ -61,15 +60,17 @@ export const PositionDialog: React.FC<{
   } = useForm<FormSchema>({ resolver: zodResolver(formSchema) });
 
   const { mutate: create } = api.position.create.useMutation({
-    onSuccess: () => router.refresh(),
+    onSuccess: () => utils.position.invalidate(),
     onError: () => errorToast(),
   });
+
   const { mutate: update } = api.position.update.useMutation({
-    onSuccess: () => router.refresh(),
+    onSuccess: () => utils.position.invalidate(),
     onError: () => errorToast(),
   });
+
   const { mutate: remove } = api.position.delete.useMutation({
-    onSuccess: () => router.refresh(),
+    onSuccess: () => utils.position.invalidate(),
     onError: () => errorToast(),
   });
 

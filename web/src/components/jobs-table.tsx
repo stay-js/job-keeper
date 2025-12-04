@@ -1,7 +1,7 @@
 'use client';
 
-import type { RouterOutputs } from '~/trpc/react';
 import { useState } from 'react';
+import type { RouterOutputs } from '~/trpc/react';
 import {
   type SortingState,
   flexRender,
@@ -19,21 +19,23 @@ import {
   TableRow,
   TableFooter,
 } from '~/components/ui/table';
+import { Skeleton } from '~/components/ui/skeleton';
 import { getFormatters } from '~/utils/formatters';
 import { useUserPreferences } from '~/contexts/user-preferences-context';
 
 export const JobsTable: React.FC<{
-  data: RouterOutputs['job']['getAll'];
-  expenses: RouterOutputs['expense']['getAll'];
+  jobs: RouterOutputs['job']['getAll'] | undefined;
+  expenses: RouterOutputs['expense']['getAll'] | undefined;
+  isLoading: boolean;
   setSelected: React.Dispatch<React.SetStateAction<number | null>>;
   setSelectedExpense: React.Dispatch<React.SetStateAction<number | null>>;
-}> = ({ data, expenses, setSelected, setSelectedExpense }) => {
+}> = ({ jobs = [], expenses = [], isLoading, setSelected, setSelectedExpense }) => {
   const userPreferences = useUserPreferences();
   const { currency: cf, hours: hf } = getFormatters(userPreferences);
 
   const [sorting, setSorting] = useState<SortingState>([]);
 
-  const perPosition = data.reduce<Record<string, { hoursWorked: number; wage: number }>>(
+  const perPosition = jobs.reduce<Record<string, { hoursWorked: number; wage: number }>>(
     (acc, job) => {
       acc[job.position] ??= { hoursWorked: 0, wage: job.wage };
       acc[job.position]!.hoursWorked += job.hours;
@@ -43,12 +45,12 @@ export const JobsTable: React.FC<{
     {},
   );
 
-  const totalHours = data.reduce((acc, job) => acc + job.hours, 0);
-  const totalPayout = data.reduce((acc, job) => acc + job.payout, 0);
+  const totalHours = jobs.reduce((acc, job) => acc + job.hours, 0);
+  const totalPayout = jobs.reduce((acc, job) => acc + job.payout, 0);
   const totalExpenses = expenses.reduce((acc, expense) => acc + expense.amount, 0);
 
   const table = useReactTable({
-    data,
+    data: jobs,
     columns: [
       {
         header: 'Date',
@@ -115,32 +117,50 @@ export const JobsTable: React.FC<{
         ))}
       </TableHeader>
 
-      <TableBody>
-        {data.length !== 0 ? (
-          <>
-            {table.getRowModel().rows.map((row) => (
-              <TableRow
-                className="cursor-pointer"
-                key={row.id}
-                data-state={row.getIsSelected() && 'selected'}
-                onClick={() => setSelected(row.original.id)}
-              >
-                {row.getVisibleCells().map((cell) => (
-                  <TableCell key={cell.id}>
-                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                  </TableCell>
-                ))}
-              </TableRow>
-            ))}
-          </>
-        ) : (
+      {isLoading && (
+        <TableBody>
+          {new Array(5).fill(null).map((_, idx) => (
+            <TableRow key={idx}>
+              {table.getAllColumns().map((column) => (
+                <TableCell key={column.id}>
+                  <div className="py-1">
+                    <Skeleton className="h-3 w-1/2" />
+                  </div>
+                </TableCell>
+              ))}
+            </TableRow>
+          ))}
+        </TableBody>
+      )}
+
+      {!isLoading && jobs.length === 0 && (
+        <TableBody>
           <TableRow>
             <TableCell colSpan={table.getAllColumns().length} className="text-center">
               No record.
             </TableCell>
           </TableRow>
-        )}
-      </TableBody>
+        </TableBody>
+      )}
+
+      {!isLoading && jobs.length > 0 && (
+        <TableBody>
+          {table.getRowModel().rows.map((row) => (
+            <TableRow
+              className="cursor-pointer"
+              key={row.id}
+              data-state={row.getIsSelected() && 'selected'}
+              onClick={() => setSelected(row.original.id)}
+            >
+              {row.getVisibleCells().map((cell) => (
+                <TableCell key={cell.id}>
+                  {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                </TableCell>
+              ))}
+            </TableRow>
+          ))}
+        </TableBody>
+      )}
 
       <TableFooter>
         {Object.entries(perPosition).map(([key, value]) => (

@@ -1,7 +1,12 @@
 'use client';
 
-import type { RouterOutputs } from '~/trpc/react';
+import { useState, useEffect } from 'react';
+import { api, type RouterOutputs } from '~/trpc/react';
 import type { Optional } from 'utility-types';
+import { z } from 'zod';
+import { type SubmitHandler, useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { ChevronsUpDown } from 'lucide-react';
 import {
   Dialog,
   DialogContent,
@@ -15,16 +20,9 @@ import { Input } from '~/components/ui/input';
 import { Label } from '~/components/ui/label';
 import { DatePicker } from '~/components/ui/date-picker';
 import { DeletePopover } from '~/components/delete-popover';
-import { z } from 'zod';
-import { type SubmitHandler, useForm } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { api } from '~/trpc/react';
-import { useRouter } from 'next/navigation';
-import { useState, useEffect } from 'react';
-import { Button } from './ui/button';
-import { getFormatters } from '~/utils/formatters';
-import { ChevronsUpDown } from 'lucide-react';
+import { Button } from '~/components/ui/button';
 import { useUserPreferences } from '~/contexts/user-preferences-context';
+import { getFormatters } from '~/utils/formatters';
 import { createDateOnlyString } from '~/utils/create-date-only-string';
 import { errorToast } from '~/utils/error-toast';
 
@@ -52,12 +50,14 @@ export const formSchema = z.object({
 type FormSchema = z.infer<typeof formSchema>;
 
 export const JobDialog: React.FC<{
-  positions: RouterOutputs['position']['getAll'];
+  positions: RouterOutputs['position']['getAll'] | undefined;
   selected: number | null;
   setSelected: React.Dispatch<React.SetStateAction<number | null>>;
   getDefaultValues: (id: number | null) => Optional<FormSchema, 'date'>;
   defaultMonth: Date;
-}> = ({ positions, selected, setSelected, getDefaultValues, defaultMonth }) => {
+}> = ({ positions = [], selected, setSelected, getDefaultValues, defaultMonth }) => {
+  const utils = api.useUtils();
+
   const userPreferences = useUserPreferences();
   const { currency: cf } = getFormatters(userPreferences);
 
@@ -65,8 +65,6 @@ export const JobDialog: React.FC<{
   const [date, setDate] = useState<Date | undefined>();
 
   const canCreate = positions.length > 0;
-
-  const router = useRouter();
 
   const {
     register,
@@ -80,15 +78,17 @@ export const JobDialog: React.FC<{
   useEffect(() => setValue('date', date ?? new Date()), [date, setValue]);
 
   const { mutate: create } = api.job.create.useMutation({
-    onSuccess: () => router.refresh(),
+    onSuccess: () => utils.job.invalidate(),
     onError: () => errorToast(),
   });
+
   const { mutate: update } = api.job.update.useMutation({
-    onSuccess: () => router.refresh(),
+    onSuccess: () => utils.job.invalidate(),
     onError: () => errorToast(),
   });
+
   const { mutate: remove } = api.job.delete.useMutation({
-    onSuccess: () => router.refresh(),
+    onSuccess: () => utils.job.invalidate(),
     onError: () => errorToast(),
   });
 

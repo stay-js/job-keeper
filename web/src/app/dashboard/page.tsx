@@ -1,43 +1,15 @@
-import { api, HydrateClient } from '~/trpc/server';
 import { auth, currentUser } from '@clerk/nextjs/server';
-import { JobsTab } from './jobs-tab';
-import { PositionsTab } from './positions-tab';
-import { StatisticsTab } from './statistics-tab';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '~/components/ui/tabs';
-import { CustomUserButton } from '~/components/custom-user-button';
+import { api, HydrateClient } from '~/trpc/server';
 import { SetInitialUserPreferences } from '~/components/set-initial-user-preferences';
-import { createMetadata } from '~/utils/create-metadata';
 import { UserPreferencesProvider } from '~/contexts/user-preferences-context';
+import { createMetadata } from '~/utils/create-metadata';
+import { DashboardTabs } from './dashboard';
 
 export const metadata = createMetadata({
   path: '/dashboard',
   title: 'Dashboard',
   noIndex: true,
 });
-
-const Jobs: React.FC = async () => {
-  const jobs = await api.job.getAll();
-  const positions = await api.position.getAll();
-  const expenses = await api.expense.getAll();
-
-  void api.job.getAll.prefetch();
-  void api.position.getAll.prefetch();
-  void api.expense.getAll.prefetch();
-
-  return <JobsTab jobs={jobs} positions={positions} expenses={expenses} />;
-};
-
-const Positions: React.FC = async () => {
-  const data = await api.position.getAllWithHoursWorked();
-
-  void api.job.getAll.prefetch();
-
-  return <PositionsTab data={data} />;
-};
-
-const Statistics: React.FC = async () => {
-  return <StatisticsTab />;
-};
 
 const Page: React.FC = async () => {
   const authObject = await auth();
@@ -53,31 +25,16 @@ const Page: React.FC = async () => {
     precision: 2,
   };
 
+  void api.job.getAll.prefetch();
+  void api.expense.getAll.prefetch();
+  void api.position.getAll.prefetch();
+  void api.position.getAllWithHoursWorked.prefetch();
+
   return (
     <HydrateClient>
       <UserPreferencesProvider value={userPreferences ?? fallbackUserPreferences}>
         <main className="container py-6 text-white md:py-24">
-          <Tabs defaultValue="jobs" className="mx-auto flex max-w-5xl flex-col gap-4">
-            <TabsList className="h-fit w-full items-center p-2">
-              <TabsTrigger value="jobs">Jobs</TabsTrigger>
-              <TabsTrigger value="positions">Positions</TabsTrigger>
-              <TabsTrigger value="statistics">Statistics</TabsTrigger>
-
-              <div className="ms-auto flex">
-                <CustomUserButton />
-              </div>
-            </TabsList>
-
-            <TabsContent value="jobs">
-              <Jobs />
-            </TabsContent>
-            <TabsContent value="positions">
-              <Positions />
-            </TabsContent>
-            <TabsContent value="statistics">
-              <Statistics />
-            </TabsContent>
-          </Tabs>
+          <DashboardTabs />
 
           {!userPreferences && <SetInitialUserPreferences />}
         </main>

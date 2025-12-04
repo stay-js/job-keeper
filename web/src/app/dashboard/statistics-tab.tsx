@@ -3,8 +3,8 @@
 import { useState } from 'react';
 import { api } from '~/trpc/react';
 import { DatePicker } from '~/components/ui/date-picker';
-import { useUserPreferences } from '~/contexts/user-preferences-context';
 import { PositionsTable } from '~/components/positions-table';
+import { useUserPreferences } from '~/contexts/user-preferences-context';
 
 export const StatisticsTab: React.FC = () => {
   const userPreferences = useUserPreferences();
@@ -46,7 +46,7 @@ export const StatisticsTab: React.FC = () => {
         </div>
       </div>
 
-      <PositionsTable data={positions ?? []} isLoading={isLoading} />
+      <PositionsTable positions={positions} isLoading={isLoading} />
     </div>
   );
 };

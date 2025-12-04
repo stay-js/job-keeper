@@ -1,5 +1,10 @@
 'use client';
 
+import { useState, useEffect } from 'react';
+import { api } from '~/trpc/react';
+import { z } from 'zod';
+import { type SubmitHandler, useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
 import {
   Dialog,
   DialogContent,
@@ -10,17 +15,11 @@ import {
   DialogTrigger,
 } from '~/components/ui/dialog';
 import { DeletePopover } from '~/components/delete-popover';
-import { z } from 'zod';
-import { type SubmitHandler, useForm } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { api } from '~/trpc/react';
-import { useRouter } from 'next/navigation';
-import { useState, useEffect } from 'react';
-import { Button } from './ui/button';
+import { Button } from '~/components/ui/button';
+import { Label } from '~/components/ui/label';
+import { Input } from '~/components/ui/input';
 import { createDateOnlyString } from '~/utils/create-date-only-string';
 import { errorToast } from '~/utils/error-toast';
-import { Label } from './ui/label';
-import { Input } from './ui/input';
 
 export const formSchema = z.object({
   name: z
@@ -47,9 +46,9 @@ export const ExpensesDialog: React.FC<{
   getDefaultValues: (id: number | null) => Omit<FormSchema, 'date'>;
   date: Date;
 }> = ({ selected, setSelected, getDefaultValues, date }) => {
-  const [isOpen, setIsOpen] = useState(false);
+  const utils = api.useUtils();
 
-  const router = useRouter();
+  const [isOpen, setIsOpen] = useState(false);
 
   const {
     register,
@@ -63,15 +62,17 @@ export const ExpensesDialog: React.FC<{
   setValue('date', date);
 
   const { mutate: create } = api.expense.create.useMutation({
-    onSuccess: () => router.refresh(),
+    onSuccess: () => utils.expense.invalidate(),
     onError: () => errorToast(),
   });
+
   const { mutate: update } = api.expense.update.useMutation({
-    onSuccess: () => router.refresh(),
+    onSuccess: () => utils.expense.invalidate(),
     onError: () => errorToast(),
   });
+
   const { mutate: remove } = api.expense.delete.useMutation({
-    onSuccess: () => router.refresh(),
+    onSuccess: () => utils.expense.invalidate(),
     onError: () => errorToast(),
   });
 
