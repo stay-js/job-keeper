@@ -1,7 +1,5 @@
 'use client';
-
 import { useEffect, useState } from 'react';
-
 import { api } from '~/trpc/react';
 import { DatePicker } from '~/components/ui/date-picker';
 import { PositionsTable } from '~/components/positions-table';
@@ -10,26 +8,27 @@ import { useUserPreferences } from '~/contexts/user-preferences-context';
 export const StatisticsTab: React.FC = () => {
   const userPreferences = useUserPreferences();
 
-  const [fromDate, setFromDate] = useState<Date | undefined>(() => {
+  const [from, setFrom] = useState<Date | undefined>(() => {
     const d = new Date();
     d.setUTCMonth(d.getUTCMonth() - 1);
 
     return d;
   });
 
-  const [toDate, setToDate] = useState<Date | undefined>(() => new Date());
+  const [to, setTo] = useState<Date | undefined>(() => new Date());
 
-  const {
-    data: positions,
-    isPending,
-    mutate,
-  } = api.positions.getWithHoursWorkedFromTo.useMutation();
+  const [queryInput, setQueryInput] = useState(() => ({ from: from as Date, to: to as Date }));
 
   useEffect(() => {
-    if (!fromDate || !toDate) return;
+    if (!from || !to) return;
 
-    mutate({ from: fromDate, to: toDate });
-  }, [fromDate, toDate, mutate]);
+    const timeout = setTimeout(() => setQueryInput({ from, to }));
+
+    return () => clearTimeout(timeout);
+  }, [from, to]);
+
+  const { data: positions, isLoading } =
+    api.positions.getWithHoursWorkedFromTo.useQuery(queryInput);
 
   return (
     <div className="flex flex-col gap-4">
@@ -37,25 +36,18 @@ export const StatisticsTab: React.FC = () => {
         <div className="flex w-fit items-center gap-2">
           <span>From: </span>
           <DatePicker
-            date={fromDate}
-            setDate={setFromDate}
-            defaultMonth={fromDate}
+            date={from}
+            setDate={setFrom}
+            defaultMonth={from}
             locale={userPreferences.locale}
           />
         </div>
-
         <div className="flex w-fit items-center gap-2">
           <span>To: </span>
-          <DatePicker
-            date={toDate}
-            setDate={setToDate}
-            defaultMonth={toDate}
-            locale={userPreferences.locale}
-          />
+          <DatePicker date={to} setDate={setTo} defaultMonth={to} locale={userPreferences.locale} />
         </div>
       </div>
-
-      <PositionsTable positions={positions} isLoading={isPending} />
+      <PositionsTable positions={positions} isLoading={isLoading} />
     </div>
   );
 };
