@@ -85,7 +85,7 @@ const TableHeadOrderButton = React.forwardRef<
     {...props}
   >
     {props.children}
-    <ChevronsUpDown size={14} />
+    <ChevronsUpDown className="shrink-0" size={14} />
   </button>
 ));
 TableHeadOrderButton.displayName = 'TableHeadOrderButton';
