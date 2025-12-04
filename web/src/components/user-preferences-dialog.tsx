@@ -1,11 +1,13 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
+import { z } from 'zod';
 import { useForm, type SubmitHandler } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { z } from 'zod';
 import { ChevronsUpDown } from 'lucide-react';
 import locale from 'locale-codes';
+
+import { api } from '~/trpc/react';
 import {
   Dialog,
   DialogContent,
@@ -16,7 +18,6 @@ import {
 } from '~/components/ui/dialog';
 import { Label } from '~/components/ui/label';
 import { Button } from '~/components/ui/button';
-import { api } from '~/trpc/react';
 import { useUserPreferences } from '~/contexts/user-preferences-context';
 import { errorToast } from '~/utils/error-toast';
 

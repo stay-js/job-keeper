@@ -1,6 +1,5 @@
 'use client';
 
-import type { RouterOutputs } from '~/trpc/react';
 import { useState } from 'react';
 import {
   type SortingState,
@@ -11,6 +10,8 @@ import {
   useReactTable,
 } from '@tanstack/react-table';
 import { ChevronDown, ChevronLeft, ChevronRight, ChevronFirst, ChevronLast } from 'lucide-react';
+
+import type { RouterOutputs } from '~/trpc/react';
 import {
   Table,
   TableBody,
@@ -21,7 +22,6 @@ import {
   TableRow,
 } from '~/components/ui/table';
 import { Button } from '~/components/ui/button';
-import { getFormatters } from '~/utils/formatters';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -30,6 +30,7 @@ import {
 } from '~/components/ui/dropdown-menu';
 import { Skeleton } from '~/components/ui/skeleton';
 import { useUserPreferences } from '~/contexts/user-preferences-context';
+import { getFormatters } from '~/utils/formatters';
 import { cn } from '~/utils/cn';
 
 export const PositionsTable: React.FC<{

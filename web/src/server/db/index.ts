@@ -1,8 +1,8 @@
 import { drizzle } from 'drizzle-orm/mysql2';
 import { createPool, type Pool } from 'mysql2/promise';
 
+import * as schema from '~/server/db/schema';
 import { env } from '~/env';
-import * as schema from './schema';
 
 const globalForDb = globalThis as unknown as { conn: Pool | undefined };
 

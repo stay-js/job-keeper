@@ -1,9 +1,10 @@
 'use client';
 
-import { Button } from '~/components/ui/button';
+import Link from 'next/link';
 import { useUser, SignInButton } from '@clerk/nextjs';
 import { MoveRight, Sparkles } from 'lucide-react';
-import Link from 'next/link';
+
+import { Button } from '~/components/ui/button';
 
 export const CTA: React.FC = () => {
   const { isSignedIn } = useUser();

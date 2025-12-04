@@ -1,8 +1,9 @@
+import { createCallerFactory, createTRPCRouter } from '~/server/api/trpc';
+
 import { positionsRouter } from './routers/positions';
 import { jobsRouter } from './routers/jobs';
 import { userPreferencesRouter } from './routers/user-preferences';
 import { expensesRouter } from './routers/expenses';
-import { createCallerFactory, createTRPCRouter } from '~/server/api/trpc';
 
 export const appRouter = createTRPCRouter({
   positions: positionsRouter,

@@ -2,11 +2,12 @@
 
 import { useCallback } from 'react';
 import { usePathname, useSearchParams } from 'next/navigation';
+
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '~/components/ui/tabs';
+import { CustomUserButton } from '~/components/custom-user-button';
 import { JobsTab } from './jobs-tab';
 import { PositionsTab } from './positions-tab';
 import { StatisticsTab } from './statistics-tab';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '~/components/ui/tabs';
-import { CustomUserButton } from '~/components/custom-user-button';
 
 export const DashboardTabs: React.FC = () => {
   const pathname = usePathname();

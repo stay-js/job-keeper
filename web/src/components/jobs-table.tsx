@@ -1,7 +1,6 @@
 'use client';
 
 import { useState } from 'react';
-import type { RouterOutputs } from '~/trpc/react';
 import {
   type SortingState,
   flexRender,
@@ -9,6 +8,8 @@ import {
   getSortedRowModel,
   useReactTable,
 } from '@tanstack/react-table';
+
+import type { RouterOutputs } from '~/trpc/react';
 import {
   Table,
   TableBody,
@@ -20,8 +21,8 @@ import {
   TableFooter,
 } from '~/components/ui/table';
 import { Skeleton } from '~/components/ui/skeleton';
-import { getFormatters } from '~/utils/formatters';
 import { useUserPreferences } from '~/contexts/user-preferences-context';
+import { getFormatters } from '~/utils/formatters';
 
 export const JobsTable: React.FC<{
   jobs: RouterOutputs['jobs']['getAll'] | undefined;

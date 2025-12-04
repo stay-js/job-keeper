@@ -3,6 +3,7 @@
 import Link from 'next/link';
 import { SignInButton, SignUpButton, useUser } from '@clerk/nextjs';
 import { MoveRight, Calendar, DollarSign, Clock } from 'lucide-react';
+
 import { Button } from '~/components/ui/button';
 
 export const Hero: React.FC = () => {

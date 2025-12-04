@@ -1,10 +1,11 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { api } from '~/trpc/react';
 import { useForm, type SubmitHandler } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
+
+import { api } from '~/trpc/react';
 import {
   Dialog,
   DialogContent,
@@ -17,8 +18,8 @@ import {
 import { Input } from '~/components/ui/input';
 import { Label } from '~/components/ui/label';
 import { Button } from '~/components/ui/button';
-import { DeletePopover } from './delete-popover';
 import { errorToast } from '~/utils/error-toast';
+import { DeletePopover } from './delete-popover';
 
 export const formSchema = z.object({
   name: z

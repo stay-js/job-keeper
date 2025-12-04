@@ -1,8 +1,9 @@
 'use client';
 
 import { useState } from 'react';
-import { api } from '~/trpc/react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
+
+import { api } from '~/trpc/react';
 import { JobsTable } from '~/components/jobs-table';
 import { Button } from '~/components/ui/button';
 import { JobDialog } from '~/components/job-dialog';

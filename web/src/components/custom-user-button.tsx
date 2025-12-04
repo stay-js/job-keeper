@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { UserButton } from '@clerk/nextjs';
 import { Globe } from 'lucide-react';
+
 import { UserPreferencesDialog } from './user-preferences-dialog';
 
 export const CustomUserButton = () => {

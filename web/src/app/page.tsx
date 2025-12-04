@@ -1,5 +1,6 @@
 import { redirect } from 'next/navigation';
 import { currentUser } from '@clerk/nextjs/server';
+
 import { HomePage, description, title } from '~/app/home/page';
 import { createMetadata } from '~/utils/create-metadata';
 

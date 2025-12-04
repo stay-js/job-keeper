@@ -1,5 +1,6 @@
 import type { NextPage } from 'next';
 import Link from 'next/link';
+
 import { createMetadata } from '~/utils/create-metadata';
 
 export const metadata = createMetadata({

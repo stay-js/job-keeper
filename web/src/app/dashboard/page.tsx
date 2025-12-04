@@ -1,4 +1,5 @@
 import { auth, currentUser } from '@clerk/nextjs/server';
+
 import { api, HydrateClient } from '~/trpc/server';
 import { SetInitialUserPreferences } from '~/components/set-initial-user-preferences';
 import { UserPreferencesProvider } from '~/contexts/user-preferences-context';

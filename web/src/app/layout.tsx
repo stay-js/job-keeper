@@ -1,9 +1,10 @@
 import '~/styles/globals.css';
 
 import type { Viewport } from 'next';
-import { GeistSans } from 'geist/font/sans';
 import { ClerkProvider } from '@clerk/nextjs';
 import { dark } from '@clerk/themes';
+import { GeistSans } from 'geist/font/sans';
+
 import { TRPCReactProvider } from '~/trpc/react';
 import { Toaster } from '~/components/ui/sonner';
 import { Footer } from '~/components/footer';
