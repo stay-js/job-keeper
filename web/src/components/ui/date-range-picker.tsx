@@ -2,15 +2,15 @@
 
 import * as React from 'react';
 import { CalendarIcon } from 'lucide-react';
+import type { DateRange } from 'react-day-picker';
 import { Button } from '~/components/ui/button';
 import { Calendar } from '~/components/ui/calendar';
 import { Popover, PopoverContent, PopoverTrigger } from '~/components/ui/popover';
 import { cn } from '~/utils/cn';
-import type { DateRange, SelectRangeEventHandler } from 'react-day-picker';
 
 export const DateRangePicker: React.FC<{
-  range: DateRange;
-  setRange: SelectRangeEventHandler;
+  range: DateRange | undefined;
+  setRange: React.Dispatch<React.SetStateAction<DateRange | undefined>>;
   defaultMonth: Date | undefined;
   locale?: string;
   className?: string;
@@ -26,9 +26,9 @@ export const DateRangePicker: React.FC<{
       >
         <CalendarIcon size={18} />
         <span>
-          {range
-            ? `${range.from?.toLocaleDateString(locale)} - ${range.to?.toLocaleDateString(locale)}`
-            : 'Select date'}
+          {range?.from && range?.to
+            ? `${range.from.toLocaleDateString(locale)} - ${range.to.toLocaleDateString(locale)}`
+            : 'Select range'}
         </span>
       </Button>
     </PopoverTrigger>

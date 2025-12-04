@@ -39,11 +39,27 @@ export const positionsRouter = createTRPCRouter({
   getWithHoursWorkedFromTo: protectedProcedure
     .input(
       z.object({
-        from: z.date(),
-        to: z.date(),
+        from: z
+          .string()
+          .refine((date) => !isNaN(Date.parse(date)))
+          .optional(),
+        to: z
+          .string()
+          .refine((date) => !isNaN(Date.parse(date)))
+          .optional(),
       }),
     )
     .query(({ ctx, input }) => {
+      const userCheck = eq(positions.userId, ctx.auth.userId);
+
+      const where =
+        input.from && input.to
+          ? and(
+              userCheck,
+              sql`${jobs.date} BETWEEN ${new Date(input.from)} AND ${new Date(input.to)}`,
+            )
+          : userCheck;
+
       return ctx.db
         .select({
           id: positions.id,
@@ -54,12 +70,7 @@ export const positionsRouter = createTRPCRouter({
         })
         .from(positions)
         .leftJoin(jobs, eq(positions.id, jobs.positionId))
-        .where(
-          and(
-            eq(positions.userId, ctx.auth.userId),
-            sql`${jobs.date} BETWEEN ${input.from} AND ${input.to}`,
-          ),
-        )
+        .where(where)
         .groupBy(positions.id)
         .orderBy(positions.name)
         .execute();

@@ -1,31 +1,35 @@
 'use client';
+
 import { useEffect, useState } from 'react';
+import { type DateRange } from 'react-day-picker';
+
 import { api } from '~/trpc/react';
-import { DatePicker } from '~/components/ui/date-picker';
+import { DateRangePicker } from '~/components/ui/date-range-picker';
 import { PositionsTable } from '~/components/positions-table';
 import { useUserPreferences } from '~/contexts/user-preferences-context';
+import { createDateOnlyString } from '~/utils/create-date-only-string';
+
+const createQueryInput = (range: DateRange | undefined) => {
+  if (!range?.from || !range?.to) return {};
+
+  return {
+    from: createDateOnlyString(range.from),
+    to: createDateOnlyString(range.to),
+  };
+};
 
 export const StatisticsTab: React.FC = () => {
   const userPreferences = useUserPreferences();
 
-  const [from, setFrom] = useState<Date | undefined>(() => {
-    const d = new Date();
-    d.setUTCMonth(d.getUTCMonth() - 1);
+  const [range, setRange] = useState<DateRange | undefined>(undefined);
 
-    return d;
-  });
-
-  const [to, setTo] = useState<Date | undefined>(() => new Date());
-
-  const [queryInput, setQueryInput] = useState(() => ({ from: from!, to: to! }));
+  const [queryInput, setQueryInput] = useState(() => createQueryInput(range));
 
   useEffect(() => {
-    if (!from || !to) return;
-
-    const timeout = setTimeout(() => setQueryInput({ from, to }));
-
-    return () => clearTimeout(timeout);
-  }, [from, to]);
+    void Promise.resolve().then(() => {
+      setTimeout(() => setQueryInput(createQueryInput(range)));
+    });
+  }, [range]);
 
   const { data: positions, isLoading } =
     api.positions.getWithHoursWorkedFromTo.useQuery(queryInput);
@@ -33,20 +37,18 @@ export const StatisticsTab: React.FC = () => {
   return (
     <div className="flex flex-col gap-4">
       <div className="flex flex-wrap gap-x-6 gap-y-4 max-sm:flex-col">
-        <div className="flex w-fit items-center gap-2">
-          <span>From: </span>
-          <DatePicker
-            date={from}
-            setDate={setFrom}
-            defaultMonth={from}
+        <div className="flex items-center gap-2">
+          <span>Range: </span>
+
+          <DateRangePicker
+            range={range}
+            setRange={setRange}
+            defaultMonth={range?.from ?? new Date()}
             locale={userPreferences.locale}
           />
         </div>
-        <div className="flex w-fit items-center gap-2">
-          <span>To: </span>
-          <DatePicker date={to} setDate={setTo} defaultMonth={to} locale={userPreferences.locale} />
-        </div>
       </div>
+
       <PositionsTable positions={positions} isLoading={isLoading} />
     </div>
   );
