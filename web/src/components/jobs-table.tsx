@@ -20,7 +20,7 @@ import {
   TableRow,
   TableFooter,
 } from '~/components/ui/table';
-import { Skeleton } from '~/components/ui/skeleton';
+import { TableSkeleton, TableNoRecord } from '~/components/table-utils';
 import { useUserPreferences } from '~/contexts/user-preferences-context';
 import { getFormatters } from '~/utils/formatters';
 
@@ -118,31 +118,9 @@ export const JobsTable: React.FC<{
         ))}
       </TableHeader>
 
-      {isLoading && (
-        <TableBody>
-          {new Array(5).fill(null).map((_, idx) => (
-            <TableRow key={idx}>
-              {table.getAllColumns().map((column) => (
-                <TableCell key={column.id}>
-                  <div className="py-1">
-                    <Skeleton className="h-3 w-1/2" />
-                  </div>
-                </TableCell>
-              ))}
-            </TableRow>
-          ))}
-        </TableBody>
-      )}
+      {isLoading && <TableSkeleton table={table} />}
 
-      {!isLoading && jobs.length === 0 && (
-        <TableBody>
-          <TableRow>
-            <TableCell colSpan={table.getAllColumns().length} className="text-center">
-              No record.
-            </TableCell>
-          </TableRow>
-        </TableBody>
-      )}
+      {!isLoading && jobs.length === 0 && <TableNoRecord colSpan={table.getAllColumns().length} />}
 
       {!isLoading && jobs.length > 0 && (
         <TableBody>

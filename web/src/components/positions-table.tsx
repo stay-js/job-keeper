@@ -28,7 +28,7 @@ import {
   DropdownMenuTrigger,
   DropdownMenuCheckboxItem,
 } from '~/components/ui/dropdown-menu';
-import { Skeleton } from '~/components/ui/skeleton';
+import { TableSkeleton, TableNoRecord } from '~/components/table-utils';
 import { useUserPreferences } from '~/contexts/user-preferences-context';
 import { getFormatters } from '~/utils/formatters';
 import { cn } from '~/utils/cn';
@@ -165,30 +165,10 @@ export const PositionsTable: React.FC<{
           ))}
         </TableHeader>
 
-        {isLoading && (
-          <TableBody>
-            {new Array(5).fill(null).map((_, idx) => (
-              <TableRow key={idx}>
-                {table.getAllColumns().map((column) => (
-                  <TableCell key={column.id}>
-                    <div className="py-1">
-                      <Skeleton className="h-3 w-1/2" />
-                    </div>
-                  </TableCell>
-                ))}
-              </TableRow>
-            ))}
-          </TableBody>
-        )}
+        {isLoading && <TableSkeleton table={table} />}
 
         {!isLoading && positions.length === 0 && (
-          <TableBody>
-            <TableRow>
-              <TableCell colSpan={table.getAllColumns().length} className="text-center">
-                No record.
-              </TableCell>
-            </TableRow>
-          </TableBody>
+          <TableNoRecord colSpan={table.getAllColumns().length} />
         )}
 
         {!isLoading && positions.length > 0 && (
