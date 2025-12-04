@@ -41,11 +41,13 @@ export const positionsRouter = createTRPCRouter({
       z.object({
         from: z
           .string()
-          .refine((date) => !isNaN(Date.parse(date)))
+          .transform((date) => new Date(date))
+          .refine((date) => !isNaN(date.getTime()))
           .optional(),
         to: z
           .string()
-          .refine((date) => !isNaN(Date.parse(date)))
+          .transform((date) => new Date(date))
+          .refine((date) => !isNaN(date.getTime()))
           .optional(),
       }),
     )
@@ -54,10 +56,7 @@ export const positionsRouter = createTRPCRouter({
 
       const where =
         input.from && input.to
-          ? and(
-              userCheck,
-              sql`${jobs.date} BETWEEN ${new Date(input.from)} AND ${new Date(input.to)}`,
-            )
+          ? and(userCheck, sql`${jobs.date} BETWEEN ${input.from} AND ${input.to}`)
           : userCheck;
 
       return ctx.db

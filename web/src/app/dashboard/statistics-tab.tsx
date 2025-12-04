@@ -32,7 +32,7 @@ export const StatisticsTab: React.FC = () => {
     <div className="flex flex-col gap-4">
       <div className="flex flex-wrap gap-x-6 gap-y-4 max-sm:flex-col">
         <div className="flex items-center gap-2">
-          <span>Range: </span>
+          <span>Range:</span>
 
           <DateRangePicker
             range={range}
