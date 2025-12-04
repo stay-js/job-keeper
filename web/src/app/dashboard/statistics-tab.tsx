@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { api } from '~/trpc/react';
 import { DatePicker } from '~/components/ui/date-picker';
 import { PositionsTable } from '~/components/positions-table';
@@ -9,18 +9,26 @@ import { useUserPreferences } from '~/contexts/user-preferences-context';
 export const StatisticsTab: React.FC = () => {
   const userPreferences = useUserPreferences();
 
-  const from = new Date();
-  from.setUTCMonth(from.getUTCMonth() - 1);
+  const [fromDate, setFromDate] = useState<Date | undefined>(() => {
+    const d = new Date();
+    d.setUTCMonth(d.getUTCMonth() - 1);
 
-  const to = new Date();
-
-  const [fromDate, setFromDate] = useState<Date | undefined>(from);
-  const [toDate, setToDate] = useState<Date | undefined>(to);
-
-  const { data: positions, isLoading } = api.positions.getWithHoursWorkedFromTo.useQuery({
-    from: fromDate ?? from,
-    to: toDate ?? to,
+    return d;
   });
+
+  const [toDate, setToDate] = useState<Date | undefined>(() => new Date());
+
+  const {
+    data: positions,
+    isPending,
+    mutate,
+  } = api.positions.getWithHoursWorkedFromTo.useMutation();
+
+  useEffect(() => {
+    if (!fromDate || !toDate) return;
+
+    mutate({ from: fromDate, to: toDate });
+  }, [fromDate, toDate, mutate]);
 
   return (
     <div className="flex flex-col gap-4">
@@ -46,7 +54,7 @@ export const StatisticsTab: React.FC = () => {
         </div>
       </div>
 
-      <PositionsTable positions={positions} isLoading={isLoading} />
+      <PositionsTable positions={positions} isLoading={isPending} />
     </div>
   );
 };

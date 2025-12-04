@@ -42,7 +42,7 @@ export const positionsRouter = createTRPCRouter({
         to: z.date(),
       }),
     )
-    .query(({ ctx, input }) => {
+    .mutation(({ ctx, input }) => {
       return ctx.db
         .select({
           id: positions.id,
