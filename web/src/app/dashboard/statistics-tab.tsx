@@ -26,9 +26,11 @@ export const StatisticsTab: React.FC = () => {
   const [queryInput, setQueryInput] = useState(() => createQueryInput(range));
 
   useEffect(() => {
-    void Promise.resolve().then(() => {
-      setTimeout(() => setQueryInput(createQueryInput(range)));
-    });
+    const timeout = setTimeout(() => {
+      setQueryInput(createQueryInput(range));
+    }, 0);
+
+    return () => clearTimeout(timeout);
   }, [range]);
 
   const { data: positions, isLoading } =
