@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useDeferredValue, useState } from 'react';
 import { type DateRange } from 'react-day-picker';
 
 import { api } from '~/trpc/react';
@@ -23,18 +23,10 @@ export const StatisticsTab: React.FC = () => {
 
   const [range, setRange] = useState<DateRange | undefined>(undefined);
 
-  const [queryInput, setQueryInput] = useState(() => createQueryInput(range));
-
-  useEffect(() => {
-    const timeout = setTimeout(() => {
-      setQueryInput(createQueryInput(range));
-    }, 0);
-
-    return () => clearTimeout(timeout);
-  }, [range]);
+  const deferredQueryInput = useDeferredValue(createQueryInput(range));
 
   const { data: positions, isLoading } =
-    api.positions.getWithHoursWorkedFromTo.useQuery(queryInput);
+    api.positions.getWithHoursWorkedFromTo.useQuery(deferredQueryInput);
 
   return (
     <div className="flex flex-col gap-4">
