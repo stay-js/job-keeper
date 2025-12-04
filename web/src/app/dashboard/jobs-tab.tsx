@@ -88,16 +88,16 @@ export const JobsTab: React.FC = () => {
 
   return (
     <div className="flex flex-col gap-4">
-      <div className="flex w-full justify-between gap-2">
-        <Button onClick={decrementMonth} variant="outline" size="icon">
+      <div className="flex w-full items-center justify-between gap-2">
+        <Button onClick={decrementMonth} variant="outline" size="icon-sm">
           <ChevronLeft size={18} />
         </Button>
 
-        <h1 className="text-4xl font-bold text-white">
+        <h1 className="text-3xl font-bold text-white">
           {year} / {month + 1}.
         </h1>
 
-        <Button onClick={incrementMonth} variant="outline" size="icon">
+        <Button onClick={incrementMonth} variant="outline" size="icon-sm">
           <ChevronRight size={18} />
         </Button>
       </div>

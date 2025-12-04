@@ -79,7 +79,7 @@ const TableHeadOrderButton = React.forwardRef<
   <button
     ref={ref}
     className={cn(
-      'flex w-fit cursor-pointer select-none items-center gap-2 rounded-md px-2 py-2 transition-colors hover:bg-neutral-700 hover:text-white',
+      'flex w-fit cursor-pointer select-none items-center gap-2 rounded-md p-2 transition-colors hover:bg-neutral-700 hover:text-white',
       className,
     )}
     {...props}

@@ -7,7 +7,7 @@ export const DeletePopover: React.FC<{
 }> = ({ type, onDelete }) => (
   <Popover>
     <PopoverTrigger asChild>
-      <Button variant="destructive" type="button">
+      <Button variant="destructive" type="button" size="sm">
         Delete
       </Button>
     </PopoverTrigger>
@@ -20,7 +20,7 @@ export const DeletePopover: React.FC<{
         </p>
       </div>
 
-      <Button variant="destructive" type="button" onClick={onDelete}>
+      <Button variant="destructive" type="button" onClick={onDelete} size="sm">
         Delete {type}
       </Button>
     </PopoverContent>

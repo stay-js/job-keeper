@@ -10,16 +10,7 @@ import {
 } from '@tanstack/react-table';
 
 import type { RouterOutputs } from '~/trpc/react';
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeadOrderButton,
-  TableHeader,
-  TableRow,
-  TableFooter,
-} from '~/components/ui/table';
+import { Table, TableBody, TableCell, TableRow, TableFooter } from '~/components/ui/table';
 import { TableSkeleton, TableNoRecord, TableHeaderWithOrdering } from '~/components/table-utils';
 import { useUserPreferences } from '~/contexts/user-preferences-context';
 import { getFormatters } from '~/utils/formatters';

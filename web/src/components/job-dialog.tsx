@@ -76,7 +76,11 @@ export const JobDialog: React.FC<{
   } = useForm<FormSchema>({ resolver: zodResolver(formSchema) });
 
   register('date');
-  useEffect(() => setValue('date', date ?? new Date()), [date, setValue]);
+  useEffect(() => {
+    if (!date) return;
+
+    setValue('date', date);
+  }, [date, setValue]);
 
   const { mutate: create } = api.jobs.create.useMutation({
     onSuccess: () => utils.jobs.invalidate(),
@@ -130,7 +134,7 @@ export const JobDialog: React.FC<{
       open={isOpen}
     >
       <DialogTrigger asChild>
-        <Button>Add new</Button>
+        <Button size="sm">Add new</Button>
       </DialogTrigger>
 
       <DialogContent className="w-11/12 max-w-lg rounded-lg">
@@ -244,8 +248,10 @@ export const JobDialog: React.FC<{
               </div>
             </div>
 
-            <DialogFooter className="flex gap-2">
-              <Button type="submit">Save changes</Button>
+            <DialogFooter>
+              <Button type="submit" size="sm">
+                Save changes
+              </Button>
 
               {selected && (
                 <DeletePopover

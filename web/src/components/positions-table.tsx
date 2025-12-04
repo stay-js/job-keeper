@@ -78,7 +78,7 @@ export const PositionsTable: React.FC<{
             <Button
               onClick={() => table.firstPage()}
               disabled={!table.getCanPreviousPage()}
-              size="icon"
+              size="icon-sm"
               variant="outline"
             >
               <ChevronFirst size={18} />
@@ -86,7 +86,7 @@ export const PositionsTable: React.FC<{
             <Button
               onClick={() => table.previousPage()}
               disabled={!table.getCanPreviousPage()}
-              size="icon"
+              size="icon-sm"
               variant="outline"
             >
               <ChevronLeft size={18} />
@@ -102,7 +102,7 @@ export const PositionsTable: React.FC<{
             <Button
               onClick={() => table.nextPage()}
               disabled={!table.getCanNextPage()}
-              size="icon"
+              size="icon-sm"
               variant="outline"
             >
               <ChevronRight size={18} />
@@ -110,7 +110,7 @@ export const PositionsTable: React.FC<{
             <Button
               onClick={() => table.lastPage()}
               disabled={!table.getCanNextPage()}
-              size="icon"
+              size="icon-sm"
               variant="outline"
             >
               <ChevronLast size={18} />
@@ -120,7 +120,7 @@ export const PositionsTable: React.FC<{
 
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <Button variant="outline" className="flex items-center gap-2 sm:w-fit">
+            <Button variant="outline" size="sm" className="flex items-center gap-2 sm:w-fit">
               Columns <ChevronDown size={16} />
             </Button>
           </DropdownMenuTrigger>

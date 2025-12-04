@@ -18,6 +18,7 @@ export const DatePicker: React.FC<{
     <PopoverTrigger asChild>
       <Button
         variant="outline"
+        size="sm"
         className={cn(
           'flex w-full items-center justify-start gap-2 bg-transparent px-3 text-left font-normal',
           className,
