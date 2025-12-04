@@ -17,7 +17,7 @@ export const StatisticsTab: React.FC = () => {
 
   const [to, setTo] = useState<Date | undefined>(() => new Date());
 
-  const [queryInput, setQueryInput] = useState(() => ({ from: from as Date, to: to as Date }));
+  const [queryInput, setQueryInput] = useState(() => ({ from: from!, to: to! }));
 
   useEffect(() => {
     if (!from || !to) return;
