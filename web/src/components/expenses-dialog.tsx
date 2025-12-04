@@ -61,18 +61,18 @@ export const ExpensesDialog: React.FC<{
   register('date');
   setValue('date', date);
 
-  const { mutate: create } = api.expense.create.useMutation({
-    onSuccess: () => utils.expense.invalidate(),
+  const { mutate: create } = api.expenses.create.useMutation({
+    onSuccess: () => utils.expenses.invalidate(),
     onError: () => errorToast(),
   });
 
-  const { mutate: update } = api.expense.update.useMutation({
-    onSuccess: () => utils.expense.invalidate(),
+  const { mutate: update } = api.expenses.update.useMutation({
+    onSuccess: () => utils.expenses.invalidate(),
     onError: () => errorToast(),
   });
 
-  const { mutate: remove } = api.expense.delete.useMutation({
-    onSuccess: () => utils.expense.invalidate(),
+  const { mutate: remove } = api.expenses.delete.useMutation({
+    onSuccess: () => utils.expenses.invalidate(),
     onError: () => errorToast(),
   });
 

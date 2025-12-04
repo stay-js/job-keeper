@@ -59,18 +59,18 @@ export const PositionDialog: React.FC<{
     reset,
   } = useForm<FormSchema>({ resolver: zodResolver(formSchema) });
 
-  const { mutate: create } = api.position.create.useMutation({
-    onSuccess: () => utils.position.invalidate(),
+  const { mutate: create } = api.positions.create.useMutation({
+    onSuccess: () => utils.positions.invalidate(),
     onError: () => errorToast(),
   });
 
-  const { mutate: update } = api.position.update.useMutation({
-    onSuccess: () => utils.position.invalidate(),
+  const { mutate: update } = api.positions.update.useMutation({
+    onSuccess: () => utils.positions.invalidate(),
     onError: () => errorToast(),
   });
 
-  const { mutate: remove } = api.position.delete.useMutation({
-    onSuccess: () => utils.position.invalidate(),
+  const { mutate: remove } = api.positions.delete.useMutation({
+    onSuccess: () => utils.positions.invalidate(),
     onError: () => errorToast(),
   });
 

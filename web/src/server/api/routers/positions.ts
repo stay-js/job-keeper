@@ -8,7 +8,7 @@ const positionSchema = z.object({
   wage: z.number().nonnegative(),
 });
 
-export const positionRouter = createTRPCRouter({
+export const positionsRouter = createTRPCRouter({
   getAll: protectedProcedure.query(({ ctx }) => {
     return ctx.db
       .select({ id: positions.id, name: positions.name, wage: positions.wage })
@@ -35,7 +35,7 @@ export const positionRouter = createTRPCRouter({
       .execute();
   }),
 
-  getWihtHoursWorkedFromTo: protectedProcedure
+  getWithHoursWorkedFromTo: protectedProcedure
     .input(
       z.object({
         from: z.date(),

@@ -50,7 +50,7 @@ export const formSchema = z.object({
 type FormSchema = z.infer<typeof formSchema>;
 
 export const JobDialog: React.FC<{
-  positions: RouterOutputs['position']['getAll'] | undefined;
+  positions: RouterOutputs['positions']['getAll'] | undefined;
   selected: number | null;
   setSelected: React.Dispatch<React.SetStateAction<number | null>>;
   getDefaultValues: (id: number | null) => Optional<FormSchema, 'date'>;
@@ -77,18 +77,18 @@ export const JobDialog: React.FC<{
   register('date');
   useEffect(() => setValue('date', date ?? new Date()), [date, setValue]);
 
-  const { mutate: create } = api.job.create.useMutation({
-    onSuccess: () => utils.job.invalidate(),
+  const { mutate: create } = api.jobs.create.useMutation({
+    onSuccess: () => utils.jobs.invalidate(),
     onError: () => errorToast(),
   });
 
-  const { mutate: update } = api.job.update.useMutation({
-    onSuccess: () => utils.job.invalidate(),
+  const { mutate: update } = api.jobs.update.useMutation({
+    onSuccess: () => utils.jobs.invalidate(),
     onError: () => errorToast(),
   });
 
-  const { mutate: remove } = api.job.delete.useMutation({
-    onSuccess: () => utils.job.invalidate(),
+  const { mutate: remove } = api.jobs.delete.useMutation({
+    onSuccess: () => utils.jobs.invalidate(),
     onError: () => errorToast(),
   });
 

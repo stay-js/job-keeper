@@ -11,7 +11,7 @@ export const metadata = createMetadata({
   noIndex: true,
 });
 
-const Page: React.FC = async () => {
+const DashboardPage: React.FC = async () => {
   const authObject = await auth();
   const user = await currentUser();
 
@@ -25,10 +25,10 @@ const Page: React.FC = async () => {
     precision: 2,
   };
 
-  void api.job.getAll.prefetch();
-  void api.expense.getAll.prefetch();
-  void api.position.getAll.prefetch();
-  void api.position.getAllWithHoursWorked.prefetch();
+  void api.jobs.getAll.prefetch();
+  void api.expenses.getAll.prefetch();
+  void api.positions.getAll.prefetch();
+  void api.positions.getAllWithHoursWorked.prefetch();
 
   return (
     <HydrateClient>
@@ -43,4 +43,4 @@ const Page: React.FC = async () => {
   );
 };
 
-export default Page;
+export default DashboardPage;

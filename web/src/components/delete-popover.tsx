@@ -2,7 +2,7 @@ import { Popover, PopoverContent, PopoverTrigger } from '~/components/ui/popover
 import { Button } from '~/components/ui/button';
 
 export const DeletePopover: React.FC<{
-  type: 'job' | 'position' | 'expense';
+  type: string;
   onDelete: () => void;
 }> = ({ type, onDelete }) => (
   <Popover>

@@ -1,14 +1,14 @@
-import { positionRouter } from './routers/position';
-import { jobRouter } from './routers/job';
+import { positionsRouter } from './routers/positions';
+import { jobsRouter } from './routers/jobs';
 import { userPreferencesRouter } from './routers/user-preferences';
-import { expenseRouter } from './routers/expenses';
+import { expensesRouter } from './routers/expenses';
 import { createCallerFactory, createTRPCRouter } from '~/server/api/trpc';
 
 export const appRouter = createTRPCRouter({
-  position: positionRouter,
-  job: jobRouter,
+  positions: positionsRouter,
+  jobs: jobsRouter,
   userPreferences: userPreferencesRouter,
-  expense: expenseRouter,
+  expenses: expensesRouter,
 });
 
 export type AppRouter = typeof appRouter;

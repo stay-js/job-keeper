@@ -33,7 +33,7 @@ import { useUserPreferences } from '~/contexts/user-preferences-context';
 import { cn } from '~/utils/cn';
 
 export const PositionsTable: React.FC<{
-  positions: RouterOutputs['position']['getAllWithHoursWorked'] | undefined;
+  positions: RouterOutputs['positions']['getAllWithHoursWorked'] | undefined;
   isLoading: boolean;
   setSelected?: React.Dispatch<React.SetStateAction<number | null>>;
 }> = ({ positions = [], isLoading, setSelected }) => {

@@ -24,8 +24,8 @@ import { getFormatters } from '~/utils/formatters';
 import { useUserPreferences } from '~/contexts/user-preferences-context';
 
 export const JobsTable: React.FC<{
-  jobs: RouterOutputs['job']['getAll'] | undefined;
-  expenses: RouterOutputs['expense']['getAll'] | undefined;
+  jobs: RouterOutputs['jobs']['getAll'] | undefined;
+  expenses: RouterOutputs['expenses']['getAll'] | undefined;
   isLoading: boolean;
   setSelected: React.Dispatch<React.SetStateAction<number | null>>;
   setSelectedExpense: React.Dispatch<React.SetStateAction<number | null>>;

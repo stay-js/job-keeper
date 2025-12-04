@@ -10,7 +10,7 @@ export const metadata = createMetadata({
   noIndex: true,
 });
 
-const Page: NextPage = () => (
+const NotFoundPage: NextPage = () => (
   <main className="grid h-full min-h-screen place-items-center">
     <div className="flex flex-col items-center gap-8 text-center">
       <div>
@@ -25,4 +25,4 @@ const Page: NextPage = () => (
   </main>
 );
 
-export default Page;
+export default NotFoundPage;

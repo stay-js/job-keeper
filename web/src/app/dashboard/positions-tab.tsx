@@ -6,7 +6,7 @@ import { PositionsTable } from '~/components/positions-table';
 import { PositionDialog } from '~/components/position-dialog';
 
 export const PositionsTab: React.FC = () => {
-  const { data: positions, isLoading } = api.position.getAllWithHoursWorked.useQuery();
+  const { data: positions, isLoading } = api.positions.getAllWithHoursWorked.useQuery();
 
   const [selected, setSelected] = useState<number | null>(null);
 

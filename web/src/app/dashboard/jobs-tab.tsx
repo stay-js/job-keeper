@@ -11,9 +11,9 @@ import { useUserPreferences } from '~/contexts/user-preferences-context';
 import { getFormatters } from '~/utils/formatters';
 
 export const JobsTab: React.FC = () => {
-  const { data: jobs, isLoading: isJobsLoading } = api.job.getAll.useQuery();
-  const { data: expenses, isLoading: isExpensesLoading } = api.expense.getAll.useQuery();
-  const { data: positions } = api.position.getAll.useQuery();
+  const { data: jobs, isLoading: isJobsLoading } = api.jobs.getAll.useQuery();
+  const { data: expenses, isLoading: isExpensesLoading } = api.expenses.getAll.useQuery();
+  const { data: positions } = api.positions.getAll.useQuery();
 
   const userPreferences = useUserPreferences();
   const { hours: hf } = getFormatters(userPreferences);

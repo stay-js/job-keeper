@@ -9,7 +9,7 @@ const expenseSchema = z.object({
   date: z.string().refine((date) => !isNaN(Date.parse(date))),
 });
 
-export const expenseRouter = createTRPCRouter({
+export const expensesRouter = createTRPCRouter({
   getAll: protectedProcedure.query(async ({ ctx }) => {
     const data = await ctx.db
       .select()

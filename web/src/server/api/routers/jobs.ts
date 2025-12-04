@@ -11,7 +11,7 @@ const jobSchema = z.object({
   positionId: z.number(),
 });
 
-export const jobRouter = createTRPCRouter({
+export const jobsRouter = createTRPCRouter({
   getAll: protectedProcedure.query(async ({ ctx }) => {
     const data = await ctx.db
       .select({
