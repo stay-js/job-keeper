@@ -34,7 +34,13 @@ export const DateRangePicker: React.FC<{
       </Button>
     </PopoverTrigger>
     <PopoverContent className="w-auto p-0">
-      <Calendar defaultMonth={defaultMonth} mode="range" selected={range} onSelect={setRange} />
+      <Calendar
+        ISOWeek
+        mode="range"
+        selected={range}
+        onSelect={setRange}
+        defaultMonth={defaultMonth}
+      />
     </PopoverContent>
   </Popover>
 );

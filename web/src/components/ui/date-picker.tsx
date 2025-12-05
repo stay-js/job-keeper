@@ -30,11 +30,12 @@ export const DatePicker: React.FC<{
     </PopoverTrigger>
     <PopoverContent className="w-auto p-0">
       <Calendar
-        defaultMonth={defaultMonth}
+        required
+        ISOWeek
         mode="single"
         selected={date}
         onSelect={setDate}
-        required
+        defaultMonth={defaultMonth}
       />
     </PopoverContent>
   </Popover>
