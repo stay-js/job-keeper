@@ -115,9 +115,10 @@ export function JobDialog({
   };
 
   useEffect(() => {
-    reset(getDefaultValues(selected));
+    if (isOpen) reset(getDefaultValues(selected));
+
     if (selected) setIsOpen(true);
-  }, [selected, reset, getDefaultValues]);
+  }, [isOpen, selected, reset, getDefaultValues]);
 
   return (
     <Dialog

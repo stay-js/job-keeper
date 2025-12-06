@@ -90,12 +90,14 @@ export function PositionDialog({
   };
 
   useEffect(() => {
-    const defaultValues = getDefaultValues(selected);
-    setCanDelete(defaultValues.canDelete ?? false);
-    reset(defaultValues);
+    if (isOpen) {
+      const defaultValues = getDefaultValues(selected);
+      setCanDelete(defaultValues.canDelete ?? false);
+      reset(defaultValues);
+    }
 
     if (selected) setIsOpen(true);
-  }, [selected, reset, getDefaultValues]);
+  }, [isOpen, selected, reset, getDefaultValues]);
 
   return (
     <Dialog

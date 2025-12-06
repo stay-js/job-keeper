@@ -90,11 +90,13 @@ export function ExpenseDialog({
   };
 
   useEffect(() => {
-    const defaultValues = getDefaultValues(selected);
-    reset({ ...defaultValues, date });
+    if (isOpen) {
+      const defaultValues = getDefaultValues(selected);
+      reset({ ...defaultValues, date });
+    }
 
     if (selected) setIsOpen(true);
-  }, [selected, reset, getDefaultValues, date]);
+  }, [isOpen, selected, reset, getDefaultValues, date]);
 
   return (
     <Dialog
