@@ -89,15 +89,15 @@ export function JobsTab() {
   return (
     <div className="flex flex-col gap-4">
       <div className="flex w-full items-center justify-between gap-2">
-        <Button onClick={decrementMonth} variant="outline" size="icon-sm">
+        <Button onClick={decrementMonth} variant="outline" size="icon">
           <ChevronLeft size={18} />
         </Button>
 
-        <h1 className="text-3xl font-bold">
+        <h1 className="text-2xl font-bold sm:text-3xl">
           {year} / {month + 1}.
         </h1>
 
-        <Button onClick={incrementMonth} variant="outline" size="icon-sm">
+        <Button onClick={incrementMonth} variant="outline" size="icon">
           <ChevronRight size={18} />
         </Button>
       </div>

@@ -80,7 +80,7 @@ export function PositionsTable({
             <Button
               onClick={() => table.firstPage()}
               disabled={!table.getCanPreviousPage()}
-              size="icon-sm"
+              size="icon"
               variant="outline"
             >
               <ChevronFirst size={18} />
@@ -88,7 +88,7 @@ export function PositionsTable({
             <Button
               onClick={() => table.previousPage()}
               disabled={!table.getCanPreviousPage()}
-              size="icon-sm"
+              size="icon"
               variant="outline"
             >
               <ChevronLeft size={18} />
@@ -104,7 +104,7 @@ export function PositionsTable({
             <Button
               onClick={() => table.nextPage()}
               disabled={!table.getCanNextPage()}
-              size="icon-sm"
+              size="icon"
               variant="outline"
             >
               <ChevronRight size={18} />
@@ -112,7 +112,7 @@ export function PositionsTable({
             <Button
               onClick={() => table.lastPage()}
               disabled={!table.getCanNextPage()}
-              size="icon-sm"
+              size="icon"
               variant="outline"
             >
               <ChevronLast size={18} />
