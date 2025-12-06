@@ -23,9 +23,9 @@ import { DatePicker } from '~/components/ui/date-picker';
 import { DeletePopover } from '~/components/delete-popover';
 import { Button } from '~/components/ui/button';
 import { useUserPreferences } from '~/contexts/user-preferences-context';
-import { getFormatters } from '~/utils/formatters';
-import { createDateOnlyString } from '~/utils/create-date-only-string';
-import { errorToast } from '~/utils/error-toast';
+import { getFormatters } from '~/lib/formatters';
+import { createDateOnlyString } from '~/lib/create-date-only-string';
+import { errorToast } from '~/lib/error-toast';
 
 export const formSchema = z.object({
   date: z.date({ error: 'Please select a valid date!' }),

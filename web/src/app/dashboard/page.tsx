@@ -3,7 +3,7 @@ import { auth, currentUser } from '@clerk/nextjs/server';
 import { api, HydrateClient } from '~/trpc/server';
 import { SetInitialUserPreferences } from '~/components/set-initial-user-preferences';
 import { UserPreferencesProvider } from '~/contexts/user-preferences-context';
-import { createMetadata } from '~/utils/create-metadata';
+import { createMetadata } from '~/lib/create-metadata';
 import { DashboardTabs } from './dashboard';
 
 export const metadata = createMetadata({

@@ -19,7 +19,7 @@ import {
 import { Label } from '~/components/ui/label';
 import { Button } from '~/components/ui/button';
 import { useUserPreferences } from '~/contexts/user-preferences-context';
-import { errorToast } from '~/utils/error-toast';
+import { errorToast } from '~/lib/error-toast';
 
 export const formSchema = z.object({
   currency: z

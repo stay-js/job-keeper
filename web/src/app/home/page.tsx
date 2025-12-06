@@ -1,4 +1,4 @@
-import { createMetadata } from '~/utils/create-metadata';
+import { createMetadata } from '~/lib/create-metadata';
 import { Hero } from './hero';
 import { DashboardPreview } from './dashboard-preview';
 import { CTA } from './cta';

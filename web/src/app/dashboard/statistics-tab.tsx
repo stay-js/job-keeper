@@ -7,7 +7,7 @@ import { api } from '~/trpc/react';
 import { DateRangePicker } from '~/components/ui/date-range-picker';
 import { PositionsTable } from '~/components/positions-table';
 import { useUserPreferences } from '~/contexts/user-preferences-context';
-import { createDateOnlyString } from '~/utils/create-date-only-string';
+import { createDateOnlyString } from '~/lib/create-date-only-string';
 
 const createQueryInput = (range: DateRange | undefined) => {
   if (!range?.from || !range?.to) return {};

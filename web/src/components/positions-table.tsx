@@ -9,10 +9,10 @@ import {
   getPaginationRowModel,
   useReactTable,
 } from '@tanstack/react-table';
-import { ChevronDown, ChevronLeft, ChevronRight, ChevronFirst, ChevronLast } from 'lucide-react';
+import { ChevronLeft, ChevronRight, ChevronFirst, ChevronLast } from 'lucide-react';
 
 import type { RouterOutputs } from '~/trpc/react';
-import { Table, TableBody, TableCell, TableRow } from '~/components/ui/table';
+import { Table } from '~/components/ui/table';
 import { Button } from '~/components/ui/button';
 import {
   TableSkeleton,
@@ -22,8 +22,7 @@ import {
   TableContent,
 } from '~/components/table-utils';
 import { useUserPreferences } from '~/contexts/user-preferences-context';
-import { getFormatters } from '~/utils/formatters';
-import { cn } from '~/utils/cn';
+import { getFormatters } from '~/lib/formatters';
 
 export const PositionsTable: React.FC<{
   positions: RouterOutputs['positions']['getAllWithHoursWorked'] | undefined;

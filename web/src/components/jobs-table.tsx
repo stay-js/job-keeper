@@ -17,7 +17,7 @@ import {
   TableContent,
 } from '~/components/table-utils';
 import { useUserPreferences } from '~/contexts/user-preferences-context';
-import { getFormatters } from '~/utils/formatters';
+import { getFormatters } from '~/lib/formatters';
 
 export const JobsTable: React.FC<{
   jobs: RouterOutputs['jobs']['getAll'] | undefined;

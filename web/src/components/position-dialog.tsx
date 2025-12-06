@@ -18,7 +18,7 @@ import {
 import { Input } from '~/components/ui/input';
 import { Label } from '~/components/ui/label';
 import { Button } from '~/components/ui/button';
-import { errorToast } from '~/utils/error-toast';
+import { errorToast } from '~/lib/error-toast';
 import { DeletePopover } from './delete-popover';
 
 export const formSchema = z.object({

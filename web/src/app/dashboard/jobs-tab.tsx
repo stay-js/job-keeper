@@ -9,7 +9,7 @@ import { Button } from '~/components/ui/button';
 import { JobDialog } from '~/components/job-dialog';
 import { ExpensesDialog } from '~/components/expenses-dialog';
 import { useUserPreferences } from '~/contexts/user-preferences-context';
-import { getFormatters } from '~/utils/formatters';
+import { getFormatters } from '~/lib/formatters';
 
 export const JobsTab: React.FC = () => {
   const { data: jobs, isLoading: isJobsLoading } = api.jobs.getAll.useQuery();
