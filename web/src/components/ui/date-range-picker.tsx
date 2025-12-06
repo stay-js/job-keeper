@@ -22,6 +22,8 @@ export function DateRangePicker({
   locale?: string;
   className?: string;
 }) {
+  const endYear = new Date().getFullYear() + 10;
+
   return (
     <Popover>
       <PopoverTrigger asChild>
@@ -43,6 +45,8 @@ export function DateRangePicker({
           selected={range}
           onSelect={setRange}
           defaultMonth={defaultMonth}
+          startMonth={new Date(1970, 0, 1)}
+          endMonth={new Date(endYear, 11, 31)}
         />
       </PopoverContent>
     </Popover>
