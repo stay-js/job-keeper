@@ -12,16 +12,16 @@ import { createQueryClient } from './query-client';
 
 let clientQueryClientSingleton: QueryClient | undefined = undefined;
 
-const getQueryClient = () => {
+function getQueryClient() {
   if (typeof window === 'undefined') return createQueryClient();
   return (clientQueryClientSingleton ??= createQueryClient());
-};
+}
 
-const getBaseUrl = () => {
+function getBaseUrl() {
   if (typeof window !== 'undefined') return window.location.origin;
   if (process.env.VERCEL_URL) return `https://${process.env.VERCEL_URL}`;
   return `http://localhost:${process.env.PORT ?? 3000}`;
-};
+}
 
 export const api = createTRPCReact<AppRouter>();
 

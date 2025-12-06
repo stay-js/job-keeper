@@ -13,12 +13,12 @@ export const metadata = createMetadata({
   description,
 });
 
-export const HomePage: React.FC = async () => (
-  <main>
-    <Hero />
-    <DashboardPreview />
-    <CTA />
-  </main>
-);
-
-export default HomePage;
+export default async function HomePage() {
+  return (
+    <main>
+      <Hero />
+      <DashboardPreview />
+      <CTA />
+    </main>
+  );
+}

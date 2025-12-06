@@ -4,7 +4,7 @@ import { api, HydrateClient } from '~/trpc/server';
 import { SetInitialUserPreferences } from '~/components/set-initial-user-preferences';
 import { UserPreferencesProvider } from '~/contexts/user-preferences-context';
 import { createMetadata } from '~/lib/create-metadata';
-import { DashboardTabs } from './dashboard';
+import { DashboardTabs } from './dashboard-tabs';
 
 export const metadata = createMetadata({
   path: '/dashboard',
@@ -12,7 +12,7 @@ export const metadata = createMetadata({
   noIndex: true,
 });
 
-const DashboardPage: React.FC = async () => {
+export default async function DashboardPage() {
   const authObject = await auth();
   const user = await currentUser();
 
@@ -42,6 +42,4 @@ const DashboardPage: React.FC = async () => {
       </UserPreferencesProvider>
     </HydrateClient>
   );
-};
-
-export default DashboardPage;
+}

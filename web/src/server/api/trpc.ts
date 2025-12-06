@@ -5,7 +5,7 @@ import { ZodError } from 'zod';
 
 import { db } from '~/server/db';
 
-export const createTRPCContext = async (opts: { headers: Headers }) => {
+export async function createTRPCContext(opts: { headers: Headers }) {
   const authObject = await auth();
 
   return {
@@ -13,7 +13,7 @@ export const createTRPCContext = async (opts: { headers: Headers }) => {
     auth: authObject,
     ...opts,
   };
-};
+}
 
 const t = initTRPC.context<typeof createTRPCContext>().create({
   transformer: superjson,

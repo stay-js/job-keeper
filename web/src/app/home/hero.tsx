@@ -6,7 +6,7 @@ import { MoveRight, Calendar, DollarSign, Clock } from 'lucide-react';
 
 import { Button } from '~/components/ui/button';
 
-export const Hero: React.FC = () => {
+export function Hero() {
   const { isSignedIn } = useUser();
 
   return (
@@ -94,4 +94,4 @@ export const Hero: React.FC = () => {
       <div className="absolute inset-0 -z-10 bg-[linear-gradient(to_right,#ffffff0a_1px,transparent_1px),linear-gradient(to_bottom,#ffffff0a_1px,transparent_1px)] bg-size-[14px_24px]" />
     </section>
   );
-};
+}

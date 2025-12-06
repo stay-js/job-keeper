@@ -9,7 +9,7 @@ import { JobsTab } from './jobs-tab';
 import { PositionsTab } from './positions-tab';
 import { StatisticsTab } from './statistics-tab';
 
-export const DashboardTabs: React.FC = () => {
+export function DashboardTabs() {
   const pathname = usePathname();
   const searchParams = useSearchParams();
 
@@ -54,4 +54,4 @@ export const DashboardTabs: React.FC = () => {
       </TabsContent>
     </Tabs>
   );
-};
+}

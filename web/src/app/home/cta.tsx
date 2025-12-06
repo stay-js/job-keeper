@@ -6,7 +6,7 @@ import { MoveRight, Sparkles } from 'lucide-react';
 
 import { Button } from '~/components/ui/button';
 
-export const CTA: React.FC = () => {
+export function CTA() {
   const { isSignedIn } = useUser();
 
   return (
@@ -66,4 +66,4 @@ export const CTA: React.FC = () => {
       </div>
     </section>
   );
-};
+}

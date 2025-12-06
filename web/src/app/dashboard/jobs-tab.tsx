@@ -11,7 +11,7 @@ import { ExpenseDialog } from '~/components/expense-dialog';
 import { useUserPreferences } from '~/contexts/user-preferences-context';
 import { getFormatters } from '~/lib/formatters';
 
-export const JobsTab: React.FC = () => {
+export function JobsTab() {
   const { data: jobs, isLoading: isJobsLoading } = api.jobs.getAll.useQuery();
   const { data: expenses, isLoading: isExpensesLoading } = api.expenses.getAll.useQuery();
   const { data: positions } = api.positions.getAll.useQuery();
@@ -128,4 +128,4 @@ export const JobsTab: React.FC = () => {
       </div>
     </div>
   );
-};
+}

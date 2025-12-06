@@ -43,11 +43,15 @@ interface PositionWithCanDelete extends FormSchema {
   canDelete?: boolean;
 }
 
-export const PositionDialog: React.FC<{
+export function PositionDialog({
+  selected,
+  setSelected,
+  getDefaultValues,
+}: {
   selected: number | null;
   setSelected: React.Dispatch<React.SetStateAction<number | null>>;
   getDefaultValues: (id: number | null) => PositionWithCanDelete;
-}> = ({ selected, setSelected, getDefaultValues }) => {
+}) {
   const utils = api.useUtils();
 
   const [isOpen, setIsOpen] = useState(false);
@@ -189,4 +193,4 @@ export const PositionDialog: React.FC<{
       </DialogContent>
     </Dialog>
   );
-};
+}

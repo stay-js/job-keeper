@@ -6,7 +6,7 @@ import { api } from '~/trpc/react';
 import { PositionsTable } from '~/components/positions-table';
 import { PositionDialog } from '~/components/position-dialog';
 
-export const PositionsTab: React.FC = () => {
+export function PositionsTab() {
   const { data: positions, isLoading } = api.positions.getAllWithHoursWorked.useQuery();
 
   const [selected, setSelected] = useState<number | null>(null);
@@ -36,4 +36,4 @@ export const PositionsTab: React.FC = () => {
       />
     </div>
   );
-};
+}

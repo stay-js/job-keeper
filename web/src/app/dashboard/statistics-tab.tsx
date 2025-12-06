@@ -9,16 +9,16 @@ import { PositionsTable } from '~/components/positions-table';
 import { useUserPreferences } from '~/contexts/user-preferences-context';
 import { createDateOnlyString } from '~/lib/create-date-only-string';
 
-const createQueryInput = (range: DateRange | undefined) => {
+function createQueryInput(range: DateRange | undefined) {
   if (!range?.from || !range?.to) return {};
 
   return {
     from: createDateOnlyString(range.from),
     to: createDateOnlyString(range.to),
   };
-};
+}
 
-export const StatisticsTab: React.FC = () => {
+export function StatisticsTab() {
   const userPreferences = useUserPreferences();
 
   const [range, setRange] = useState<DateRange | undefined>(undefined);
@@ -44,4 +44,4 @@ export const StatisticsTab: React.FC = () => {
       <PositionsTable positions={positions} isLoading={isLoading} />
     </div>
   );
-};
+}

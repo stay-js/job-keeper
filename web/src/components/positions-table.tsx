@@ -3,7 +3,6 @@
 import { useState } from 'react';
 import {
   type SortingState,
-  flexRender,
   getCoreRowModel,
   getSortedRowModel,
   getPaginationRowModel,
@@ -24,11 +23,15 @@ import {
 import { useUserPreferences } from '~/contexts/user-preferences-context';
 import { getFormatters } from '~/lib/formatters';
 
-export const PositionsTable: React.FC<{
+export function PositionsTable({
+  positions = [],
+  isLoading,
+  setSelected,
+}: {
   positions: RouterOutputs['positions']['getAllWithHoursWorked'] | undefined;
   isLoading: boolean;
   setSelected?: React.Dispatch<React.SetStateAction<number | null>>;
-}> = ({ positions = [], isLoading, setSelected }) => {
+}) {
   const userPreferences = useUserPreferences();
   const { currency: cf, hours: hf } = getFormatters(userPreferences);
 
@@ -135,4 +138,4 @@ export const PositionsTable: React.FC<{
       </Table>
     </>
   );
-};
+}

@@ -5,14 +5,10 @@ import { appRouter } from '~/server/api/root';
 import { createTRPCContext } from '~/server/api/trpc';
 import { env } from '~/env';
 
-const createContext = async (req: NextRequest) => {
-  return createTRPCContext({
-    headers: req.headers,
-  });
-};
+const createContext = async (req: NextRequest) => createTRPCContext({ headers: req.headers });
 
-const handler = (req: NextRequest) =>
-  fetchRequestHandler({
+function handler(req: NextRequest) {
+  return fetchRequestHandler({
     endpoint: '/api/trpc',
     req,
     router: appRouter,
@@ -24,5 +20,6 @@ const handler = (req: NextRequest) =>
           }
         : undefined,
   });
+}
 
 export { handler as GET, handler as POST };

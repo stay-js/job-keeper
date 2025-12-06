@@ -58,13 +58,19 @@ export const formSchema = z.object({
 
 type FormSchema = z.infer<typeof formSchema>;
 
-export const JobDialog: React.FC<{
+export function JobDialog({
+  positions = [],
+  selected,
+  setSelected,
+  getDefaultValues,
+  defaultMonth,
+}: {
   positions: RouterOutputs['positions']['getAll'] | undefined;
   selected: number | null;
   setSelected: React.Dispatch<React.SetStateAction<number | null>>;
   getDefaultValues: (id: number | null) => Optional<FormSchema, 'date'>;
   defaultMonth: Date;
-}> = ({ positions = [], selected, setSelected, getDefaultValues, defaultMonth }) => {
+}) {
   const utils = api.useUtils();
 
   const userPreferences = useUserPreferences();
@@ -303,4 +309,4 @@ export const JobDialog: React.FC<{
       </DialogContent>
     </Dialog>
   );
-};
+}

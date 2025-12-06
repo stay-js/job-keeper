@@ -51,11 +51,15 @@ export const formSchema = z.object({
 
 type FormSchema = z.infer<typeof formSchema>;
 
-export const UserPreferencesDialog: React.FC<{
+export function UserPreferencesDialog({
+  isOpen,
+  setIsOpen,
+  type,
+}: {
   isOpen: boolean;
   setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
   type: 'initial' | 'update';
-}> = ({ isOpen, setIsOpen, type }) => {
+}) {
   const router = useRouter();
 
   const userPreferences = useUserPreferences();
@@ -213,4 +217,4 @@ export const UserPreferencesDialog: React.FC<{
       </DialogContent>
     </Dialog>
   );
-};
+}

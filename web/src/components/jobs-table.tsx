@@ -19,13 +19,19 @@ import {
 import { useUserPreferences } from '~/contexts/user-preferences-context';
 import { getFormatters } from '~/lib/formatters';
 
-export const JobsTable: React.FC<{
+export function JobsTable({
+  jobs = [],
+  expenses = [],
+  isLoading,
+  setSelected,
+  setSelectedExpense,
+}: {
   jobs: RouterOutputs['jobs']['getAll'] | undefined;
   expenses: RouterOutputs['expenses']['getAll'] | undefined;
   isLoading: boolean;
   setSelected: React.Dispatch<React.SetStateAction<number | null>>;
   setSelectedExpense: React.Dispatch<React.SetStateAction<number | null>>;
-}> = ({ jobs = [], expenses = [], isLoading, setSelected, setSelectedExpense }) => {
+}) {
   const userPreferences = useUserPreferences();
   const { currency: cf, hours: hf } = getFormatters(userPreferences);
 
@@ -138,4 +144,4 @@ export const JobsTable: React.FC<{
       </TableFooter>
     </Table>
   );
-};
+}
