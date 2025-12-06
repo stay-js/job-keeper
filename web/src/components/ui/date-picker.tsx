@@ -9,22 +9,34 @@ import { Popover, PopoverContent, PopoverTrigger } from '~/components/ui/popover
 import { cn } from '~/lib/utils';
 
 export function DatePicker({
+  id,
   date,
   setDate,
   locale,
   className,
   defaultMonth,
+  invalid,
 }: {
+  id?: string;
   date: Date | undefined;
   setDate: React.Dispatch<React.SetStateAction<Date | undefined>>;
   defaultMonth: Date | undefined;
   locale?: string;
   className?: string;
+  invalid?: boolean;
 }) {
   return (
     <Popover>
       <PopoverTrigger asChild>
-        <Button variant="outline" className={cn('justify-start text-left font-normal', className)}>
+        <Button
+          variant="outline"
+          id={id ?? 'date'}
+          className={cn(
+            'justify-start text-left font-normal',
+            !date && !invalid && 'text-muted-foreground',
+            className,
+          )}
+        >
           <CalendarIcon size={18} />
           <span>{date ? date.toLocaleDateString(locale) : 'Select date'}</span>
         </Button>

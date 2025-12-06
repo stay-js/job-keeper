@@ -52,7 +52,7 @@ export const JobsTab: React.FC = () => {
       date: undefined,
       location: '',
       event: '',
-      positionId: 'default',
+      positionId: '',
       hours: '',
     };
 
