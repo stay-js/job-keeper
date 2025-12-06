@@ -37,7 +37,7 @@ export function DateRangePicker({
         </Button>
       </PopoverTrigger>
 
-      <PopoverContent className="w-auto p-0">
+      <PopoverContent className="w-auto overflow-hidden p-0" align="start">
         <Calendar
           ISOWeek
           captionLayout="dropdown"

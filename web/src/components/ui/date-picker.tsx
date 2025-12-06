@@ -25,8 +25,10 @@ export function DatePicker({
   className?: string;
   invalid?: boolean;
 }) {
+  const [open, setOpen] = React.useState(false);
+
   return (
-    <Popover>
+    <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>
         <Button
           variant="outline"
@@ -42,14 +44,17 @@ export function DatePicker({
         </Button>
       </PopoverTrigger>
 
-      <PopoverContent className="w-auto p-0">
+      <PopoverContent className="w-auto overflow-hidden p-0" align="start">
         <Calendar
           required
           ISOWeek
           captionLayout="label"
           mode="single"
           selected={date}
-          onSelect={setDate}
+          onSelect={(date) => {
+            setDate(date);
+            setOpen(false);
+          }}
           defaultMonth={defaultMonth}
         />
       </PopoverContent>
