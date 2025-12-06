@@ -33,7 +33,7 @@ export const DashboardTabs: React.FC = () => {
       value={searchParams.get('tab') ?? 'jobs'}
       onValueChange={handleTabChange}
     >
-      <div className="bg-muted flex w-full items-center justify-between gap-4 rounded-lg p-2">
+      <div className="bg-card flex w-full items-center justify-between gap-4 rounded-lg p-2">
         <TabsList className="bg-transparent p-0">
           <TabsTrigger value="jobs">Jobs</TabsTrigger>
           <TabsTrigger value="positions">Positions</TabsTrigger>
