@@ -35,28 +35,28 @@ export function Hero() {
 
           {isSignedIn ? (
             <div className="flex justify-center gap-4">
-              <Button className="rounded-lg" asChild>
+              <Button size="lg" className="rounded-lg" asChild>
                 <Link href="/dashboard">
                   <span>Go to Dashboard</span>
                   <MoveRight />
                 </Link>
               </Button>
 
-              <Button variant="secondary" className="rounded-lg" asChild>
+              <Button variant="secondary" size="lg" className="rounded-lg" asChild>
                 <Link href="/dashboard">Sign Up</Link>
               </Button>
             </div>
           ) : (
             <div className="flex justify-center gap-4">
               <SignInButton mode="modal">
-                <Button className="rounded-lg">
+                <Button size="lg" className="rounded-lg">
                   <span>Go to Dashboard</span>
                   <MoveRight />
                 </Button>
               </SignInButton>
 
               <SignUpButton mode="modal">
-                <Button variant="secondary" className="rounded-lg">
+                <Button variant="secondary" size="lg" className="rounded-lg">
                   Sign Up
                 </Button>
               </SignUpButton>

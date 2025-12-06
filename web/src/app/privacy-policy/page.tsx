@@ -12,7 +12,7 @@ export const metadata = createMetadata({
 
 export default function PrivacyPolicyPage() {
   return (
-    <div className="container flex flex-col gap-8 py-20">
+    <main className="container flex flex-col gap-8 py-20">
       <h1 className="text-4xl font-bold text-balance">Privacy Policy</h1>
 
       <div className="flex flex-col gap-10">
@@ -293,6 +293,6 @@ export default function PrivacyPolicyPage() {
           </ul>
         </section>
       </div>
-    </div>
+    </main>
   );
 }

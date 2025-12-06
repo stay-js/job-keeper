@@ -28,7 +28,7 @@ export default async function DashboardPage() {
   return (
     <HydrateClient>
       <UserPreferencesProvider value={userPreferences}>
-        <main className="container py-6 md:py-24">
+        <main className="container py-6 md:py-16">
           <DashboardTabs />
 
           {!userPreferences && <SetInitialUserPreferences />}

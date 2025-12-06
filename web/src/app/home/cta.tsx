@@ -10,7 +10,7 @@ export function CTA() {
   const { isSignedIn } = useUser();
 
   return (
-    <section className="py-20 sm:py-32">
+    <section className="py-24">
       <div className="container max-w-4xl text-center">
         <div className="group relative isolate overflow-hidden rounded-3xl bg-linear-to-br from-cyan-500 via-blue-600 to-blue-700 p-0.5 transition-all duration-300 hover:scale-[1.02] hover:shadow-2xl hover:shadow-blue-500/50">
           <div className="relative overflow-hidden rounded-3xl bg-linear-to-br from-cyan-500 via-blue-600 to-blue-700 px-8 py-16 sm:px-16 sm:py-24">
