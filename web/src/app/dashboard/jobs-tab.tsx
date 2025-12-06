@@ -93,7 +93,7 @@ export const JobsTab: React.FC = () => {
           <ChevronLeft size={18} />
         </Button>
 
-        <h1 className="text-3xl font-bold text-white">
+        <h1 className="text-3xl font-bold">
           {year} / {month + 1}.
         </h1>
 

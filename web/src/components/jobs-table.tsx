@@ -99,7 +99,7 @@ export const JobsTable: React.FC<{
 
       {isLoading && <TableSkeleton table={table} />}
 
-      {!isLoading && jobs.length === 0 && <TableNoRecord colSpan={table.getAllColumns().length} />}
+      {!isLoading && jobs.length === 0 && <TableNoRecord columns={table.getAllColumns().length} />}
 
       {!isLoading && jobs.length > 0 && (
         <TableBody>

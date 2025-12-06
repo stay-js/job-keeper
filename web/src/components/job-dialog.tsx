@@ -134,7 +134,7 @@ export const JobDialog: React.FC<{
       open={isOpen}
     >
       <DialogTrigger asChild>
-        <Button size="sm">Add new</Button>
+        <Button>Add new</Button>
       </DialogTrigger>
 
       <DialogContent className="w-11/12 max-w-lg rounded-lg">
@@ -210,7 +210,7 @@ export const JobDialog: React.FC<{
                   <select
                     id="position"
                     {...register('positionId')}
-                    className="flex h-9 w-full cursor-pointer appearance-none items-center justify-between rounded-md border border-neutral-200 bg-white px-3 text-sm ring-offset-white placeholder:text-neutral-500 focus:outline-none focus:ring-2 focus:ring-neutral-950 focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 dark:border-neutral-800 dark:bg-neutral-950 dark:ring-offset-neutral-950 dark:placeholder:text-neutral-400 dark:focus:ring-neutral-300 [&>span]:line-clamp-1"
+                    className="flex h-9 w-full cursor-pointer appearance-none items-center justify-between rounded-md border border-neutral-200 bg-white px-3 text-sm ring-offset-white placeholder:text-neutral-500 focus:ring-2 focus:ring-neutral-950 focus:ring-offset-2 focus:outline-none disabled:cursor-not-allowed disabled:opacity-50 dark:border-neutral-800 dark:bg-neutral-950 dark:ring-offset-neutral-950 dark:placeholder:text-neutral-400 dark:focus:ring-neutral-300 [&>span]:line-clamp-1"
                   >
                     <option value="default">Select position</option>
 
@@ -223,7 +223,7 @@ export const JobDialog: React.FC<{
 
                   <ChevronsUpDown
                     size={14}
-                    className="pointer-events-none absolute right-2 top-1/2 -translate-y-1/2 text-neutral-500"
+                    className="pointer-events-none absolute top-1/2 right-2 -translate-y-1/2 text-neutral-500"
                   />
                 </div>
 
@@ -249,9 +249,7 @@ export const JobDialog: React.FC<{
             </div>
 
             <DialogFooter>
-              <Button type="submit" size="sm">
-                Save changes
-              </Button>
+              <Button type="submit">Save changes</Button>
 
               {selected && (
                 <DeletePopover

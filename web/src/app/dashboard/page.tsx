@@ -34,7 +34,7 @@ const DashboardPage: React.FC = async () => {
   return (
     <HydrateClient>
       <UserPreferencesProvider value={userPreferences ?? fallbackUserPreferences}>
-        <main className="container py-6 text-white md:py-24">
+        <main className="container py-6 md:py-24">
           <DashboardTabs />
 
           {!userPreferences && <SetInitialUserPreferences />}

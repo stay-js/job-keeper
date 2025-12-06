@@ -120,7 +120,7 @@ export const PositionsTable: React.FC<{
 
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <Button variant="outline" size="sm" className="flex items-center gap-2 sm:w-fit">
+            <Button variant="outline" className="flex items-center gap-2 sm:w-fit">
               Columns <ChevronDown size={16} />
             </Button>
           </DropdownMenuTrigger>
@@ -148,7 +148,7 @@ export const PositionsTable: React.FC<{
         {isLoading && <TableSkeleton table={table} />}
 
         {!isLoading && positions.length === 0 && (
-          <TableNoRecord colSpan={table.getAllColumns().length} />
+          <TableNoRecord columns={table.getAllColumns().length} />
         )}
 
         {!isLoading && positions.length > 0 && (

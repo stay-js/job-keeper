@@ -111,7 +111,7 @@ export const ExpensesDialog: React.FC<{
       open={isOpen}
     >
       <DialogTrigger asChild>
-        <Button size="sm">Add expense</Button>
+        <Button>Add expense</Button>
       </DialogTrigger>
 
       <DialogContent className="w-11/12 max-w-lg rounded-lg">
@@ -153,9 +153,7 @@ export const ExpensesDialog: React.FC<{
           </div>
 
           <DialogFooter>
-            <Button type="submit" size="sm">
-              Save changes
-            </Button>
+            <Button type="submit">Save changes</Button>
 
             {selected && (
               <DeletePopover

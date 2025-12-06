@@ -2,13 +2,13 @@ import Link from 'next/link';
 import { Github, Globe } from 'lucide-react';
 
 export const Footer: React.FC = () => (
-  <footer className="border-t bg-neutral-900 text-sm">
+  <footer className="bg-card border-t text-sm">
     <div className="container flex flex-col gap-8 py-12">
       <div className="flex justify-between gap-8 max-md:flex-col">
         <div className="flex flex-col gap-4">
           <h3 className="text-lg font-semibold">JobKeeper</h3>
 
-          <p className="text-balanced max-w-[50ch] leading-relaxed text-neutral-400">
+          <p className="text-balanced text-muted-foreground max-w-[50ch] leading-relaxed">
             Track hours, calculate earnings, and organize all your positions in one place. Built for
             students who juggle multiple jobs.
           </p>
@@ -19,18 +19,21 @@ export const Footer: React.FC = () => (
             <h4 className="font-semibold">Quick Links</h4>
 
             <div className="flex flex-col gap-2">
-              <Link href="/home" className="text-neutral-400 transition-colors hover:text-white">
+              <Link
+                href="/home"
+                className="text-muted-foreground hover:text-foreground transition-colors"
+              >
                 Home
               </Link>
               <Link
                 href="/dashboard"
-                className="text-neutral-400 transition-colors hover:text-white"
+                className="text-muted-foreground hover:text-foreground transition-colors"
               >
                 Dashboard
               </Link>
               <Link
                 href="/privacy-policy"
-                className="text-neutral-400 transition-colors hover:text-white"
+                className="text-muted-foreground hover:text-foreground transition-colors"
               >
                 Privacy Policy
               </Link>
@@ -45,7 +48,7 @@ export const Footer: React.FC = () => (
                 href="https://github.com/stay-js/job-keeper"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex items-center gap-1 text-neutral-400 transition-colors hover:text-white"
+                className="text-muted-foreground hover:text-foreground flex items-center gap-1 transition-colors"
               >
                 <Github size={16} />
                 View on GitHub
@@ -55,7 +58,7 @@ export const Footer: React.FC = () => (
                 href="https://znagy.hu"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex items-center gap-1 text-neutral-400 transition-colors hover:text-white"
+                className="text-muted-foreground hover:text-foreground flex items-center gap-1 transition-colors"
               >
                 <Globe size={16} />
                 znagy.hu
@@ -65,7 +68,7 @@ export const Footer: React.FC = () => (
         </div>
       </div>
 
-      <div className="border-t pt-8 text-neutral-400">
+      <div className="text-muted-foreground border-t pt-8">
         &copy; 2025 JobKeeper. All rights reserved.
       </div>
     </div>
