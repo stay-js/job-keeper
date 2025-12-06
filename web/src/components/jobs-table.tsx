@@ -3,25 +3,35 @@
 import { useState } from 'react';
 import {
   type SortingState,
-  flexRender,
   getCoreRowModel,
   getSortedRowModel,
   useReactTable,
 } from '@tanstack/react-table';
 
 import type { RouterOutputs } from '~/trpc/react';
-import { Table, TableBody, TableCell, TableRow, TableFooter } from '~/components/ui/table';
-import { TableSkeleton, TableNoRecord, TableHeaderWithOrdering } from '~/components/table-utils';
+import { Table, TableCell, TableRow, TableFooter } from '~/components/ui/table';
+import {
+  TableSkeleton,
+  TableNoRecord,
+  TableHeaderWithOrdering,
+  TableContent,
+} from '~/components/table-utils';
 import { useUserPreferences } from '~/contexts/user-preferences-context';
-import { getFormatters } from '~/utils/formatters';
+import { getFormatters } from '~/lib/formatters';
 
-export const JobsTable: React.FC<{
+export function JobsTable({
+  jobs = [],
+  expenses = [],
+  isLoading,
+  setSelected,
+  setSelectedExpense,
+}: {
   jobs: RouterOutputs['jobs']['getAll'] | undefined;
   expenses: RouterOutputs['expenses']['getAll'] | undefined;
   isLoading: boolean;
   setSelected: React.Dispatch<React.SetStateAction<number | null>>;
   setSelectedExpense: React.Dispatch<React.SetStateAction<number | null>>;
-}> = ({ jobs = [], expenses = [], isLoading, setSelected, setSelectedExpense }) => {
+}) {
   const userPreferences = useUserPreferences();
   const { currency: cf, hours: hf } = getFormatters(userPreferences);
 
@@ -99,25 +109,10 @@ export const JobsTable: React.FC<{
 
       {isLoading && <TableSkeleton table={table} />}
 
-      {!isLoading && jobs.length === 0 && <TableNoRecord colSpan={table.getAllColumns().length} />}
+      {!isLoading && jobs.length === 0 && <TableNoRecord columns={table.getAllColumns().length} />}
 
       {!isLoading && jobs.length > 0 && (
-        <TableBody>
-          {table.getRowModel().rows.map((row) => (
-            <TableRow
-              className="cursor-pointer"
-              key={row.id}
-              data-state={row.getIsSelected() && 'selected'}
-              onClick={() => setSelected(row.original.id)}
-            >
-              {row.getVisibleCells().map((cell) => (
-                <TableCell key={cell.id}>
-                  {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                </TableCell>
-              ))}
-            </TableRow>
-          ))}
-        </TableBody>
+        <TableContent table={table} setSelected={setSelected} idAccessor={(row) => row.id} />
       )}
 
       <TableFooter>
@@ -149,4 +144,4 @@ export const JobsTable: React.FC<{
       </TableFooter>
     </Table>
   );
-};
+}

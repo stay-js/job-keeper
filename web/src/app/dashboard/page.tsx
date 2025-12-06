@@ -3,8 +3,8 @@ import { auth, currentUser } from '@clerk/nextjs/server';
 import { api, HydrateClient } from '~/trpc/server';
 import { SetInitialUserPreferences } from '~/components/set-initial-user-preferences';
 import { UserPreferencesProvider } from '~/contexts/user-preferences-context';
-import { createMetadata } from '~/utils/create-metadata';
-import { DashboardTabs } from './dashboard';
+import { createMetadata } from '~/lib/create-metadata';
+import { DashboardTabs } from './dashboard-tabs';
 
 export const metadata = createMetadata({
   path: '/dashboard',
@@ -12,7 +12,7 @@ export const metadata = createMetadata({
   noIndex: true,
 });
 
-const DashboardPage: React.FC = async () => {
+export default async function DashboardPage() {
   const authObject = await auth();
   const user = await currentUser();
 
@@ -34,7 +34,7 @@ const DashboardPage: React.FC = async () => {
   return (
     <HydrateClient>
       <UserPreferencesProvider value={userPreferences ?? fallbackUserPreferences}>
-        <main className="container py-6 text-white md:py-24">
+        <main className="container py-6 md:py-24">
           <DashboardTabs />
 
           {!userPreferences && <SetInitialUserPreferences />}
@@ -42,6 +42,4 @@ const DashboardPage: React.FC = async () => {
       </UserPreferencesProvider>
     </HydrateClient>
   );
-};
-
-export default DashboardPage;
+}

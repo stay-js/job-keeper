@@ -3,9 +3,8 @@
 import { useState, useEffect } from 'react';
 import type { Optional } from 'utility-types';
 import { z } from 'zod';
-import { type SubmitHandler, useForm } from 'react-hook-form';
+import { type SubmitHandler, Controller, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { ChevronsUpDown } from 'lucide-react';
 
 import { api, type RouterOutputs } from '~/trpc/react';
 import {
@@ -18,14 +17,23 @@ import {
   DialogTrigger,
 } from '~/components/ui/dialog';
 import { Input } from '~/components/ui/input';
-import { Label } from '~/components/ui/label';
+import {
+  Select,
+  SelectTrigger,
+  SelectValue,
+  SelectContent,
+  SelectGroup,
+  SelectLabel,
+  SelectItem,
+} from '~/components/ui/select';
+import { Field, FieldError, FieldGroup, FieldLabel } from '~/components/ui/field';
 import { DatePicker } from '~/components/ui/date-picker';
 import { DeletePopover } from '~/components/delete-popover';
 import { Button } from '~/components/ui/button';
 import { useUserPreferences } from '~/contexts/user-preferences-context';
-import { getFormatters } from '~/utils/formatters';
-import { createDateOnlyString } from '~/utils/create-date-only-string';
-import { errorToast } from '~/utils/error-toast';
+import { getFormatters } from '~/lib/formatters';
+import { createDateOnlyString } from '~/lib/create-date-only-string';
+import { errorToast } from '~/lib/error-toast';
 
 export const formSchema = z.object({
   date: z.date({ error: 'Please select a valid date!' }),
@@ -50,37 +58,31 @@ export const formSchema = z.object({
 
 type FormSchema = z.infer<typeof formSchema>;
 
-export const JobDialog: React.FC<{
+export function JobDialog({
+  positions = [],
+  selected,
+  setSelected,
+  getDefaultValues,
+  defaultMonth,
+}: {
   positions: RouterOutputs['positions']['getAll'] | undefined;
   selected: number | null;
   setSelected: React.Dispatch<React.SetStateAction<number | null>>;
   getDefaultValues: (id: number | null) => Optional<FormSchema, 'date'>;
   defaultMonth: Date;
-}> = ({ positions = [], selected, setSelected, getDefaultValues, defaultMonth }) => {
+}) {
   const utils = api.useUtils();
 
   const userPreferences = useUserPreferences();
   const { currency: cf } = getFormatters(userPreferences);
 
   const [isOpen, setIsOpen] = useState(false);
-  const [date, setDate] = useState<Date | undefined>();
 
   const canCreate = positions.length > 0;
 
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-    reset,
-    setValue,
-  } = useForm<FormSchema>({ resolver: zodResolver(formSchema) });
-
-  register('date');
-  useEffect(() => {
-    if (!date) return;
-
-    setValue('date', date);
-  }, [date, setValue]);
+  const { handleSubmit, reset, control } = useForm<FormSchema>({
+    resolver: zodResolver(formSchema),
+  });
 
   const { mutate: create } = api.jobs.create.useMutation({
     onSuccess: () => utils.jobs.invalidate(),
@@ -113,28 +115,20 @@ export const JobDialog: React.FC<{
   };
 
   useEffect(() => {
-    const defaultValues = getDefaultValues(selected);
-    setDate(defaultValues.date);
-    reset(defaultValues);
-
+    reset(getDefaultValues(selected));
     if (selected) setIsOpen(true);
-  }, [selected, reset, getDefaultValues, setDate]);
+  }, [selected, reset, getDefaultValues]);
 
   return (
     <Dialog
       onOpenChange={(state) => {
         setIsOpen(state);
-
-        if (!state) {
-          setSelected(null);
-          setDate(undefined);
-          reset();
-        }
+        if (!state) setSelected(null);
       }}
       open={isOpen}
     >
       <DialogTrigger asChild>
-        <Button size="sm">Add new</Button>
+        <Button>Add new</Button>
       </DialogTrigger>
 
       <DialogContent className="w-11/12 max-w-lg rounded-lg">
@@ -155,103 +149,148 @@ export const JobDialog: React.FC<{
         {canCreate && (
           <form onSubmit={handleSubmit(onSubmit)}>
             <div className="grid gap-4 py-4">
-              <div className="grid grid-cols-4 items-center gap-4 gap-y-2">
-                <Label htmlFor="date" className="text-right">
-                  Date: <span className="text-red-500">*</span>
-                </Label>
+              <FieldGroup>
+                <Controller
+                  name="date"
+                  control={control}
+                  render={({ field, fieldState }) => (
+                    <Field data-invalid={fieldState.invalid}>
+                      <div className="flex flex-wrap justify-between gap-x-4 gap-y-2">
+                        <FieldLabel htmlFor="date">
+                          Date: <span className="text-red-500">*</span>
+                        </FieldLabel>
+                        {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
+                      </div>
 
-                <DatePicker
-                  className="col-span-3"
-                  date={date}
-                  setDate={setDate}
-                  locale={userPreferences.locale}
-                  defaultMonth={defaultMonth}
+                      <DatePicker
+                        invalid={fieldState.invalid}
+                        id="date"
+                        date={field.value}
+                        setDate={field.onChange}
+                        locale={userPreferences.locale}
+                        defaultMonth={defaultMonth}
+                      />
+                    </Field>
+                  )}
                 />
+              </FieldGroup>
 
-                {errors.date && (
-                  <span className="col-span-full text-right text-xs text-red-500 dark:text-red-500">
-                    {errors.date.message}
-                  </span>
-                )}
-              </div>
+              <FieldGroup>
+                <Controller
+                  name="location"
+                  control={control}
+                  render={({ field, fieldState }) => (
+                    <Field data-invalid={fieldState.invalid}>
+                      <div className="flex flex-wrap justify-between gap-x-4 gap-y-2">
+                        <FieldLabel htmlFor="location">
+                          Location: <span className="text-red-500">*</span>
+                        </FieldLabel>
+                        {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
+                      </div>
 
-              <div className="grid grid-cols-4 items-center gap-4 gap-y-2">
-                <Label htmlFor="location" className="text-right">
-                  Location: <span className="text-red-500">*</span>
-                </Label>
-                <Input id="location" className="col-span-3" {...register('location')} />
+                      <Input
+                        {...field}
+                        id="location"
+                        type="text"
+                        placeholder="Location"
+                        className="bg-background border-border text-foreground"
+                        aria-invalid={fieldState.invalid}
+                      />
+                    </Field>
+                  )}
+                />
+              </FieldGroup>
 
-                {errors.location && (
-                  <span className="col-span-full text-right text-xs text-red-500 dark:text-red-500">
-                    {errors.location.message}
-                  </span>
-                )}
-              </div>
+              <FieldGroup>
+                <Controller
+                  name="event"
+                  control={control}
+                  render={({ field, fieldState }) => (
+                    <Field data-invalid={fieldState.invalid}>
+                      <div className="flex flex-wrap justify-between gap-x-4 gap-y-2">
+                        <FieldLabel htmlFor="event">Event:</FieldLabel>
+                        {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
+                      </div>
 
-              <div className="grid grid-cols-4 items-center gap-4 gap-y-2">
-                <Label htmlFor="event" className="text-right">
-                  Event:
-                </Label>
-                <Input id="event" className="col-span-3" {...register('event')} />
+                      <Input
+                        {...field}
+                        id="event"
+                        type="text"
+                        placeholder="Event"
+                        className="bg-background border-border text-foreground"
+                        aria-invalid={fieldState.invalid}
+                      />
+                    </Field>
+                  )}
+                />
+              </FieldGroup>
 
-                {errors.event && (
-                  <span className="col-span-full text-right text-xs text-red-500 dark:text-red-500">
-                    {errors.event.message}
-                  </span>
-                )}
-              </div>
+              <FieldGroup>
+                <Controller
+                  name="positionId"
+                  control={control}
+                  render={({ field, fieldState }) => (
+                    <Field data-invalid={fieldState.invalid}>
+                      <div className="flex flex-wrap justify-between gap-x-4 gap-y-2">
+                        <FieldLabel htmlFor="positionId">
+                          Position: <span className="text-red-500">*</span>
+                        </FieldLabel>
+                        {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
+                      </div>
 
-              <div className="grid grid-cols-4 items-center gap-4 gap-y-2">
-                <Label htmlFor="position" className="text-right">
-                  Position: <span className="text-red-500">*</span>
-                </Label>
+                      <Select
+                        {...field}
+                        onValueChange={field.onChange}
+                        aria-invalid={fieldState.invalid}
+                      >
+                        <SelectTrigger id="positionId" aria-invalid={fieldState.invalid}>
+                          <SelectValue placeholder="Select position" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectGroup>
+                            <SelectLabel>Positions</SelectLabel>
+                            {positions.map((position) => (
+                              <SelectItem key={position.id} value={position.id.toString()}>
+                                {position.name} ({cf.format(position.wage)})
+                              </SelectItem>
+                            ))}
+                          </SelectGroup>
+                        </SelectContent>
+                      </Select>
+                    </Field>
+                  )}
+                />
+              </FieldGroup>
 
-                <div className="relative col-span-3">
-                  <select
-                    id="position"
-                    {...register('positionId')}
-                    className="flex h-9 w-full cursor-pointer appearance-none items-center justify-between rounded-md border border-neutral-200 bg-white px-3 text-sm ring-offset-white placeholder:text-neutral-500 focus:outline-none focus:ring-2 focus:ring-neutral-950 focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 dark:border-neutral-800 dark:bg-neutral-950 dark:ring-offset-neutral-950 dark:placeholder:text-neutral-400 dark:focus:ring-neutral-300 [&>span]:line-clamp-1"
-                  >
-                    <option value="default">Select position</option>
+              <FieldGroup>
+                <Controller
+                  name="hours"
+                  control={control}
+                  render={({ field, fieldState }) => (
+                    <Field data-invalid={fieldState.invalid}>
+                      <div className="flex flex-wrap justify-between gap-x-4 gap-y-2">
+                        <FieldLabel htmlFor="hours">
+                          Hours: <span className="text-red-500">*</span>
+                        </FieldLabel>
+                        {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
+                      </div>
 
-                    {positions.map((position) => (
-                      <option key={position.id} value={position.id}>
-                        {position.name} ({cf.format(position.wage)})
-                      </option>
-                    ))}
-                  </select>
-
-                  <ChevronsUpDown
-                    size={14}
-                    className="pointer-events-none absolute right-2 top-1/2 -translate-y-1/2 text-neutral-500"
-                  />
-                </div>
-
-                {errors.positionId && (
-                  <span className="col-span-full text-right text-xs text-red-500 dark:text-red-500">
-                    {errors.positionId.message}
-                  </span>
-                )}
-              </div>
-
-              <div className="grid grid-cols-4 items-center gap-4 gap-y-2">
-                <Label htmlFor="hours" className="text-right">
-                  Hours: <span className="text-red-500">*</span>
-                </Label>
-                <Input id="hours" className="col-span-3" {...register('hours')} />
-
-                {errors.hours && (
-                  <span className="col-span-full text-right text-xs text-red-500 dark:text-red-500">
-                    {errors.hours.message}
-                  </span>
-                )}
-              </div>
+                      <Input
+                        {...field}
+                        id="hours"
+                        type="text"
+                        placeholder="Hours"
+                        className="bg-background border-border text-foreground"
+                        aria-invalid={fieldState.invalid}
+                      />
+                    </Field>
+                  )}
+                />
+              </FieldGroup>
             </div>
 
             <DialogFooter>
-              <Button type="submit" size="sm">
-                Save changes
-              </Button>
+              <Button type="submit">Save changes</Button>
 
               {selected && (
                 <DeletePopover
@@ -270,4 +309,4 @@ export const JobDialog: React.FC<{
       </DialogContent>
     </Dialog>
   );
-};
+}

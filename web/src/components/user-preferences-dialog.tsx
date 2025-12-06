@@ -2,10 +2,8 @@
 
 import { useRouter } from 'next/navigation';
 import { z } from 'zod';
-import { useForm, type SubmitHandler } from 'react-hook-form';
+import { type SubmitHandler, Controller, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { ChevronsUpDown } from 'lucide-react';
-import locale from 'locale-codes';
 
 import { api } from '~/trpc/react';
 import {
@@ -16,10 +14,20 @@ import {
   DialogHeader,
   DialogTitle,
 } from '~/components/ui/dialog';
-import { Label } from '~/components/ui/label';
+import { Field, FieldError, FieldGroup, FieldLabel } from '~/components/ui/field';
+import {
+  Select,
+  SelectTrigger,
+  SelectValue,
+  SelectContent,
+  SelectGroup,
+  SelectLabel,
+  SelectItem,
+} from '~/components/ui/select';
 import { Button } from '~/components/ui/button';
 import { useUserPreferences } from '~/contexts/user-preferences-context';
-import { errorToast } from '~/utils/error-toast';
+import { errorToast } from '~/lib/error-toast';
+import { LOCALES, CURRENCIES } from '~/constants/locale-curreny';
 
 export const formSchema = z.object({
   currency: z
@@ -43,20 +51,20 @@ export const formSchema = z.object({
 
 type FormSchema = z.infer<typeof formSchema>;
 
-export const UserPreferencesDialog: React.FC<{
+export function UserPreferencesDialog({
+  isOpen,
+  setIsOpen,
+  type,
+}: {
   isOpen: boolean;
   setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
   type: 'initial' | 'update';
-}> = ({ isOpen, setIsOpen, type }) => {
+}) {
   const router = useRouter();
 
   const userPreferences = useUserPreferences();
 
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm<FormSchema>({
+  const { handleSubmit, control } = useForm<FormSchema>({
     resolver: zodResolver(formSchema),
     defaultValues: { ...userPreferences, precision: String(userPreferences.precision) },
   });
@@ -88,113 +96,125 @@ export const UserPreferencesDialog: React.FC<{
 
         <form onSubmit={handleSubmit(onSubmit)}>
           <div className="grid gap-4 py-4">
-            <div className="grid grid-cols-4 items-center gap-4 gap-y-2">
-              <Label htmlFor="locale" className="text-right">
-                Locale: <span className="text-red-500">*</span>
-              </Label>
+            <FieldGroup>
+              <Controller
+                name="locale"
+                control={control}
+                render={({ field, fieldState }) => (
+                  <Field data-invalid={fieldState.invalid}>
+                    <div className="flex flex-wrap justify-between gap-x-4 gap-y-2">
+                      <FieldLabel htmlFor="locale">
+                        Locale: <span className="text-red-500">*</span>
+                      </FieldLabel>
+                      {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
+                    </div>
 
-              <div className="relative col-span-3">
-                <select
-                  id="date-format"
-                  {...register('locale')}
-                  className="flex h-10 w-full cursor-pointer appearance-none items-center justify-between rounded-md border border-neutral-200 bg-white p-2 text-sm ring-offset-white placeholder:text-neutral-500 focus:outline-none focus:ring-2 focus:ring-neutral-950 focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 dark:border-neutral-800 dark:bg-neutral-950 dark:ring-offset-neutral-950 dark:placeholder:text-neutral-400 dark:focus:ring-neutral-300 [&>span]:line-clamp-1"
-                >
-                  <option value="">Select locale</option>
+                    <Select
+                      {...field}
+                      onValueChange={field.onChange}
+                      aria-invalid={fieldState.invalid}
+                    >
+                      <SelectTrigger id="locale" aria-invalid={fieldState.invalid}>
+                        <SelectValue placeholder="Select locale" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectGroup>
+                          <SelectLabel>Locales</SelectLabel>
+                          {LOCALES.map((locale) => (
+                            <SelectItem key={locale} value={locale}>
+                              {locale}
+                            </SelectItem>
+                          ))}
+                        </SelectGroup>
+                      </SelectContent>
+                    </Select>
+                  </Field>
+                )}
+              />
+            </FieldGroup>
 
-                  {locale.all.map((format) => (
-                    <option key={format.tag} value={format.tag}>
-                      {format.name} ({format.tag})
-                    </option>
-                  ))}
-                </select>
+            <FieldGroup>
+              <Controller
+                name="currency"
+                control={control}
+                render={({ field, fieldState }) => (
+                  <Field data-invalid={fieldState.invalid}>
+                    <div className="flex flex-wrap justify-between gap-x-4 gap-y-2">
+                      <FieldLabel htmlFor="currency">
+                        Currency: <span className="text-red-500">*</span>
+                      </FieldLabel>
+                      {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
+                    </div>
 
-                <ChevronsUpDown
-                  size={14}
-                  className="pointer-events-none absolute right-2 top-1/2 -translate-y-1/2 text-neutral-500"
-                />
-              </div>
+                    <Select
+                      {...field}
+                      onValueChange={field.onChange}
+                      aria-invalid={fieldState.invalid}
+                    >
+                      <SelectTrigger id="currency" aria-invalid={fieldState.invalid}>
+                        <SelectValue placeholder="Select currency" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectGroup>
+                          <SelectLabel>Currencies</SelectLabel>
 
-              {errors.locale && (
-                <span className="col-span-full text-right text-xs text-red-500 dark:text-red-500">
-                  {errors.locale.message}
-                </span>
-              )}
-            </div>
+                          {CURRENCIES.map((currency) => (
+                            <SelectItem key={currency} value={currency}>
+                              {currency}
+                            </SelectItem>
+                          ))}
+                        </SelectGroup>
+                      </SelectContent>
+                    </Select>
+                  </Field>
+                )}
+              />
+            </FieldGroup>
 
-            <div className="grid grid-cols-4 items-center gap-4 gap-y-2">
-              <Label htmlFor="currency" className="text-right">
-                Currency: <span className="text-red-500">*</span>
-              </Label>
+            <FieldGroup>
+              <Controller
+                name="precision"
+                control={control}
+                render={({ field, fieldState }) => (
+                  <Field data-invalid={fieldState.invalid}>
+                    <div className="flex flex-wrap justify-between gap-x-4 gap-y-2">
+                      <FieldLabel htmlFor="precision">
+                        Precision (Rounding): <span className="text-red-500">*</span>
+                      </FieldLabel>
+                      {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
+                    </div>
 
-              <div className="relative col-span-3">
-                <select
-                  id="currency"
-                  {...register('currency')}
-                  className="flex h-10 w-full cursor-pointer appearance-none items-center justify-between rounded-md border border-neutral-200 bg-white p-2 text-sm ring-offset-white placeholder:text-neutral-500 focus:outline-none focus:ring-2 focus:ring-neutral-950 focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 dark:border-neutral-800 dark:bg-neutral-950 dark:ring-offset-neutral-950 dark:placeholder:text-neutral-400 dark:focus:ring-neutral-300 [&>span]:line-clamp-1"
-                >
-                  <option value="">Select currency</option>
+                    <Select
+                      {...field}
+                      onValueChange={field.onChange}
+                      aria-invalid={fieldState.invalid}
+                    >
+                      <SelectTrigger id="precision" aria-invalid={fieldState.invalid}>
+                        <SelectValue placeholder="Select precision" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectGroup>
+                          <SelectLabel>Precisions</SelectLabel>
 
-                  {Intl.supportedValuesOf('currency').map((currency) => (
-                    <option key={currency} value={currency}>
-                      {currency}
-                    </option>
-                  ))}
-                </select>
-
-                <ChevronsUpDown
-                  size={14}
-                  className="pointer-events-none absolute right-2 top-1/2 -translate-y-1/2 text-neutral-500"
-                />
-              </div>
-
-              {errors.currency && (
-                <span className="col-span-full text-right text-xs text-red-500 dark:text-red-500">
-                  {errors.currency.message}
-                </span>
-              )}
-            </div>
-
-            <div className="grid grid-cols-4 items-center gap-4 gap-y-2">
-              <Label htmlFor="precision" className="text-right">
-                Precision (Rounding): <span className="text-red-500">*</span>
-              </Label>
-
-              <div className="relative col-span-3">
-                <select
-                  id="precision"
-                  {...register('precision')}
-                  className="flex h-10 w-full cursor-pointer appearance-none items-center justify-between rounded-md border border-neutral-200 bg-white p-2 text-sm ring-offset-white placeholder:text-neutral-500 focus:outline-none focus:ring-2 focus:ring-neutral-950 focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 dark:border-neutral-800 dark:bg-neutral-950 dark:ring-offset-neutral-950 dark:placeholder:text-neutral-400 dark:focus:ring-neutral-300 [&>span]:line-clamp-1"
-                >
-                  <option value="">Select precision</option>
-
-                  {[0, 1, 2].map((precision) => (
-                    <option key={precision} value={precision}>
-                      {precision}
-                    </option>
-                  ))}
-                </select>
-
-                <ChevronsUpDown
-                  size={14}
-                  className="pointer-events-none absolute right-2 top-1/2 -translate-y-1/2 text-neutral-500"
-                />
-              </div>
-
-              {errors.precision && (
-                <span className="col-span-full text-right text-xs text-red-500 dark:text-red-500">
-                  {errors.precision.message}
-                </span>
-              )}
-            </div>
+                          {['0', '1', '2'].map((precision) => (
+                            <SelectItem key={precision} value={precision}>
+                              {precision}
+                            </SelectItem>
+                          ))}
+                        </SelectGroup>
+                      </SelectContent>
+                    </Select>
+                  </Field>
+                )}
+              />
+            </FieldGroup>
           </div>
 
           <DialogFooter>
-            <Button type="submit" size="sm">
-              Save changes
-            </Button>
+            <Button type="submit">Save changes</Button>
           </DialogFooter>
         </form>
       </DialogContent>
     </Dialog>
   );
-};
+}

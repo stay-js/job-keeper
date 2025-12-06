@@ -8,19 +8,22 @@ export type UserPreferences = Omit<NonNullable<RouterOutputs['userPreferences'][
 
 const UserPreferencesContext = createContext<UserPreferences | undefined>(undefined);
 
-export const UserPreferencesProvider: React.FC<{
+export function UserPreferencesProvider({
+  value,
+  children,
+}: {
   value: UserPreferences;
   children: React.ReactNode;
-}> = ({ value, children }) => {
+}) {
   return (
     <UserPreferencesContext.Provider value={value}>{children}</UserPreferencesContext.Provider>
   );
-};
+}
 
-export const useUserPreferences = () => {
+export function useUserPreferences() {
   const ctx = useContext(UserPreferencesContext);
 
   if (!ctx) throw new Error('useUserPreferences must be used within a UserPreferencesProvider');
 
   return ctx;
-};
+}

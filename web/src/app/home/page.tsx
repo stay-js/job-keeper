@@ -1,4 +1,4 @@
-import { createMetadata } from '~/utils/create-metadata';
+import { createMetadata } from '~/lib/create-metadata';
 import { Hero } from './hero';
 import { DashboardPreview } from './dashboard-preview';
 import { CTA } from './cta';
@@ -13,12 +13,12 @@ export const metadata = createMetadata({
   description,
 });
 
-export const HomePage: React.FC = async () => (
-  <main>
-    <Hero />
-    <DashboardPreview />
-    <CTA />
-  </main>
-);
-
-export default HomePage;
+export default async function HomePage() {
+  return (
+    <main>
+      <Hero />
+      <DashboardPreview />
+      <CTA />
+    </main>
+  );
+}

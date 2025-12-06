@@ -9,7 +9,7 @@ import { JobsTab } from './jobs-tab';
 import { PositionsTab } from './positions-tab';
 import { StatisticsTab } from './statistics-tab';
 
-export const DashboardTabs: React.FC = () => {
+export function DashboardTabs() {
   const pathname = usePathname();
   const searchParams = useSearchParams();
 
@@ -30,19 +30,18 @@ export const DashboardTabs: React.FC = () => {
   return (
     <Tabs
       defaultValue="jobs"
-      className="mx-auto flex max-w-5xl flex-col gap-4"
       value={searchParams.get('tab') ?? 'jobs'}
       onValueChange={handleTabChange}
     >
-      <TabsList className="h-fit w-full items-center p-2">
-        <TabsTrigger value="jobs">Jobs</TabsTrigger>
-        <TabsTrigger value="positions">Positions</TabsTrigger>
-        <TabsTrigger value="statistics">Statistics</TabsTrigger>
+      <div className="bg-card flex w-full items-center justify-between gap-4 rounded-lg p-2">
+        <TabsList className="bg-transparent p-0">
+          <TabsTrigger value="jobs">Jobs</TabsTrigger>
+          <TabsTrigger value="positions">Positions</TabsTrigger>
+          <TabsTrigger value="statistics">Statistics</TabsTrigger>
+        </TabsList>
 
-        <div className="ms-auto flex">
-          <CustomUserButton />
-        </div>
-      </TabsList>
+        <CustomUserButton />
+      </div>
 
       <TabsContent value="jobs">
         <JobsTab />
@@ -55,4 +54,4 @@ export const DashboardTabs: React.FC = () => {
       </TabsContent>
     </Tabs>
   );
-};
+}

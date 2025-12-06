@@ -7,11 +7,11 @@ import { api } from '~/trpc/react';
 import { JobsTable } from '~/components/jobs-table';
 import { Button } from '~/components/ui/button';
 import { JobDialog } from '~/components/job-dialog';
-import { ExpensesDialog } from '~/components/expenses-dialog';
+import { ExpenseDialog } from '~/components/expense-dialog';
 import { useUserPreferences } from '~/contexts/user-preferences-context';
-import { getFormatters } from '~/utils/formatters';
+import { getFormatters } from '~/lib/formatters';
 
-export const JobsTab: React.FC = () => {
+export function JobsTab() {
   const { data: jobs, isLoading: isJobsLoading } = api.jobs.getAll.useQuery();
   const { data: expenses, isLoading: isExpensesLoading } = api.expenses.getAll.useQuery();
   const { data: positions } = api.positions.getAll.useQuery();
@@ -52,7 +52,7 @@ export const JobsTab: React.FC = () => {
       date: undefined,
       location: '',
       event: '',
-      positionId: 'default',
+      positionId: '',
       hours: '',
     };
 
@@ -93,7 +93,7 @@ export const JobsTab: React.FC = () => {
           <ChevronLeft size={18} />
         </Button>
 
-        <h1 className="text-3xl font-bold text-white">
+        <h1 className="text-3xl font-bold">
           {year} / {month + 1}.
         </h1>
 
@@ -119,7 +119,7 @@ export const JobsTab: React.FC = () => {
           defaultMonth={monthDate}
         />
 
-        <ExpensesDialog
+        <ExpenseDialog
           selected={selectedExpense}
           setSelected={setSelectedExpense}
           getDefaultValues={getDefaultExpenseValues}
@@ -128,4 +128,4 @@ export const JobsTab: React.FC = () => {
       </div>
     </div>
   );
-};
+}

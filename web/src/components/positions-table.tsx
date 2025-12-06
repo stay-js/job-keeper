@@ -3,33 +3,35 @@
 import { useState } from 'react';
 import {
   type SortingState,
-  flexRender,
   getCoreRowModel,
   getSortedRowModel,
   getPaginationRowModel,
   useReactTable,
 } from '@tanstack/react-table';
-import { ChevronDown, ChevronLeft, ChevronRight, ChevronFirst, ChevronLast } from 'lucide-react';
+import { ChevronLeft, ChevronRight, ChevronFirst, ChevronLast } from 'lucide-react';
 
 import type { RouterOutputs } from '~/trpc/react';
-import { Table, TableBody, TableCell, TableRow } from '~/components/ui/table';
+import { Table } from '~/components/ui/table';
 import { Button } from '~/components/ui/button';
 import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuTrigger,
-  DropdownMenuCheckboxItem,
-} from '~/components/ui/dropdown-menu';
-import { TableSkeleton, TableNoRecord, TableHeaderWithOrdering } from '~/components/table-utils';
+  TableSkeleton,
+  TableNoRecord,
+  TableHeaderWithOrdering,
+  TableColumnSelector,
+  TableContent,
+} from '~/components/table-utils';
 import { useUserPreferences } from '~/contexts/user-preferences-context';
-import { getFormatters } from '~/utils/formatters';
-import { cn } from '~/utils/cn';
+import { getFormatters } from '~/lib/formatters';
 
-export const PositionsTable: React.FC<{
+export function PositionsTable({
+  positions = [],
+  isLoading,
+  setSelected,
+}: {
   positions: RouterOutputs['positions']['getAllWithHoursWorked'] | undefined;
   isLoading: boolean;
   setSelected?: React.Dispatch<React.SetStateAction<number | null>>;
-}> = ({ positions = [], isLoading, setSelected }) => {
+}) {
   const userPreferences = useUserPreferences();
   const { currency: cf, hours: hf } = getFormatters(userPreferences);
 
@@ -118,28 +120,7 @@ export const PositionsTable: React.FC<{
           </div>
         </div>
 
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="outline" size="sm" className="flex items-center gap-2 sm:w-fit">
-              Columns <ChevronDown size={16} />
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent>
-            {table
-              .getAllColumns()
-              .filter((column) => column.getCanHide())
-              .map((column) => (
-                <DropdownMenuCheckboxItem
-                  className="cursor-pointer"
-                  key={column.id}
-                  checked={column.getIsVisible()}
-                  onCheckedChange={(value) => column.toggleVisibility(!!value)}
-                >
-                  {column.columnDef.header?.toString()}
-                </DropdownMenuCheckboxItem>
-              ))}
-          </DropdownMenuContent>
-        </DropdownMenu>
+        <TableColumnSelector table={table} />
       </div>
 
       <Table>
@@ -148,28 +129,13 @@ export const PositionsTable: React.FC<{
         {isLoading && <TableSkeleton table={table} />}
 
         {!isLoading && positions.length === 0 && (
-          <TableNoRecord colSpan={table.getAllColumns().length} />
+          <TableNoRecord columns={table.getAllColumns().length} />
         )}
 
         {!isLoading && positions.length > 0 && (
-          <TableBody>
-            {table.getRowModel().rows.map((row) => (
-              <TableRow
-                className={cn(setSelected && 'cursor-pointer')}
-                key={row.id}
-                data-state={row.getIsSelected() && 'selected'}
-                onClick={setSelected ? () => setSelected(row.original.id) : undefined}
-              >
-                {row.getVisibleCells().map((cell) => (
-                  <TableCell key={cell.id}>
-                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                  </TableCell>
-                ))}
-              </TableRow>
-            ))}
-          </TableBody>
+          <TableContent table={table} setSelected={setSelected} idAccessor={(row) => row.id} />
         )}
       </Table>
     </>
   );
-};
+}

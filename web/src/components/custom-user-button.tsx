@@ -6,7 +6,7 @@ import { Globe } from 'lucide-react';
 
 import { UserPreferencesDialog } from './user-preferences-dialog';
 
-export const CustomUserButton = () => {
+export function CustomUserButton() {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
@@ -24,4 +24,4 @@ export const CustomUserButton = () => {
       <UserPreferencesDialog isOpen={isOpen} setIsOpen={setIsOpen} type="update" />
     </>
   );
-};
+}
