@@ -110,7 +110,6 @@ export const JobDialog: React.FC<{
 
   useEffect(() => {
     reset(getDefaultValues(selected));
-
     if (selected) setIsOpen(true);
   }, [selected, reset, getDefaultValues]);
 
@@ -118,11 +117,7 @@ export const JobDialog: React.FC<{
     <Dialog
       onOpenChange={(state) => {
         setIsOpen(state);
-
-        if (!state) {
-          setSelected(null);
-          reset(getDefaultValues(null));
-        }
+        if (!state) setSelected(null);
       }}
       open={isOpen}
     >
