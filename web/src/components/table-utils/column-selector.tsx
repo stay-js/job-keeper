@@ -13,7 +13,7 @@ export function TableColumnSelector<TData>({ table }: { table: Table<TData> }) {
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Button variant="outline" className="max-sm:w-full">
-          <span>Oszlopok</span> <ChevronDown size={16} />
+          <span>Columns</span> <ChevronDown size={16} />
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">
