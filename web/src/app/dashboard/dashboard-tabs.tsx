@@ -34,7 +34,7 @@ export function DashboardTabs() {
       onValueChange={handleTabChange}
     >
       <div className="bg-card flex w-full items-center justify-between gap-4 rounded-lg p-2">
-        <TabsList className="bg-transparent p-0">
+        <TabsList className="h-fit items-center bg-transparent p-0">
           <TabsTrigger value="jobs">Jobs</TabsTrigger>
           <TabsTrigger value="positions">Positions</TabsTrigger>
           <TabsTrigger value="statistics">Statistics</TabsTrigger>
