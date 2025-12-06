@@ -41,7 +41,7 @@ export const formSchema = z.object({
 
 type FormSchema = z.infer<typeof formSchema>;
 
-export const ExpensesDialog: React.FC<{
+export const ExpenseDialog: React.FC<{
   selected: number | null;
   setSelected: React.Dispatch<React.SetStateAction<number | null>>;
   getDefaultValues: (id: number | null) => Omit<FormSchema, 'date'>;

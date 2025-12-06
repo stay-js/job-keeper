@@ -7,7 +7,7 @@ import { api } from '~/trpc/react';
 import { JobsTable } from '~/components/jobs-table';
 import { Button } from '~/components/ui/button';
 import { JobDialog } from '~/components/job-dialog';
-import { ExpensesDialog } from '~/components/expenses-dialog';
+import { ExpenseDialog } from '~/components/expense-dialog';
 import { useUserPreferences } from '~/contexts/user-preferences-context';
 import { getFormatters } from '~/lib/formatters';
 
@@ -119,7 +119,7 @@ export const JobsTab: React.FC = () => {
           defaultMonth={monthDate}
         />
 
-        <ExpensesDialog
+        <ExpenseDialog
           selected={selectedExpense}
           setSelected={setSelectedExpense}
           getDefaultValues={getDefaultExpenseValues}
