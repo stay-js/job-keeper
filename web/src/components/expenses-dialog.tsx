@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { z } from 'zod';
-import { type SubmitHandler, useForm } from 'react-hook-form';
+import { type SubmitHandler, Controller, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 
 import { api } from '~/trpc/react';
@@ -17,7 +17,7 @@ import {
 } from '~/components/ui/dialog';
 import { DeletePopover } from '~/components/delete-popover';
 import { Button } from '~/components/ui/button';
-import { Label } from '~/components/ui/label';
+import { Field, FieldError, FieldGroup, FieldLabel } from '~/components/ui/field';
 import { Input } from '~/components/ui/input';
 import { createDateOnlyString } from '~/lib/create-date-only-string';
 import { errorToast } from '~/lib/error-toast';
@@ -51,16 +51,9 @@ export const ExpensesDialog: React.FC<{
 
   const [isOpen, setIsOpen] = useState(false);
 
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-    reset,
-    setValue,
-  } = useForm<FormSchema>({ resolver: zodResolver(formSchema) });
-
-  register('date');
-  setValue('date', date);
+  const { handleSubmit, reset, control } = useForm<FormSchema>({
+    resolver: zodResolver(formSchema),
+  });
 
   const { mutate: create } = api.expenses.create.useMutation({
     onSuccess: () => utils.expenses.invalidate(),
@@ -93,10 +86,10 @@ export const ExpensesDialog: React.FC<{
 
   useEffect(() => {
     const defaultValues = getDefaultValues(selected);
-    reset(defaultValues);
+    reset({ ...defaultValues, date });
 
     if (selected) setIsOpen(true);
-  }, [selected, reset, getDefaultValues]);
+  }, [selected, reset, getDefaultValues, date]);
 
   return (
     <Dialog
@@ -126,30 +119,57 @@ export const ExpensesDialog: React.FC<{
 
         <form onSubmit={handleSubmit(onSubmit)}>
           <div className="grid gap-4 py-4">
-            <div className="grid grid-cols-4 items-center gap-4 gap-y-2">
-              <Label htmlFor="name" className="text-right">
-                Name: <span className="text-red-500">*</span>
-              </Label>
-              <Input id="name" className="col-span-3" {...register('name')} />
+            <FieldGroup>
+              <Controller
+                name="name"
+                control={control}
+                render={({ field, fieldState }) => (
+                  <Field data-invalid={fieldState.invalid}>
+                    <div className="flex flex-wrap justify-between gap-x-4 gap-y-2">
+                      <FieldLabel htmlFor="name">
+                        Name: <span className="text-red-500">*</span>
+                      </FieldLabel>
+                      {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
+                    </div>
 
-              {errors.name && (
-                <span className="col-span-full text-right text-xs text-red-500 dark:text-red-500">
-                  {errors.name.message}
-                </span>
-              )}
-            </div>
-            <div className="grid grid-cols-4 items-center gap-4 gap-y-2">
-              <Label htmlFor="amount" className="text-right">
-                Amount: <span className="text-red-500">*</span>
-              </Label>
-              <Input id="amount" className="col-span-3" {...register('amount')} />
+                    <Input
+                      {...field}
+                      id="name"
+                      type="text"
+                      placeholder="Name"
+                      className="bg-background border-border text-foreground"
+                      aria-invalid={fieldState.invalid}
+                    />
+                  </Field>
+                )}
+              />
+            </FieldGroup>
 
-              {errors.amount && (
-                <span className="col-span-full text-right text-xs text-red-500 dark:text-red-500">
-                  {errors.amount.message}
-                </span>
-              )}
-            </div>
+            <FieldGroup>
+              <Controller
+                name="amount"
+                control={control}
+                render={({ field, fieldState }) => (
+                  <Field data-invalid={fieldState.invalid}>
+                    <div className="flex flex-wrap justify-between gap-x-4 gap-y-2">
+                      <FieldLabel htmlFor="amount">
+                        Amount: <span className="text-red-500">*</span>
+                      </FieldLabel>
+                      {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
+                    </div>
+
+                    <Input
+                      {...field}
+                      id="amount"
+                      type="text"
+                      placeholder="Amount"
+                      className="bg-background border-border text-foreground"
+                      aria-invalid={fieldState.invalid}
+                    />
+                  </Field>
+                )}
+              />
+            </FieldGroup>
           </div>
 
           <DialogFooter>
