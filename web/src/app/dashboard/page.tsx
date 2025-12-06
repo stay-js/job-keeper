@@ -20,12 +20,6 @@ export default async function DashboardPage() {
 
   const userPreferences = await api.userPreferences.get();
 
-  const fallbackUserPreferences = {
-    currency: 'EUR',
-    locale: 'en',
-    precision: 2,
-  };
-
   void api.jobs.getAll.prefetch();
   void api.expenses.getAll.prefetch();
   void api.positions.getAll.prefetch();
@@ -33,7 +27,7 @@ export default async function DashboardPage() {
 
   return (
     <HydrateClient>
-      <UserPreferencesProvider value={userPreferences ?? fallbackUserPreferences}>
+      <UserPreferencesProvider value={userPreferences}>
         <main className="container py-6 md:py-24">
           <DashboardTabs />
 

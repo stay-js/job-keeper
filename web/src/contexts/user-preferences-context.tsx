@@ -8,15 +8,23 @@ export type UserPreferences = Omit<NonNullable<RouterOutputs['userPreferences'][
 
 const UserPreferencesContext = createContext<UserPreferences | undefined>(undefined);
 
+const fallbackUserPreferences = {
+  currency: 'GBP',
+  locale: 'en-GB',
+  precision: 2,
+};
+
 export function UserPreferencesProvider({
   value,
   children,
 }: {
-  value: UserPreferences;
+  value?: UserPreferences;
   children: React.ReactNode;
 }) {
   return (
-    <UserPreferencesContext.Provider value={value}>{children}</UserPreferencesContext.Provider>
+    <UserPreferencesContext.Provider value={value ?? fallbackUserPreferences}>
+      {children}
+    </UserPreferencesContext.Provider>
   );
 }
 
