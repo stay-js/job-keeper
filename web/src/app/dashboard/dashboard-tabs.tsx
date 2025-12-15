@@ -1,10 +1,10 @@
 'use client';
 
-import { useCallback } from 'react';
 import { usePathname, useSearchParams } from 'next/navigation';
 
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '~/components/ui/tabs';
 import { CustomUserButton } from '~/components/custom-user-button';
+import { useCreateQueryString } from '~/hooks/use-create-query-string';
 import { JobsTab } from './jobs-tab';
 import { PositionsTab } from './positions-tab';
 import { StatisticsTab } from './statistics-tab';
@@ -12,16 +12,7 @@ import { StatisticsTab } from './statistics-tab';
 export function DashboardTabs() {
   const pathname = usePathname();
   const searchParams = useSearchParams();
-
-  const createQueryString = useCallback(
-    (name: string, value: string) => {
-      const params = new URLSearchParams(searchParams.toString());
-      params.set(name, value);
-
-      return params.toString();
-    },
-    [searchParams],
-  );
+  const createQueryString = useCreateQueryString(searchParams);
 
   const handleTabChange = (value: string) => {
     window.history.pushState(null, '', pathname + '?' + createQueryString('tab', value));
