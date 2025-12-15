@@ -21,6 +21,7 @@ import {
   TableContent,
 } from '~/components/table-utils';
 import { useUserPreferences } from '~/contexts/user-preferences-context';
+import { useMounted } from '~/hooks/use-mounted';
 import { getFormatters } from '~/lib/formatters';
 
 export function PositionsTable({
@@ -32,6 +33,7 @@ export function PositionsTable({
   isLoading: boolean;
   setSelected?: React.Dispatch<React.SetStateAction<number | null>>;
 }) {
+  const mounted = useMounted();
   const userPreferences = useUserPreferences();
   const { currency: cf, hours: hf } = getFormatters(userPreferences);
 
@@ -71,6 +73,16 @@ export function PositionsTable({
     onPaginationChange: setPagination,
     state: { sorting, pagination },
   });
+
+  if (!mounted) {
+    return (
+      <Table>
+        <TableHeaderWithOrdering table={table} />
+
+        <TableSkeleton table={table} />
+      </Table>
+    );
+  }
 
   return (
     <>

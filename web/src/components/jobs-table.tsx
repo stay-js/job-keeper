@@ -17,6 +17,7 @@ import {
   TableContent,
 } from '~/components/table-utils';
 import { useUserPreferences } from '~/contexts/user-preferences-context';
+import { useMounted } from '~/hooks/use-mounted';
 import { getFormatters } from '~/lib/formatters';
 
 export function JobsTable({
@@ -32,6 +33,7 @@ export function JobsTable({
   setSelected: React.Dispatch<React.SetStateAction<number | null>>;
   setSelectedExpense: React.Dispatch<React.SetStateAction<number | null>>;
 }) {
+  const mounted = useMounted();
   const userPreferences = useUserPreferences();
   const { currency: cf, hours: hf } = getFormatters(userPreferences);
 
@@ -102,6 +104,16 @@ export function JobsTable({
     onSortingChange: setSorting,
     state: { sorting },
   });
+
+  if (!mounted) {
+    return (
+      <Table>
+        <TableHeaderWithOrdering table={table} />
+
+        <TableSkeleton table={table} />
+      </Table>
+    );
+  }
 
   return (
     <Table>
