@@ -18,7 +18,7 @@ export const jobs = table(
     userId: d.varchar('user_id', { length: 256 }).notNull(),
     location: d.varchar('location', { length: 256 }).notNull(),
     event: d.varchar('event', { length: 256 }),
-    date: d.date('date', { mode: 'string' }).notNull(),
+    date: d.date('date').notNull(),
     hours: d.float('hours').notNull(),
     positionId: d
       .bigint('position_id', { mode: 'number', unsigned: true })
@@ -35,7 +35,7 @@ export const expenses = table(
     userId: d.varchar('user_id', { length: 256 }).notNull(),
     name: d.varchar('name', { length: 256 }).notNull(),
     amount: d.float('amount').notNull(),
-    date: d.date('date', { mode: 'string' }).notNull(),
+    date: d.date('date').notNull(),
   }),
   (t) => [index('by_user_idx').on(t.userId)],
 );

@@ -7,19 +7,20 @@ import { expenses } from '~/server/db/schema';
 const expenseSchema = z.object({
   name: z.string().min(1).max(256),
   amount: z.number().nonnegative(),
-  date: z.string().refine((date) => !isNaN(Date.parse(date))),
+  date: z
+    .string()
+    .transform((val) => new Date(val))
+    .refine((date) => !isNaN(date.getTime())),
 });
 
 export const expensesRouter = createTRPCRouter({
-  getAll: protectedProcedure.query(async ({ ctx }) => {
-    const data = await ctx.db
+  getAll: protectedProcedure.query(({ ctx }) => {
+    return ctx.db
       .select()
       .from(expenses)
       .where(eq(expenses.userId, ctx.auth.userId))
       .orderBy(expenses.date)
       .execute();
-
-    return data.map((item) => ({ ...item, date: new Date(item.date) }));
   }),
 
   getById: protectedProcedure.input(z.object({ id: z.number() })).query(({ ctx, input }) => {

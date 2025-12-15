@@ -7,14 +7,17 @@ import { jobs, positions } from '~/server/db/schema';
 const jobSchema = z.object({
   location: z.string().min(1).max(256),
   event: z.string().max(256).optional(),
-  date: z.string().refine((val) => !isNaN(Date.parse(val))),
+  date: z
+    .string()
+    .transform((val) => new Date(val))
+    .refine((date) => !isNaN(date.getTime())),
   hours: z.number().min(0).max(24),
   positionId: z.number(),
 });
 
 export const jobsRouter = createTRPCRouter({
-  getAll: protectedProcedure.query(async ({ ctx }) => {
-    const data = await ctx.db
+  getAll: protectedProcedure.query(({ ctx }) => {
+    return ctx.db
       .select({
         id: jobs.id,
         date: jobs.date,
@@ -31,8 +34,6 @@ export const jobsRouter = createTRPCRouter({
       .innerJoin(positions, eq(positions.id, jobs.positionId))
       .orderBy(jobs.date)
       .execute();
-
-    return data.map((item) => ({ ...item, date: new Date(item.date) }));
   }),
 
   create: protectedProcedure.input(jobSchema).mutation(({ ctx, input }) => {
