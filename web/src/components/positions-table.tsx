@@ -13,6 +13,7 @@ import { ChevronLeft, ChevronRight, ChevronFirst, ChevronLast } from 'lucide-rea
 import type { RouterOutputs } from '~/trpc/react';
 import { Table } from '~/components/ui/table';
 import { Button } from '~/components/ui/button';
+import { Skeleton } from '~/components/ui/skeleton';
 import {
   TableSkeleton,
   TableNoRecord,
@@ -76,11 +77,39 @@ export function PositionsTable({
 
   if (!mounted) {
     return (
-      <Table>
-        <TableHeaderWithOrdering table={table} />
+      <>
+        <div className="flex gap-4 max-sm:flex-col">
+          <div className="flex w-full items-center justify-between gap-2">
+            <div className="flex gap-2">
+              <Button disabled size="icon" variant="outline">
+                <ChevronFirst size={18} />
+              </Button>
+              <Button disabled size="icon" variant="outline">
+                <ChevronLeft size={18} />
+              </Button>
+            </div>
 
-        <TableSkeleton table={table} />
-      </Table>
+            <Skeleton className="h-3 w-24" />
+
+            <div className="flex gap-2">
+              <Button disabled size="icon" variant="outline">
+                <ChevronRight size={18} />
+              </Button>
+              <Button disabled size="icon" variant="outline">
+                <ChevronLast size={18} />
+              </Button>
+            </div>
+          </div>
+
+          <TableColumnSelector table={table} />
+        </div>
+
+        <Table>
+          <TableHeaderWithOrdering table={table} />
+
+          <TableSkeleton table={table} />
+        </Table>
+      </>
     );
   }
 
