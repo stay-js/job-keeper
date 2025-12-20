@@ -4,20 +4,10 @@ import { useMemo } from 'react';
 import { Bar, BarChart, CartesianGrid, XAxis } from 'recharts';
 
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '~/components/ui/card';
-import {
-  ChartContainer,
-  ChartTooltip,
-  ChartTooltipContent,
-  type ChartConfig,
-} from '~/components/ui/chart';
+import { ChartContainer, ChartTooltip, ChartTooltipContent } from '~/components/ui/chart';
 import { useUserPreferences } from '~/contexts/user-preferences-context';
 import { getFormatters } from '~/lib/formatters';
 import { RouterOutputs } from '~/trpc/react';
-
-const chartConfig = {
-  payout: { label: 'Payout' },
-  hoursWorked: { label: 'Hours Worked' },
-} satisfies ChartConfig;
 
 export function PayoutChart({
   positions = [],
@@ -47,7 +37,14 @@ export function PayoutChart({
       </CardHeader>
 
       <CardContent className="p-4">
-        <ChartContainer config={chartConfig} className="aspect-auto h-[250px] w-full">
+        <ChartContainer
+          config={{
+            payout: {
+              label: 'Payout',
+            },
+          }}
+          className="aspect-auto h-[250px] w-full"
+        >
           <BarChart accessibilityLayer data={positions} margin={{ left: 12, right: 12 }}>
             <CartesianGrid vertical={false} />
 
