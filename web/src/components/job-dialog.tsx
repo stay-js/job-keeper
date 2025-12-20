@@ -85,17 +85,29 @@ export function JobDialog({
   });
 
   const { mutate: create } = api.jobs.create.useMutation({
-    onSuccess: () => utils.jobs.invalidate(),
+    onSuccess: () => {
+      utils.jobs.invalidate();
+      utils.positions.getAllWithHoursWorked.invalidate();
+      utils.positions.getWithHoursWorkedFromTo.invalidate();
+    },
     onError: () => errorToast(),
   });
 
   const { mutate: update } = api.jobs.update.useMutation({
-    onSuccess: () => utils.jobs.invalidate(),
+    onSuccess: () => {
+      utils.jobs.invalidate();
+      utils.positions.getAllWithHoursWorked.invalidate();
+      utils.positions.getWithHoursWorkedFromTo.invalidate();
+    },
     onError: () => errorToast(),
   });
 
   const { mutate: remove } = api.jobs.delete.useMutation({
-    onSuccess: () => utils.jobs.invalidate(),
+    onSuccess: () => {
+      utils.jobs.invalidate();
+      utils.positions.getAllWithHoursWorked.invalidate();
+      utils.positions.getWithHoursWorkedFromTo.invalidate();
+    },
     onError: () => errorToast(),
   });
 
