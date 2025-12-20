@@ -1,13 +1,14 @@
 'use client';
 
 import { useMemo } from 'react';
-import { Bar, BarChart, CartesianGrid, XAxis } from 'recharts';
+import { Bar, BarChart, CartesianGrid, YAxis, XAxis } from 'recharts';
 
+import { RouterOutputs } from '~/trpc/react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '~/components/ui/card';
 import { ChartContainer, ChartTooltip, ChartTooltipContent } from '~/components/ui/chart';
 import { useUserPreferences } from '~/contexts/user-preferences-context';
 import { getFormatters } from '~/lib/formatters';
-import { RouterOutputs } from '~/trpc/react';
+import { truncateText } from '~/lib/truncate-text';
 
 export function PayoutChart({
   positions = [],
@@ -29,29 +30,45 @@ export function PayoutChart({
           <CardTitle>Payout</CardTitle>
           <CardDescription>Showing total payout by positions in the selected range</CardDescription>
         </div>
-
         <div className="flex flex-col gap-1 border-t p-4 sm:border-s sm:border-t-0">
           <span className="text-muted-foreground text-xs">Total Payout</span>
           <span className="text-lg leading-none font-bold sm:text-2xl">{cf.format(total)}</span>
         </div>
       </CardHeader>
-
       <CardContent className="p-4">
         <ChartContainer
-          config={{
-            payout: {
-              label: 'Payout',
-            },
-          }}
-          className="aspect-auto h-[250px] w-full"
+          config={{ payout: { label: 'Payout' } }}
+          className="w-full"
+          style={{ height: Math.max(300, (positions?.length ?? 0) * 42) + 'px' }}
         >
-          <BarChart accessibilityLayer data={positions} margin={{ left: 12, right: 12 }}>
-            <CartesianGrid vertical={false} />
+          <BarChart
+            accessibilityLayer
+            data={positions}
+            layout="vertical"
+            margin={{ left: 12, right: 12 }}
+          >
+            <CartesianGrid vertical />
 
-            <XAxis dataKey="position" tickLine={false} axisLine={false} tickMargin={8} />
+            <YAxis
+              dataKey="position"
+              type="category"
+              width={75}
+              tickLine={false}
+              axisLine={false}
+              interval={0}
+              tickFormatter={(value) => truncateText(value, 15)}
+            />
 
-            <ChartTooltip content={<ChartTooltipContent className="w-[150px]" />} />
-            <Bar dataKey="payout" fill={`var(--chart-1)`} />
+            <XAxis
+              type="number"
+              tickLine={false}
+              axisLine={false}
+              tickFormatter={(value) => cf.format(value)}
+            />
+
+            <ChartTooltip content={<ChartTooltipContent className="w-38" />} />
+
+            <Bar dataKey="payout" fill="var(--chart-1)" />
           </BarChart>
         </ChartContainer>
       </CardContent>
