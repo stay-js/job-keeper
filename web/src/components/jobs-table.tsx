@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
 import {
   type SortingState,
   getCoreRowModel,
@@ -49,9 +49,18 @@ export function JobsTable({
     {},
   );
 
-  const totalHours = jobs.reduce((acc, job) => acc + job.hours, 0);
-  const totalPayout = jobs.reduce((acc, job) => acc + job.payout, 0);
-  const totalExpenses = expenses.reduce((acc, expense) => acc + expense.amount, 0);
+  const jobTotals = useMemo(
+    () => ({
+      hours: jobs.reduce((acc, job) => acc + job.hours, 0),
+      payout: jobs.reduce((acc, job) => acc + job.payout, 0),
+    }),
+    [jobs],
+  );
+
+  const totalExpenses = useMemo(
+    () => expenses.reduce((acc, expense) => acc + expense.amount, 0),
+    [expenses],
+  );
 
   const table = useReactTable({
     data: jobs,
@@ -150,8 +159,8 @@ export function JobsTable({
 
         <TableRow className="border-t">
           <TableCell colSpan={5}>Total:</TableCell>
-          <TableCell>{hf.format(totalHours)}</TableCell>
-          <TableCell>{cf.format(totalPayout - totalExpenses)}</TableCell>
+          <TableCell>{hf.format(jobTotals.hours)}</TableCell>
+          <TableCell>{cf.format(jobTotals.payout - totalExpenses)}</TableCell>
         </TableRow>
       </TableFooter>
     </Table>
