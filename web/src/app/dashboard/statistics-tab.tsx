@@ -6,6 +6,7 @@ import { type DateRange } from 'react-day-picker';
 import { api } from '~/trpc/react';
 import { DateRangePicker } from '~/components/ui/date-range-picker';
 import { PositionsTable } from '~/components/positions-table';
+import { PayoutChart } from '~/components/payout-chart';
 import { useUserPreferences } from '~/contexts/user-preferences-context';
 import { createDateOnlyString } from '~/lib/create-date-only-string';
 
@@ -42,6 +43,8 @@ export function StatisticsTab() {
       </div>
 
       <PositionsTable positions={positions} isLoading={isLoading} />
+
+      <PayoutChart positions={positions} />
     </div>
   );
 }
