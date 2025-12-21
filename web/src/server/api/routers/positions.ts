@@ -41,12 +41,22 @@ export const positionsRouter = createTRPCRouter({
       z.object({
         from: z
           .string()
-          .transform((date) => new Date(date))
+          .transform((date) => {
+            const newDate = new Date(date);
+            newDate.setHours(0, 0, 0, 0);
+
+            return newDate;
+          })
           .refine((date) => !isNaN(date.getTime()))
           .optional(),
         to: z
           .string()
-          .transform((date) => new Date(date))
+          .transform((date) => {
+            const newDate = new Date(date);
+            newDate.setHours(23, 59, 59, 999);
+
+            return newDate;
+          })
           .refine((date) => !isNaN(date.getTime()))
           .optional(),
       }),
