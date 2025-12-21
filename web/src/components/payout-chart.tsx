@@ -17,7 +17,7 @@ export function PayoutChart({
   className,
 }: {
   positions: RouterOutputs['positions']['getAllWithHoursWorked'] | undefined;
-  colors: string[];
+  colors: Record<string, string>;
   className?: string;
 }) {
   const userPreferences = useUserPreferences();
@@ -74,12 +74,31 @@ export function PayoutChart({
             />
 
             <ChartTooltip
-              content={<ChartTooltipContent hideIndicator className="min-w-38" color="white" />}
+              content={
+                <ChartTooltipContent
+                  hideLabel
+                  formatter={(value, _, item) => (
+                    <div className="flex items-center gap-2">
+                      <div
+                        className="size-2.5 rounded-[2px]"
+                        style={{ backgroundColor: colors[item.payload?.id] }}
+                      />
+
+                      <div className="flex gap-1">
+                        <span className="text-muted-foreground">{item.payload?.position}:</span>
+                        <span className="text-foreground font-mono font-medium">
+                          {cf.format(value as number)}
+                        </span>
+                      </div>
+                    </div>
+                  )}
+                />
+              }
             />
 
             <Bar dataKey="payout">
-              {positions?.map((entry, index) => (
-                <Cell key={`cell-${index}`} fill={colors[index]} />
+              {positions?.map((item) => (
+                <Cell key={item.id} fill={colors[item.id]} />
               ))}
             </Bar>
           </BarChart>

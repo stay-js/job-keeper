@@ -1,7 +1,8 @@
 'use client';
 
-import { useDeferredValue, useMemo, useState } from 'react';
+import { useDeferredValue, useMemo, useRef, useState } from 'react';
 import { type DateRange } from 'react-day-picker';
+import { getRandomColor } from 'hue-hash';
 
 import { api } from '~/trpc/react';
 import { DateRangePicker } from '~/components/ui/date-range-picker';
@@ -28,19 +29,23 @@ export function StatisticsTab() {
 
   const { data: positions } = api.positions.getWithHoursWorkedFromTo.useQuery(deferredQueryInput);
 
-  const colors = useMemo(
-    () =>
-      positions?.map(() => {
-        const newRgb = {
-          r: Math.floor(Math.random() * 256),
-          g: Math.floor(Math.random() * 256),
-          b: Math.floor(Math.random() * 256),
-        };
+  const colorsRef = useRef<Record<string, string>>({});
 
-        return `rgb(${newRgb.r}, ${newRgb.g}, ${newRgb.b})`;
-      }) ?? [],
-    [positions],
-  );
+  const colors = useMemo(() => {
+    if (!positions) return colorsRef.current;
+
+    for (const { id } of positions) {
+      if (!colorsRef.current[id]) {
+        colorsRef.current[id] = getRandomColor(id, {
+          hue: { min: 120, max: 300 },
+          saturation: { min: 65, max: 85 },
+          lightness: { min: 45, max: 60 },
+        });
+      }
+    }
+
+    return colorsRef.current;
+  }, [positions]);
 
   return (
     <div className="flex flex-col gap-4">

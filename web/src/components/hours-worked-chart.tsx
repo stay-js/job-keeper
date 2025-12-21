@@ -16,7 +16,7 @@ export function HoursWorkedChart({
   className,
 }: {
   positions: RouterOutputs['positions']['getAllWithHoursWorked'] | undefined;
-  colors: string[];
+  colors: Record<string, string>;
   className?: string;
 }) {
   const randomColor = () => {
@@ -59,14 +59,29 @@ export function HoursWorkedChart({
             <ChartTooltip
               content={
                 <ChartTooltipContent
-                  className="min-w-38 [&_.flex.justify-between]:gap-2"
                   hideLabel
+                  formatter={(value, _, item) => (
+                    <div className="flex items-center gap-2">
+                      <div
+                        className="size-2.5 rounded-[2px]"
+                        style={{ backgroundColor: colors[item.payload?.id] }}
+                      />
+
+                      <div className="flex gap-1">
+                        <span className="text-muted-foreground">{item.payload?.position}:</span>
+                        <span className="text-foreground font-mono font-medium">
+                          {hf.format(value as number)}
+                        </span>
+                      </div>
+                    </div>
+                  )}
                 />
               }
             />
+
             <Pie data={positions} dataKey="hoursWorked" nameKey="position">
-              {positions?.map((entry, index) => (
-                <Cell key={`cell-${index}`} fill={colors[index]} />
+              {positions?.map((item) => (
+                <Cell key={item.id} fill={colors[item.id]} />
               ))}
             </Pie>
           </PieChart>
