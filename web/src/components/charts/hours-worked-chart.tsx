@@ -38,7 +38,7 @@ export function HoursWorkedChart({
         <PieChart>
           <ChartTooltip content={<ChartTooltipContent colors={colors} formatter={hf} />} />
 
-          <Pie data={positions} dataKey="hoursWorked">
+          <Pie data={positions} dataKey="hoursWorked" nameKey="position">
             {positions?.map((item) => (
               <Cell key={item.id} fill={colors[item.id]} />
             ))}
