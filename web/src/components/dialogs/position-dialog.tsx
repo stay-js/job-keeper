@@ -18,8 +18,8 @@ import {
 import { Input } from '~/components/ui/input';
 import { Field, FieldError, FieldGroup, FieldLabel } from '~/components/ui/field';
 import { Button } from '~/components/ui/button';
+import { DeletePopover } from '~/components/delete-popover';
 import { errorToast } from '~/lib/error-toast';
-import { DeletePopover } from './delete-popover';
 
 export const formSchema = z.object({
   name: z

@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 
-import { UserPreferencesDialog } from './user-preferences-dialog';
+import { UserPreferencesDialog } from '~/components/dialogs/user-preferences-dialog';
 
 export function SetInitialUserPreferences() {
   const [isOpen, setIsOpen] = useState(true);

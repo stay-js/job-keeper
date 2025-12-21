@@ -4,10 +4,10 @@ import { useState } from 'react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 
 import { api } from '~/trpc/react';
-import { JobsTable } from '~/components/jobs-table';
+import { JobsTable } from '~/components/tables/jobs-table';
 import { Button } from '~/components/ui/button';
-import { JobDialog } from '~/components/job-dialog';
-import { ExpenseDialog } from '~/components/expense-dialog';
+import { JobDialog } from '~/components/dialogs/job-dialog';
+import { ExpenseDialog } from '~/components/dialogs/expense-dialog';
 import { useUserPreferences } from '~/contexts/user-preferences-context';
 import { getFormatters } from '~/lib/formatters';
 

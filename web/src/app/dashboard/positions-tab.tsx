@@ -3,8 +3,8 @@
 import { useState } from 'react';
 
 import { api } from '~/trpc/react';
-import { PositionsTable } from '~/components/positions-table';
-import { PositionDialog } from '~/components/position-dialog';
+import { PositionsTable } from '~/components/tables/positions-table';
+import { PositionDialog } from '~/components/dialogs/position-dialog';
 
 export function PositionsTab() {
   const { data: positions, isLoading } = api.positions.getAllWithHoursWorked.useQuery();

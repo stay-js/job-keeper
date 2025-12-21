@@ -20,7 +20,7 @@ import {
   TableHeaderWithOrdering,
   TableColumnSelector,
   TableContent,
-} from '~/components/table-utils';
+} from '~/components/tables/table-utils';
 import { useUserPreferences } from '~/contexts/user-preferences-context';
 import { useMounted } from '~/hooks/use-mounted';
 import { getFormatters } from '~/lib/formatters';

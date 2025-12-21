@@ -5,10 +5,9 @@ import { PieChart, Pie, Cell } from 'recharts';
 
 import { RouterOutputs } from '~/trpc/react';
 import { ChartContainer, ChartTooltip } from '~/components/ui/chart';
+import { ChartCard, ChartTooltipContent } from '~/components/charts/chart-utils';
 import { useUserPreferences } from '~/contexts/user-preferences-context';
 import { getFormatters } from '~/lib/formatters';
-import { ChartCard } from './chart-card';
-import { ChartTooltipContent } from './chart-tooltip-content';
 
 export function HoursWorkedChart({
   className,

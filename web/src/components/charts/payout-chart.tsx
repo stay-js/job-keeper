@@ -5,11 +5,10 @@ import { Bar, BarChart, CartesianGrid, YAxis, XAxis, Cell } from 'recharts';
 
 import { RouterOutputs } from '~/trpc/react';
 import { ChartContainer, ChartTooltip } from '~/components/ui/chart';
+import { ChartCard, ChartTooltipContent } from '~/components/charts/chart-utils';
 import { useUserPreferences } from '~/contexts/user-preferences-context';
 import { getFormatters } from '~/lib/formatters';
 import { truncateText } from '~/lib/truncate-text';
-import { ChartCard } from './chart-card';
-import { ChartTooltipContent } from './chart-tooltip-content';
 import { useMounted } from '~/hooks/use-mounted';
 
 export function PayoutChart({

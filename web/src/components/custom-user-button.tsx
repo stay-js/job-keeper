@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { UserButton } from '@clerk/nextjs';
 import { Globe } from 'lucide-react';
 
-import { UserPreferencesDialog } from './user-preferences-dialog';
+import { UserPreferencesDialog } from '~/components/dialogs/user-preferences-dialog';
 
 export function CustomUserButton() {
   const [isOpen, setIsOpen] = useState(false);
