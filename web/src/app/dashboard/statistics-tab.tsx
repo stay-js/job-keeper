@@ -6,8 +6,8 @@ import { getRandomColor } from 'hue-hash';
 
 import { api } from '~/trpc/react';
 import { DateRangePicker } from '~/components/ui/date-range-picker';
-import { PayoutChart } from '~/components/payout-chart';
-import { HoursWorkedChart } from '~/components/hours-worked-chart';
+import { PayoutChart } from '~/components/charts/payout-chart';
+import { HoursWorkedChart } from '~/components/charts/hours-worked-chart';
 import { useUserPreferences } from '~/contexts/user-preferences-context';
 import { createDateOnlyString } from '~/lib/create-date-only-string';
 
