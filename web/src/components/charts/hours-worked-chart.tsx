@@ -11,13 +11,15 @@ import { ChartCard } from './chart-card';
 import { ChartTooltipContent } from './chart-tooltip-content';
 
 export function HoursWorkedChart({
-  positions = [],
-  colors,
   className,
+  positions = [],
+  isLoading,
+  colors,
 }: {
-  positions: RouterOutputs['positions']['getAllWithHoursWorked'] | undefined;
-  colors: Record<string, string>;
   className?: string;
+  positions: RouterOutputs['positions']['getAllWithHoursWorked'] | undefined;
+  isLoading: boolean;
+  colors: Record<string, string>;
 }) {
   const userPreferences = useUserPreferences();
   const { hours: hf } = getFormatters(userPreferences);
@@ -32,6 +34,7 @@ export function HoursWorkedChart({
       className={className}
       title="Hours Worked"
       description="Total hours worked by positions in the selected range"
+      isLoading={isLoading}
       total={hf.format(total)}
     >
       <ChartContainer className="mx-auto aspect-square w-full max-w-80">

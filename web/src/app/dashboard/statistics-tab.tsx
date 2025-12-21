@@ -27,7 +27,8 @@ export function StatisticsTab() {
 
   const deferredQueryInput = useDeferredValue(createQueryInput(range));
 
-  const { data: positions } = api.positions.getWithHoursWorkedFromTo.useQuery(deferredQueryInput);
+  const { data: positions, isLoading } =
+    api.positions.getWithHoursWorkedFromTo.useQuery(deferredQueryInput);
 
   const colorsRef = useRef<Record<string, string>>({});
 
@@ -61,8 +62,19 @@ export function StatisticsTab() {
       </div>
 
       <div className="grid gap-4 lg:grid-cols-[2fr_1fr]">
-        <HoursWorkedChart positions={positions} colors={colors} className="lg:order-2" />
-        <PayoutChart positions={positions} colors={colors} className="lg:order-1" />
+        <HoursWorkedChart
+          className="lg:order-2"
+          positions={positions}
+          isLoading={isLoading}
+          colors={colors}
+        />
+
+        <PayoutChart
+          className="lg:order-1"
+          positions={positions}
+          isLoading={isLoading}
+          colors={colors}
+        />
       </div>
     </div>
   );

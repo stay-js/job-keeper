@@ -10,16 +10,20 @@ import { getFormatters } from '~/lib/formatters';
 import { truncateText } from '~/lib/truncate-text';
 import { ChartCard } from './chart-card';
 import { ChartTooltipContent } from './chart-tooltip-content';
+import { useMounted } from '~/hooks/use-mounted';
 
 export function PayoutChart({
-  positions = [],
-  colors,
   className,
+  positions = [],
+  isLoading,
+  colors,
 }: {
-  positions: RouterOutputs['positions']['getAllWithHoursWorked'] | undefined;
-  colors: Record<string, string>;
   className?: string;
+  positions: RouterOutputs['positions']['getAllWithHoursWorked'] | undefined;
+  isLoading: boolean;
+  colors: Record<string, string>;
 }) {
+  const isMounted = useMounted();
   const userPreferences = useUserPreferences();
   const { currency: cf } = getFormatters(userPreferences);
 
@@ -34,10 +38,14 @@ export function PayoutChart({
       title="Payout"
       description="Total payout by positions in the selected range"
       total={cf.format(total)}
+      isLoading={isLoading}
     >
       <ChartContainer
-        className="aspect-auto w-full"
-        style={{ height: Math.max(100, (positions?.length ?? 0) * 42) + 'px' }}
+        className="aspect-auto w-full transition-[height] duration-300"
+        style={{
+          height:
+            !isMounted || isLoading ? '100px' : Math.max(100, (positions?.length ?? 0) * 42) + 'px',
+        }}
       >
         <BarChart
           accessibilityLayer

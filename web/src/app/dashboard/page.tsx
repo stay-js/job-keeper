@@ -24,6 +24,7 @@ export default async function DashboardPage() {
   void api.expenses.getAll.prefetch();
   void api.positions.getAll.prefetch();
   void api.positions.getAllWithHoursWorked.prefetch();
+  void api.positions.getWithHoursWorkedFromTo.prefetch({ from: undefined, to: undefined });
 
   return (
     <HydrateClient>
