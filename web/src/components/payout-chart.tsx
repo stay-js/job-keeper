@@ -44,8 +44,7 @@ export function PayoutChart({
 
       <CardContent className="p-4">
         <ChartContainer
-          config={{ payout: { label: 'Payout' } }}
-          className="w-full"
+          className="aspect-auto w-full"
           style={{ height: Math.max(100, (positions?.length ?? 0) * 42) + 'px' }}
         >
           <BarChart

@@ -19,16 +19,6 @@ export function HoursWorkedChart({
   colors: Record<string, string>;
   className?: string;
 }) {
-  const randomColor = () => {
-    const newRgb = {
-      r: Math.floor(Math.random() * 256),
-      g: Math.floor(Math.random() * 256),
-      b: Math.floor(Math.random() * 256),
-    };
-
-    return `rgb(${newRgb.r}, ${newRgb.g}, ${newRgb.b})`;
-  };
-
   const userPreferences = useUserPreferences();
   const { hours: hf } = getFormatters(userPreferences);
 
@@ -54,7 +44,7 @@ export function HoursWorkedChart({
       </CardHeader>
 
       <CardContent className="p-4">
-        <ChartContainer config={{}} className="aspect-square">
+        <ChartContainer className="mx-auto aspect-square w-full max-w-80">
           <PieChart>
             <ChartTooltip
               content={

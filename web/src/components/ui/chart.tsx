@@ -38,10 +38,10 @@ function ChartContainer({
   id,
   className,
   children,
-  config,
+  config = {},
   ...props
 }: React.ComponentProps<'div'> & {
-  config: ChartConfig;
+  config?: ChartConfig;
   children: React.ComponentProps<typeof RechartsPrimitive.ResponsiveContainer>['children'];
 }) {
   const uniqueId = React.useId();
