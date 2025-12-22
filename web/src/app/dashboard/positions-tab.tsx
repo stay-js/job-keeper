@@ -29,6 +29,7 @@ export function PositionsTab() {
   return (
     <div className="flex flex-col gap-4">
       <PositionsTable positions={positions} isLoading={isLoading} setSelected={setSelected} />
+
       <PositionDialog
         selected={selected}
         setSelected={setSelected}

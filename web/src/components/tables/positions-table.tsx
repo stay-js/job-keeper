@@ -13,6 +13,7 @@ import { ChevronLeft, ChevronRight, ChevronFirst, ChevronLast } from 'lucide-rea
 import type { RouterOutputs } from '~/trpc/react';
 import { Table } from '~/components/ui/table';
 import { Button } from '~/components/ui/button';
+import { Input } from '~/components/ui/input';
 import { Skeleton } from '~/components/ui/skeleton';
 import {
   TableSkeleton,
@@ -26,6 +27,7 @@ import { useMounted } from '~/hooks/use-mounted';
 import { getFormatters } from '~/lib/formatters';
 import { usePathname, useSearchParams } from 'next/navigation';
 import { useCreateQueryString } from '~/hooks/use-create-query-string';
+import { useFilter } from '~/hooks/use-filter';
 
 const PAGE_SIZE = 10;
 
@@ -47,19 +49,25 @@ export function PositionsTable({
   isLoading: boolean;
   setSelected?: React.Dispatch<React.SetStateAction<number | null>>;
 }) {
+  const mounted = useMounted();
+
   const pathname = usePathname();
   const searchParams = useSearchParams();
   const createQueryString = useCreateQueryString(searchParams);
 
-  const currentPageIndex = Number(searchParams.get('page'));
-
-  const mounted = useMounted();
   const userPreferences = useUserPreferences();
   const { currency: cf, hours: hf } = getFormatters(userPreferences);
 
-  const totalPages = Math.max(Math.ceil(positions.length / PAGE_SIZE), 1);
+  const { query, setQuery, filteredItems, isFiltering } = useFilter(positions, [
+    'position',
+    'wage',
+  ]);
 
   const [sorting, setSorting] = useState<SortingState>([]);
+
+  const currentPageIndex = Number(searchParams.get('page'));
+  const totalPages = Math.max(Math.ceil(filteredItems.length / PAGE_SIZE), 1);
+
   const [pagination, setPagination] = useState({
     pageIndex: getValidatedPageIndex(totalPages, currentPageIndex - 1),
     pageSize: PAGE_SIZE,
@@ -75,8 +83,15 @@ export function PositionsTable({
     );
   }, [pagination.pageIndex]);
 
+  useEffect(() => {
+    setPagination((prev) => ({
+      ...prev,
+      pageIndex: getValidatedPageIndex(totalPages, currentPageIndex - 1),
+    }));
+  }, [currentPageIndex, totalPages]);
+
   const table = useReactTable({
-    data: positions,
+    data: filteredItems,
     columns: [
       {
         header: 'Position',
@@ -107,90 +122,62 @@ export function PositionsTable({
     autoResetPageIndex: false,
   });
 
-  if (!mounted) {
-    return (
-      <>
-        <div className="flex gap-4 max-sm:flex-col">
-          <div className="flex w-full items-center justify-between gap-2">
-            <div className="flex gap-2">
-              <Button disabled size="icon" variant="outline">
-                <ChevronFirst size={18} />
-              </Button>
-              <Button disabled size="icon" variant="outline">
-                <ChevronLeft size={18} />
-              </Button>
-            </div>
-
-            <Skeleton className="h-3 w-24" />
-
-            <div className="flex gap-2">
-              <Button disabled size="icon" variant="outline">
-                <ChevronRight size={18} />
-              </Button>
-              <Button disabled size="icon" variant="outline">
-                <ChevronLast size={18} />
-              </Button>
-            </div>
-          </div>
-
-          <TableColumnSelector table={table} />
-        </div>
-
-        <Table>
-          <TableHeaderWithOrdering table={table} />
-
-          <TableSkeleton table={table} />
-        </Table>
-      </>
-    );
-  }
+  const shouldShowSkeleton = !mounted || isLoading || isFiltering;
+  const shouldShowNoRecord = !shouldShowSkeleton && table.getRowCount() === 0;
+  const shouldShowContent = !shouldShowSkeleton && table.getRowCount() > 0;
 
   return (
-    <>
-      <div className="flex gap-4 max-sm:flex-col">
-        <div className="flex w-full items-center justify-between gap-2">
-          <div className="flex gap-2">
-            <Button
-              onClick={() => table.firstPage()}
-              disabled={!table.getCanPreviousPage()}
-              size="icon"
-              variant="outline"
-            >
-              <ChevronFirst size={18} />
-            </Button>
-            <Button
-              onClick={() => table.previousPage()}
-              disabled={!table.getCanPreviousPage()}
-              size="icon"
-              variant="outline"
-            >
-              <ChevronLeft size={18} />
-            </Button>
-          </div>
+    <div className="flex flex-col gap-4">
+      <div className="flex w-full items-center justify-between gap-2">
+        <div className="flex gap-2">
+          <Button
+            onClick={() => table.firstPage()}
+            disabled={!mounted || !table.getCanPreviousPage()}
+            size="icon"
+            variant="outline"
+          >
+            <ChevronFirst size={18} />
+          </Button>
+          <Button
+            onClick={() => table.previousPage()}
+            disabled={!mounted || !table.getCanPreviousPage()}
+            size="icon"
+            variant="outline"
+          >
+            <ChevronLeft size={18} />
+          </Button>
+        </div>
 
+        {mounted ? (
           <div>
             Page <b>{pagination.pageIndex + 1}</b> of <b>{totalPages}</b>
           </div>
+        ) : (
+          <Skeleton className="h-3 w-24" />
+        )}
 
-          <div className="flex gap-2">
-            <Button
-              onClick={() => table.nextPage()}
-              disabled={!table.getCanNextPage()}
-              size="icon"
-              variant="outline"
-            >
-              <ChevronRight size={18} />
-            </Button>
-            <Button
-              onClick={() => table.lastPage()}
-              disabled={!table.getCanNextPage()}
-              size="icon"
-              variant="outline"
-            >
-              <ChevronLast size={18} />
-            </Button>
-          </div>
+        <div className="flex gap-2">
+          <Button
+            onClick={() => table.nextPage()}
+            disabled={!mounted || !table.getCanNextPage()}
+            size="icon"
+            variant="outline"
+          >
+            <ChevronRight size={18} />
+          </Button>
+          <Button
+            onClick={() => table.lastPage()}
+            disabled={!mounted || !table.getCanNextPage()}
+            size="icon"
+            variant="outline"
+          >
+            <ChevronLast size={18} />
+          </Button>
         </div>
+      </div>
+
+      <div className="flex gap-2 max-sm:flex-col">
+        <Input placeholder="Search..." value={query} onChange={(e) => setQuery(e.target.value)} />
 
         <TableColumnSelector table={table} />
       </div>
@@ -198,16 +185,14 @@ export function PositionsTable({
       <Table>
         <TableHeaderWithOrdering table={table} />
 
-        {isLoading && <TableSkeleton table={table} />}
+        {shouldShowSkeleton && <TableSkeleton table={table} />}
 
-        {!isLoading && positions.length === 0 && (
-          <TableNoRecord columns={table.getAllColumns().length} />
-        )}
+        {shouldShowNoRecord && <TableNoRecord columns={table.getAllColumns().length} />}
 
-        {!isLoading && positions.length > 0 && (
+        {shouldShowContent && (
           <TableContent table={table} setSelected={setSelected} idAccessor={(row) => row.id} />
         )}
       </Table>
-    </>
+    </div>
   );
 }
