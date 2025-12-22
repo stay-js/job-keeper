@@ -90,21 +90,21 @@ export function JobsTable({
         header: 'Wage',
         accessorKey: 'wage',
         cell: (cell) => (
-          <span className="whitespace-nowrap">{cf.format(cell.getValue<number>())}</span>
+          <span className="whitespace-nowrap">{cf.format(cell.getValue<number>()) || 0}</span>
         ),
       },
       {
         header: 'Hours',
         accessorKey: 'hours',
         cell: (cell) => (
-          <span className="whitespace-nowrap">{hf.format(cell.getValue<number>())}</span>
+          <span className="whitespace-nowrap">{hf.format(cell.getValue<number>()) || 0}</span>
         ),
       },
       {
         header: 'Payout',
         accessorKey: 'payout',
         cell: (cell) => (
-          <span className="whitespace-nowrap">{cf.format(cell.getValue<number>())}</span>
+          <span className="whitespace-nowrap">{cf.format(cell.getValue<number>()) || 0}</span>
         ),
       },
     ],

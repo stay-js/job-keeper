@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import {
   type SortingState,
   getCoreRowModel,
@@ -24,6 +24,10 @@ import {
 import { useUserPreferences } from '~/contexts/user-preferences-context';
 import { useMounted } from '~/hooks/use-mounted';
 import { getFormatters } from '~/lib/formatters';
+import { usePathname, useSearchParams } from 'next/navigation';
+import { useCreateQueryString } from '~/hooks/use-create-query-string';
+
+const PAGE_SIZE = 10;
 
 export function PositionsTable({
   positions = [],
@@ -34,15 +38,31 @@ export function PositionsTable({
   isLoading: boolean;
   setSelected?: React.Dispatch<React.SetStateAction<number | null>>;
 }) {
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
+  const createQueryString = useCreateQueryString(searchParams);
+
+  const currentPageIndex = Number(searchParams.get('page'));
+
   const mounted = useMounted();
   const userPreferences = useUserPreferences();
   const { currency: cf, hours: hf } = getFormatters(userPreferences);
 
   const [sorting, setSorting] = useState<SortingState>([]);
   const [pagination, setPagination] = useState({
-    pageIndex: 0,
-    pageSize: 10,
+    pageIndex: currentPageIndex && !isNaN(currentPageIndex) ? currentPageIndex - 1 : 0,
+    pageSize: PAGE_SIZE,
   });
+
+  useEffect(() => {
+    const newPage = pagination.pageIndex + 1;
+
+    window.history.pushState(
+      null,
+      '',
+      pathname + '?' + createQueryString('page', newPage.toString()),
+    );
+  }, [pagination.pageIndex]);
 
   const table = useReactTable({
     data: positions,
@@ -54,7 +74,7 @@ export function PositionsTable({
       {
         header: 'Wage',
         accessorKey: 'wage',
-        cell: (cell) => cf.format(cell.getValue<number>()),
+        cell: (cell) => cf.format(cell.getValue<number>() || 0),
       },
       {
         header: 'Hours Worked',
@@ -64,7 +84,7 @@ export function PositionsTable({
       {
         header: 'Payout',
         accessorKey: 'payout',
-        cell: (cell) => cf.format(cell.getValue<number>()),
+        cell: (cell) => cf.format(cell.getValue<number>() || 0),
       },
     ],
     getCoreRowModel: getCoreRowModel(),
