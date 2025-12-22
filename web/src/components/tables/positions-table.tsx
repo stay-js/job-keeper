@@ -104,6 +104,7 @@ export function PositionsTable({
     onSortingChange: setSorting,
     onPaginationChange: setPagination,
     state: { sorting, pagination },
+    autoResetPageIndex: false,
   });
 
   if (!mounted) {
