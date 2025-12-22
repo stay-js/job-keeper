@@ -29,6 +29,15 @@ import { useCreateQueryString } from '~/hooks/use-create-query-string';
 
 const PAGE_SIZE = 10;
 
+function getValidatedPageIndex(pageCount: number, pageIndex: number) {
+  if (isNaN(pageIndex)) return 0;
+
+  if (pageIndex < 0) return 0;
+  if (pageIndex >= pageCount) return Math.max(pageCount - 1, 0);
+
+  return pageIndex;
+}
+
 export function PositionsTable({
   positions = [],
   isLoading,
@@ -48,9 +57,11 @@ export function PositionsTable({
   const userPreferences = useUserPreferences();
   const { currency: cf, hours: hf } = getFormatters(userPreferences);
 
+  const totalPages = Math.max(Math.ceil(positions.length / PAGE_SIZE), 1);
+
   const [sorting, setSorting] = useState<SortingState>([]);
   const [pagination, setPagination] = useState({
-    pageIndex: currentPageIndex && !isNaN(currentPageIndex) ? currentPageIndex - 1 : 0,
+    pageIndex: getValidatedPageIndex(totalPages, currentPageIndex - 1),
     pageSize: PAGE_SIZE,
   });
 
@@ -157,8 +168,7 @@ export function PositionsTable({
           </div>
 
           <div>
-            Page <b>{table.getState().pagination.pageIndex + 1}</b> of{' '}
-            <b>{Math.max(table.getPageCount(), 1)}</b>
+            Page <b>{pagination.pageIndex + 1}</b> of <b>{totalPages}</b>
           </div>
 
           <div className="flex gap-2">
