@@ -16,6 +16,7 @@ Ugrás a [Fejlesztői Dokumentációra](#2-fejlesztői-dokumentáció)
 4. [Munkák (Jobs) Kezelése](#14-munkák-jobs-kezelése)
 5. [Kiadások (Expenses) Kezelése](#15-kiadások-expenses-kezelése)
 6. [Profilbeállítások Módosítása](#16-profilbeállítások-módosítása)
+7. [Statisztika](#17-statisztika)
 
 ---
 
@@ -23,15 +24,15 @@ Ugrás a [Fejlesztői Dokumentációra](#2-fejlesztői-dokumentáció)
 
 Amikor először lépsz be a JobKeeper fiókodba, az alkalmazás megkér, hogy állítsd be a személyes preferenciáidat. Ezek a beállítások biztosítják, hogy az adatok a számodra legmegfelelőbb formátumban jelenjenek meg.
 
-#### Ezeket az adatokat kell megadnod:
+#### 1.1.1. Ezeket az adatokat kell megadnod:
 
-**Dátum- és Időformátum (Locale):** Itt választhatod ki a régiódat (pl. Magyarország, `hu` / `hu-HU`). Ez határozza meg, hogy a dátumok és számok milyen formátumban jelennek meg.
+**Dátum- és Időformátum (Locale):** Itt választhatod ki a régiódat (pl. Magyarország `hu-HU`). Ez határozza meg, hogy a dátumok és számok milyen formátumban jelennek meg.
 
-- **Például:** A magyar (`hu`) beállítás esetén a dátum `2023. 12. 24.` formátumú lesz, a számoknál nincs helyiérték pont és tizedes vesszőt használunk, míg az amerikai angol (`en-US`) esetén a dátum `12/24/2023` formátumú lesz a számoknál pedig helyiérték vesszőt és tizedes pontot használunk.
+- **Például:** A magyar (`hu-HU`) beállítás esetén a dátum `2023. 12. 24.` formátumú lesz, a számoknál nincs helyiérték pont és tizedes vesszőt használunk, míg az amerikai angol (`en-US`) esetén a dátum `12/24/2023` formátumú lesz a számoknál pedig helyiérték vesszőt és tizedes pontot használunk.
 
 **Pénznem (Currency):** Válaszd ki azt a pénznemet, amelyben a fizetésedet kapod (pl. `HUF`, `EUR`, `USD`). Az alkalmazás ebben a pénznemben fogja megjeleníteni az órabéreket és a teljes keresetedet.
 
-**Kerekítés (Precision):** Itt adhatod meg, hogy a pénzösszegek (órabéred, fizetésed), hány tizedesjegy pontossággal jelenjenek meg.
+**Kerekítés (Precision):** Itt adhatod meg, hogy a pénzösszegek (órabéred, fizetésed, kiadások), hány tizedesjegy pontossággal jelenjenek meg.
 
 Opciók:
 
@@ -61,7 +62,7 @@ Az alkalmazás három fő fogalom köré épül: **Pozíciók (Positions)**, **M
 
 A pozícióidat a **Positions** fülön kezelheted. Itt láthatod az összes eddig létrehozott pozíciódat, a hozzájuk tartozó órabért és az azokban ledolgozott összesített óraszámot, illetve fizetést.
 
-#### Új pozíció létrehozása
+#### 1.3.1. Új pozíció létrehozása
 
 1. Navigálj a **Positions** fülre.
 2. Kattints az **Add new** gombra.
@@ -70,11 +71,19 @@ A pozícióidat a **Positions** fülön kezelheted. Itt láthatod az összes edd
    - **Hourly Wage:** Az ehhez a pozícióhoz tartozó órabér. (>0)
 4. Kattints a **Save changes** gombra a mentéshez.
 
-#### Pozíció szerkesztése és törlése
+#### 1.3.2. Pozíció szerkesztése és törlése
 
 **Szerkesztés:** Kattints a táblázatban a szerkeszteni kívánt pozíció sorára. A felugró ablakban módosíthatod a megnevezést vagy az órabért.
 
 **Törlés:** Egy pozíciót csak akkor tudsz törölni, ha még egyetlen munkát (Job) sem rögzítettél hozzá. Ha a pozíció törölhető, a szerkesztő ablakban megjelenik a **Delete** gomb.
+
+#### 1.3.3. Keresés a pozíciók között
+
+A **Positions** fül tetején található keresőmező segítségével gyorsan megtalálhatod a kívánt pozíciót/pozíciókat a pozíció neve vagy a pozícióhoz tartozó órabér alapján.
+
+#### 1.3.4. Megjelenő oszlopok ki/be kapcsolása
+
+A keresőmező mellett (mobilon alatt) található `Columns` gombra kattintva kiválaszthatod, hogy mely oszlopok jelenjenek meg a táblázatban. Ez lehetővé teszi, hogy csak a számodra releváns információkat lásd.
 
 ---
 
@@ -85,7 +94,7 @@ Az elvégzett munkáidat a **Jobs** fülön rögzítheted és tekintheted meg. A
 - **Navigáció a hónapok között:** A dátum feletti `<` és `>` nyilakkal tudsz váltani az előző és a következő hónap között.
 - **Havi összegzés:** A táblázat alján láthatod az adott hónapban ledolgozott órák és a teljes kereset összegzését, pozíciónként lebontva is.
 
-#### Új munka hozzáadása
+#### 1.4.1. Új munka hozzáadása
 
 1. Navigálj a **Jobs** fülre.
 2. Kattints az **Add new** gombra.
@@ -97,7 +106,7 @@ Az elvégzett munkáidat a **Jobs** fülön rögzítheted és tekintheted meg. A
    - **Hours:** A ledolgozott órák száma. (tört óra esetén, .-al vagy ,-vel elválastva, >0; <=24)
 4. Kattints a **Save changes** gombra.
 
-#### Munka szerkesztése és törlése
+#### 1.4.2. Munka szerkesztése és törlése
 
 Kattints a táblázatban a módosítani vagy törölni kívánt munka sorára. A felugró ablakban módosíthatod az adatokat, vagy a **Delete** gombbal véglegesen törölheted a bejegyzést.
 
@@ -107,7 +116,7 @@ Kattints a táblázatban a módosítani vagy törölni kívánt munka sorára. A
 
 A kiadásaidat is a **Jobs** fülön rögzítheted és tekintheted meg. A kiadások a havi összesítésben levonásra kerülnek a teljes keresetből.
 
-#### Új kiadás hozzáadása
+#### 1.5.1. Új kiadás hozzáadása
 
 1. Navigálj a **Jobs** fülre.
 2. Kattints az **Add expense** gombra.
@@ -116,7 +125,7 @@ A kiadásaidat is a **Jobs** fülön rögzítheted és tekintheted meg. A kiadá
    - **Amount:** A kiadás összege. (>0)
 4. Kattints a **Save changes** gombra.
 
-#### Kiadás szerkesztése és törlése
+#### 1.5.2. Kiadás szerkesztése és törlése
 
 Kattints a táblázatban a módosítani vagy törölni kívánt kiadás sorára. A felugró ablakban módosíthatod az adatokat, vagy a **Delete** gombbal véglegesen törölheted a bejegyzést.
 
@@ -127,6 +136,20 @@ Ha módosítani szeretnéd a dátum- és számformátumot, a pénznemet vagy a k
 1. Kattints a jobb felső sarokban található profil ikonra.
 2. A lenyíló menüben válaszd az **Update Locale & Currency** opciót.
 3. A felugró ablakban módosíthatod a kívánt beállításokat, majd a **Save changes** gombra kattintva mentheted a változtatásokat.
+
+### 1.7. Statisztika
+
+A statisztikai adatokat a **Statistics** fülön találod. Itt két grafikon segítségével tekintheted meg a ledolgozott óráid és a kereseted alakulását.
+
+#### 1.7.1. Grafikonok
+
+- **Ledolgozott órák grafikon:** Ez a kördiagram pozíciók szerinti bontásban mutatja meg, hogy az adott időszakban hány órát dolgoztál az adott pozíciókban.
+
+- **Kereset grafikon:** Ez az oszlopdiagram pozíciók szerinti bontásban mutatja meg, hogy az adott időszakban mennyi volt a teljes kereseted az adott pozíciókban.
+
+#### 1.7.2. Időszak kiválasztása
+
+A **Statistics** fül tetején található dátumválasztó segítségével kiválaszthatod, hogy mely időszakban szeretnéd megtekinteni a statisztikákat. Alapértelmezetten az összes adatot jeleníti meg.
 
 ---
 
