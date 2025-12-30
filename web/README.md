@@ -200,7 +200,15 @@ web/
 │ │ ├── ui/ # Alacsony szintű felhasználói interfész elemek (gombok, táblázatok, dialógusok)
 │ │ └── ... # Magasabb szintű komponensek (pl. jobs-table, position-dialog)
 │ │
-│ └── contexts/ # React Context-ek (pl. felhasználói beállítások kezelése)
+│ ├── constants/ # Állandó értékek
+│ ├── contexts/ # React Context-ek (pl. felhasználói beállítások kezelése)
+│ ├── hooks/ # Egyedi React hook-ok
+│ ├── lib/ # Segédfüggvények
+│ ├── server/ # Backend / Szerver oldali kód
+│ │ ├── api/ # Szerver oldali API logika (pl. TRPC routerek)
+│ │ └── db/ # Adatbázis séma, kapcsolat
+│ ├── styles/ # Globális stílusok (Tailwind konfiguráció)
+│ └── trpc/ # TRPC konfiguráció és segédfüggvények
 │
 ├── .env, .env.prod.local, .env-example # Környezeti változók különböző környezetekhez
 ├── .gitignore # Git által figyelmen kívül hagyott fájlok
@@ -249,7 +257,7 @@ export const jobs = table(
     userId: d.varchar('user_id', { length: 256 }).notNull(),
     location: d.varchar('location', { length: 256 }).notNull(),
     event: d.varchar('event', { length: 256 }),
-    date: d.date('date', { mode: 'string' }).notNull(),
+    date: d.date('date').notNull(),
     hours: d.float('hours').notNull(),
     positionId: d
       .bigint('position_id', { mode: 'number', unsigned: true })
@@ -270,7 +278,7 @@ export const expenses = table(
     userId: d.varchar('user_id', { length: 256 }).notNull(),
     name: d.varchar('name', { length: 256 }).notNull(),
     amount: d.float('amount').notNull(),
-    date: d.date('date', { mode: 'string' }).notNull(),
+    date: d.date('date').notNull(),
   }),
   (t) => [index('by_user_idx').on(t.userId)],
 );
