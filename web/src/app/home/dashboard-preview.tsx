@@ -29,9 +29,9 @@ export function DashboardPreview() {
               <Image
                 src="/jobs.png"
                 alt="JobKeeper Jobs Dashboard showing a table with job entries including dates, locations, events, positions, wages, hours worked, and payouts"
-                width={2048}
-                height={1152}
-                className="aspect-video w-full object-cover"
+                width={2928}
+                height={1647}
+                className="w-full"
                 priority
               />
             </div>
@@ -52,9 +52,31 @@ export function DashboardPreview() {
               <Image
                 src="/positions.png"
                 alt="JobKeeper Positions Dashboard displaying a paginated table of different positions with wages, hours worked, and total payouts"
-                width={2048}
-                height={1152}
-                className="aspect-video w-full object-cover"
+                width={2928}
+                height={1647}
+                className="w-full"
+              />
+            </div>
+          </div>
+
+          <div className="flex flex-col gap-4">
+            <div className="flex items-center gap-3">
+              <div className="h-1 w-8 rounded-full bg-purple-500" />
+              <h3 className="text-xl font-semibold">Statistics</h3>
+            </div>
+
+            <p className="text-muted-foreground max-w-2xl leading-relaxed">
+              Analyze your job data with comprehensive statistics. Visualize earnings, and hours
+              worked in the selected range through charts and graphs.
+            </p>
+
+            <div className="bg-background overflow-hidden rounded-xl border shadow-2xl">
+              <Image
+                src="/statistics.png"
+                alt="JobKeeper Statistics Dashboard displaying various charts and graphs summarizing job data"
+                width={2928}
+                height={1647}
+                className="w-full"
               />
             </div>
           </div>
