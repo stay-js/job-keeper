@@ -81,6 +81,7 @@ export const positionsRouter = createTRPCRouter({
         .leftJoin(jobs, eq(positions.id, jobs.positionId))
         .where(where)
         .groupBy(positions.id)
+        .having(sql`${sum(jobs.hours)} > 0`)
         .orderBy(positions.name)
         .execute();
     }),
