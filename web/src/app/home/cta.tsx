@@ -34,7 +34,7 @@ export function CTA() {
 
               {isSignedIn ? (
                 <Button
-                  className="group/btn relative overflow-hidden rounded-xl bg-white px-8 py-7 text-base font-semibold text-blue-600 shadow-lg shadow-black/20 transition-all duration-300 hover:scale-105 hover:shadow-xl hover:shadow-black/30"
+                  className="group/btn relative overflow-hidden rounded-xl bg-white px-8! py-7 text-base font-semibold text-blue-600 shadow-lg shadow-black/20 transition-all duration-300 hover:scale-105 hover:shadow-xl hover:shadow-black/30"
                   asChild
                 >
                   <Link href="/dashboard" className="flex items-center gap-2">
@@ -45,7 +45,7 @@ export function CTA() {
                 </Button>
               ) : (
                 <SignInButton mode="modal">
-                  <Button className="group/btn relative overflow-hidden rounded-xl bg-white px-8 py-7 text-base font-semibold text-blue-600 shadow-lg shadow-black/20 transition-all duration-300 hover:scale-105 hover:shadow-xl hover:shadow-black/30">
+                  <Button className="group/btn relative overflow-hidden rounded-xl bg-white px-8! py-7 text-base font-semibold text-blue-600 shadow-lg shadow-black/20 transition-all duration-300 hover:scale-105 hover:shadow-xl hover:shadow-black/30">
                     <span className="flex items-center gap-2">
                       <span>Get Started</span>
                       <MoveRight />
