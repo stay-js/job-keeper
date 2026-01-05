@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useDebounceValue } from 'usehooks-ts';
 import Fuse from 'fuse.js';
 
-export function useFilter(items: any[] | undefined = [], keys: string[]) {
+export function useFilter<T>(items: T[] | undefined = [], keys: string[]) {
   const [query, setQuery] = useState('');
   const [debouncedQuery] = useDebounceValue(query, 300);
 
