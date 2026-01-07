@@ -20,22 +20,29 @@ import { Field, FieldError, FieldGroup, FieldLabel } from '~/components/ui/field
 import { Input } from '~/components/ui/input';
 import { DeletePopover } from '~/components/delete-popover';
 import { createDateOnlyString } from '~/lib/create-date-only-string';
+import { parseCultureInvariantFloat } from '~/lib/parse-culture-invariant-float';
 import { errorToast } from '~/lib/error-toast';
 
 export const formSchema = z.object({
   name: z
     .string()
+    .trim()
     .min(1, { error: 'Please specify a name!' })
     .max(256, { error: 'Name is too long! (max 256 characters)' }),
-  amount: z.string().refine(
-    (value) => {
-      const num = parseFloat(value.replace(',', '.'));
-      return num > 0;
-    },
-    {
-      error: 'Please specify valid amount! (>0)',
-    },
-  ),
+  amount: z
+    .string()
+    .trim()
+    .refine(
+      (value) => {
+        const num = parseCultureInvariantFloat(value);
+        if (num === null) return false;
+
+        return num > 0;
+      },
+      {
+        error: 'Please specify valid amount! (>0)',
+      },
+    ),
   date: z.date(),
 });
 
@@ -79,7 +86,7 @@ export function ExpenseDialog({
     const newData = {
       ...data,
       date: createDateOnlyString(data.date),
-      amount: parseFloat(data.amount.replace(',', '.')),
+      amount: parseCultureInvariantFloat(data.amount)!,
     };
 
     if (selected) update({ id: selected, ...newData });

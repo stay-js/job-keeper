@@ -5,10 +5,11 @@ import { createTRPCRouter, protectedProcedure } from '~/server/api/trpc';
 import { jobs, positions } from '~/server/db/schema';
 
 const jobSchema = z.object({
-  location: z.string().min(1).max(256),
-  event: z.string().max(256).optional(),
+  location: z.string().trim().min(1).max(256),
+  event: z.string().trim().max(256).optional(),
   date: z
     .string()
+    .trim()
     .transform((val) => new Date(val))
     .refine((date) => !isNaN(date.getTime())),
   hours: z.number().min(0).max(24),

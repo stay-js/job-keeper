@@ -5,8 +5,8 @@ import { createTRPCRouter, protectedProcedure } from '~/server/api/trpc';
 import { userPreferences } from '~/server/db/schema';
 
 const userPreferencesSchema = z.object({
-  currency: z.string().min(1).max(16),
-  locale: z.string().min(1).max(16),
+  currency: z.string().trim().min(1).max(16),
+  locale: z.string().trim().min(1).max(16),
   precision: z.number().min(0).max(10),
 });
 

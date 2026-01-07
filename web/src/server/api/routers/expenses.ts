@@ -5,10 +5,11 @@ import { createTRPCRouter, protectedProcedure } from '~/server/api/trpc';
 import { expenses } from '~/server/db/schema';
 
 const expenseSchema = z.object({
-  name: z.string().min(1).max(256),
+  name: z.string().trim().min(1).max(256),
   amount: z.number().nonnegative(),
   date: z
     .string()
+    .trim()
     .transform((val) => new Date(val))
     .refine((date) => !isNaN(date.getTime())),
 });

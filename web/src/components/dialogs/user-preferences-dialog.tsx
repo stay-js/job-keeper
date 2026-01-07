@@ -32,14 +32,17 @@ import { LOCALES, CURRENCIES } from '~/constants/locale-curreny';
 export const formSchema = z.object({
   currency: z
     .string()
+    .trim()
     .min(1, { error: 'Please select a currency!' })
     .max(16, { error: 'Currency is too long! (max 16 characters)' }),
   locale: z
     .string()
+    .trim()
     .min(1, { error: 'Please select a locale!' })
     .max(16, { error: 'Locale is too long! (max 16 characters)' }),
   precision: z
     .string()
+    .trim()
     .min(1, { error: 'Please select a precision!' })
     .max(2, { error: 'Precision is too long! (max 2 characters)' })
     .refine((val) => {

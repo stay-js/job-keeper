@@ -19,22 +19,29 @@ import { Input } from '~/components/ui/input';
 import { Field, FieldError, FieldGroup, FieldLabel } from '~/components/ui/field';
 import { Button } from '~/components/ui/button';
 import { DeletePopover } from '~/components/delete-popover';
+import { parseCultureInvariantFloat } from '~/lib/parse-culture-invariant-float';
 import { errorToast } from '~/lib/error-toast';
 
 export const formSchema = z.object({
   name: z
     .string()
+    .trim()
     .min(1, { error: 'Please specify a name!' })
     .max(256, { error: 'Name is too long! (max 256 characters)' }),
-  wage: z.string().refine(
-    (value) => {
-      const num = parseFloat(value.replace(',', '.'));
-      return num > 0;
-    },
-    {
-      error: 'Please specify valid wage! (>0)',
-    },
-  ),
+  wage: z
+    .string()
+    .trim()
+    .refine(
+      (value) => {
+        const num = parseCultureInvariantFloat(value);
+        if (num === null) return false;
+
+        return num > 0;
+      },
+      {
+        error: 'Please specify valid wage! (>0)',
+      },
+    ),
 });
 
 type FormSchema = z.infer<typeof formSchema>;
@@ -79,7 +86,7 @@ export function PositionDialog({
   const onSubmit: SubmitHandler<FormSchema> = (data) => {
     const newData = {
       name: data.name,
-      wage: parseFloat(data.wage.replace(',', '.')),
+      wage: parseCultureInvariantFloat(data.wage)!,
     };
 
     if (selected) update({ id: selected, ...newData });

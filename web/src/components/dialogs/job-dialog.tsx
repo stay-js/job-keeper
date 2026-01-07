@@ -33,27 +33,41 @@ import { DeletePopover } from '~/components/delete-popover';
 import { useUserPreferences } from '~/contexts/user-preferences-context';
 import { getFormatters } from '~/lib/formatters';
 import { createDateOnlyString } from '~/lib/create-date-only-string';
+import { parseCultureInvariantFloat } from '~/lib/parse-culture-invariant-float';
 import { errorToast } from '~/lib/error-toast';
 
 export const formSchema = z.object({
   date: z.date({ error: 'Please select a valid date!' }),
   location: z
     .string()
+    .trim()
     .min(1, { error: 'Please specify a location!' })
     .max(256, { error: 'Location is too long! (max 256 characters)' }),
-  event: z.string().max(256, { error: 'Event is too long! (max 256 characters)' }).optional(),
-  positionId: z.string().refine((value) => value !== 'default' && parseInt(value) > 0, {
-    error: 'Please select a position!',
-  }),
-  hours: z.string().refine(
-    (value) => {
-      const num = parseFloat(value.replace(',', '.'));
-      return num > 0 && num <= 24;
-    },
-    {
-      error: 'Please specify valid work hours! (0-24)',
-    },
-  ),
+  event: z
+    .string()
+    .trim()
+    .max(256, { error: 'Event is too long! (max 256 characters)' })
+    .optional(),
+  positionId: z
+    .string()
+    .trim()
+    .refine((value) => !isNaN(Number(value)) && Number(value) > 0, {
+      error: 'Please select a position!',
+    }),
+  hours: z
+    .string()
+    .trim()
+    .refine(
+      (value) => {
+        const num = parseCultureInvariantFloat(value);
+        if (num === null) return false;
+
+        return num > 0 && num <= 24;
+      },
+      {
+        error: 'Please specify valid work hours! (0-24)',
+      },
+    ),
 });
 
 type FormSchema = z.infer<typeof formSchema>;
@@ -115,8 +129,8 @@ export function JobDialog({
     const newData = {
       ...data,
       date: createDateOnlyString(data.date),
-      hours: parseFloat(data.hours.replace(',', '.')),
-      positionId: parseInt(data.positionId),
+      hours: parseCultureInvariantFloat(data.hours)!,
+      positionId: Number(data.positionId),
     };
 
     if (selected) update({ id: selected, ...newData });

@@ -5,7 +5,7 @@ import { createTRPCRouter, protectedProcedure } from '~/server/api/trpc';
 import { positions, jobs } from '~/server/db/schema';
 
 const positionSchema = z.object({
-  name: z.string().min(1).max(256),
+  name: z.string().trim().min(1).max(256),
   wage: z.number().nonnegative(),
 });
 
@@ -41,6 +41,7 @@ export const positionsRouter = createTRPCRouter({
       z.object({
         from: z
           .string()
+          .trim()
           .transform((date) => {
             const newDate = new Date(date);
             newDate.setHours(0, 0, 0, 0);
@@ -51,6 +52,7 @@ export const positionsRouter = createTRPCRouter({
           .optional(),
         to: z
           .string()
+          .trim()
           .transform((date) => {
             const newDate = new Date(date);
             newDate.setHours(23, 59, 59, 999);
