@@ -29,7 +29,7 @@ pnpm db:push
 docker compose down
 ```
 
-## MYSQL elérése
+## MySQL elérése
 
 - Host: `localhost`
 - Port: `3306`
