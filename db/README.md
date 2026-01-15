@@ -2,15 +2,15 @@
 
 ## Előkészületek
 
-- `.env.example` fájlban találhatóak a szükséges környezeti változók. Ezt a fájlt le kell másolni és átnevezni `.env`-re.
+- `.env.example` fájlban találhatóak a szükséges környezeti változók. Amennyiben nem az alapértelmezett értékekre van szükség, ezt a fájlt le kell másolni és átnevezni `.env`-re, majd felülírni a szükséges értékeket.
 
-## Futtatás lokálisan
+## Futtatás
 
 ```bash
-docker compose up -d
+bash start.sh
 ```
 
-## Első indítás esetén
+### Első indítás esetén
 
 - Táblák létrehozása a `Drizzle` schema alapján:
 
@@ -23,7 +23,23 @@ pnpm db:push
 # npm run db:push
 ```
 
-## Hostolt development adatbázis elérése
+## Leállítás
 
-- Host: `mysql-znagy-gh-znagy-gh.g.aivencloud.com`
-- Port: `25828`
+```bash
+docker compose down
+```
+
+## MYSQL elérése
+
+- Host: `localhost`
+- Port: `3306`
+- Felhasználónév: a `.env` fájlban megadott `MYSQL_USER` érték
+- Jelszó: a `.env` fájlban megadott `MYSQL_PASSWORD` érték
+- Adatbázis: a `.env` fájlban megadott `MYSQL_DATABASE` érték
+
+## PHPMyAdmin elérése
+
+- URL: <http://localhost:8080>
+- Szerver: üresen hagyható, amennyiben az `.env` fájlban meg van adva a `PMA_HOST` érték
+- Felhasználónév: a `.env` fájlban megadott `MYSQL_USER` érték
+- Jelszó: a `.env` fájlban megadott `MYSQL_PASSWORD` érték

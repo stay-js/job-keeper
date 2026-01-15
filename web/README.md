@@ -302,7 +302,6 @@ export const userPreferences = table('user_preferences', (d) => ({
 #### 2.4.1. Előkészületek
 
 - `.env.example` fájlban találhatóak a szükséges környezeti változók. Ezt a fájlt le kell másolni és átnevezni `.env`-re.
-  - `DATABASE_URL` felülírása amennyiben a hostolt adatbázist szeretnénk használni.
   - `NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY` és `CLERK_SECRET_KEY` felülírása a saját Clerk kulcsainkkal.
 - Amennyiben még nincs, Node.js telepítése: <https://nodejs.org/>
 - Amennyiben még nincs, pnpm telepítése (opcionális lépes): `npm install -g pnpm`

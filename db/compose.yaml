@@ -1,20 +1,42 @@
-version: '3.8'
+networks:
+  database:
+
+volumes:
+  mysql:
 
 services:
   db:
-    image: mysql:latest
-    container_name: db
+    image: mysql:9.5.0
     restart: unless-stopped
     environment:
-      MYSQL_ROOT_PASSWORD: '${MYSQL_ROOT_PASSWORD}'
-      MYSQL_DATABASE: '${MYSQL_DATABASE}'
-      MYSQL_USER: '${MYSQL_USER}'
-      MYSQL_PASSWORD: '${MYSQL_PASSWORD}'
-      TZ: '${TZ}'
-    ports:
-      - '3306:3306'
+      - TZ=${TZ}
+      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+      - MYSQL_DATABASE=${MYSQL_DATABASE}
+      - MYSQL_USER=${MYSQL_USER}
+      - MYSQL_PASSWORD=${MYSQL_PASSWORD}
     volumes:
-      - data:/var/lib/mysql
+      - "mysql:/var/lib/mysql:rw"
+    ports:
+      - 3306:3306
+    networks:
+      - database
+    healthcheck:
+      test: '/usr/bin/mysql --user=root --password=$MYSQL_ROOT_PASSWORD --execute "SHOW DATABASES;"'
+      timeout: 20s
+      retries: 10
 
-volumes:
-  data: ~
+  phpmyadmin:
+    image: phpmyadmin:5.2.3-apache
+    restart: unless-stopped
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      - PMA_ARBITRARY=1
+      - PMA_HOST=${PMA_HOST}
+      - PMA_PORT=${PMA_PORT}
+      - UPLOAD_LIMIT=300M
+    ports:
+      - 8080:80
+    networks:
+      - database
