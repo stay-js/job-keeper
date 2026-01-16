@@ -70,7 +70,7 @@ export function Footer() {
         </div>
 
         <div className="text-muted-foreground border-t pt-8">
-          &copy; 2025 JobKeeper. All rights reserved.
+          &copy; 2026 JobKeeper. All rights reserved.
         </div>
       </div>
     </footer>
